@@ -82,8 +82,73 @@ namespace LabAWS_RestauranteAPI.Controllers
         // GET
         // Lo que MÁS se vendió.
 
+
+
+        [HttpGet("mas-vendido")]
+        public async Task<IActionResult> GetProductoMasVendido()
+        {
+            var productoMasVendido = await _context.Pedidos
+                .GroupBy(dp => dp.IdProducto)  // estariamos agrupando por el Id del producto
+                .Select(g => new {              // Seleccionamos el Id del producto y la cantidad vendida
+                    ProductoId = g.Key,
+                    CantidadVendida = g.Sum(dp => dp.Cantidad)  // Sumamos la cantidad de cada detalle de pedido
+                })
+                .OrderByDescending(g => g.CantidadVendida)  // aca nos estaria ordenando de forma desc por la cantidad vendida para saber cual es el mas vendido
+                .FirstOrDefaultAsync();  // obtenemos el primero resultado mas vendido o null si es que no hay datos 
+
+            if (productoMasVendido == null)
+            {
+                return NotFound("No se encontraron datos de ventas.");
+            }
+
+            // aca estamos cargando  los detalles del producto desde la tabla de productos 
+            var producto = await _context.Productos.FindAsync(productoMasVendido.ProductoId);
+
+            //return Ok(producto);  // devolvemos cual es el producto que mas se vendio 
+
+            return Ok(new
+            {
+                Producto = producto,  // Detalles del producto que menos se vendio
+                CantidadVendida = productoMasVendido.CantidadVendida  // aca vemos la cantidad vendida del producto
+            });
+
+
+        }
+
+
         // GET
         // Lo que MENOS se vendió.
+
+        [HttpGet("menos-vendido")]
+        public async Task<IActionResult> GetProductoMenosVendido()
+        {
+            var productoMenosVendido = await _context.Pedidos
+                .GroupBy(dp => dp.IdProducto)  // estariamos agrupando por el Id del producto
+                .Select(g => new {              //Seleccionamos el Id del producto y la cantidad vendida
+                    ProductoId = g.Key,
+                    CantidadVendida = g.Sum(dp => dp.Cantidad)  // Sumamos la cantidad de cada detalle de pedido
+                })
+                .OrderBy(g => g.CantidadVendida)  // Ordenamos de forma asc por cantidad vendida para saber cual es el menos vendido 
+                .FirstOrDefaultAsync();  // obtenemos el primero resultado menos vendido o null si es que no hay datos 
+
+            if (productoMenosVendido == null)
+            {
+                return NotFound("No se encontraron datos de ventas.");
+            }
+
+            // aca estamos cargando  los detalles del producto desde la tabla de productos 
+            var producto = await _context.Productos.FindAsync(productoMenosVendido.ProductoId);
+
+            // return Ok(producto);  // devolvemos cual es el producto que menos se vendio 
+
+            return Ok(new
+            {
+                Producto = producto,  // Detalles del producto que menos se vendio
+                CantidadVendida = productoMenosVendido.CantidadVendida  // aca vemos la cantidad vendida del producto
+            });
+        }
+
+
 
         // GET
         // Los que no se entregaron en el tiempo estipulado.

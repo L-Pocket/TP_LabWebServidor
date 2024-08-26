@@ -1,5 +1,5 @@
-﻿using Entidades;
-using LabAWS_RestauranteAPI.DAL;
+﻿using LabAWS_RestauranteAPI.DAL;
+using LabAWS_RestauranteAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

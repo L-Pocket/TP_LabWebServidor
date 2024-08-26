@@ -9,8 +9,8 @@ namespace LabAWS_RestauranteAPI.Controllers
     [ApiController]
     public class LoginsController : ControllerBase
     {
-
-        // Login de empleado.
+        // Logins en el Endpoint.
+        // Se maneja con JWT
 
         private readonly RestauranteContext _context;
         private static List<Logueo> _logins = new List<Logueo>();

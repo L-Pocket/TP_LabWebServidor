@@ -5,12 +5,12 @@ namespace LabAWS_RestauranteAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SociosControllers: ControllerBase
+    public class SociosController: ControllerBase
     {
         private readonly RestauranteContext _context;
 
         // Constructor
-        public SociosControllers(RestauranteContext context)
+        public SociosController(RestauranteContext context)
         {
             _context = context;
         }

@@ -30,7 +30,7 @@ namespace LabAWS_RestauranteAPI.Controllers
                 .Select(l => new
                 {
                     EmpleadoId = l.IdEmpleado,                   // ID del empleado
-                    NombreEmpleado = l.IdEmpleadoNavigation.Nombre, // Nombre del empleado
+                    NombreEmpleado = l.IdEmpleadoNavigation.Nombre, 
                     FechaLogueo = l.FechaLogueo,                  // Fecha y hora de logueo
                     Dia = l.FechaLogueo.DayOfWeek,                // Día de la semana en que el empleado se logueo
                     Hora = l.FechaLogueo.TimeOfDay                // Hora del logueo

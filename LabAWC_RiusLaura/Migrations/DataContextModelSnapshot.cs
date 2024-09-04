@@ -42,7 +42,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("MesaDeComandaId");
 
-                    b.ToTable("Comandas");
+                    b.ToTable("Comandas", (string)null);
 
                     b.HasData(
                         new
@@ -115,7 +115,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("SectorDelEmpleadoId");
 
-                    b.ToTable("Empleados");
+                    b.ToTable("Empleados", (string)null);
 
                     b.HasData(
                         new
@@ -224,7 +224,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasKey("IdEstadoMesa");
 
-                    b.ToTable("Estados_Mesas");
+                    b.ToTable("Estados_Mesas", (string)null);
 
                     b.HasData(
                         new
@@ -263,7 +263,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasKey("IdEstadoPedido");
 
-                    b.ToTable("Estados_Pedidos");
+                    b.ToTable("Estados_Pedidos", (string)null);
 
                     b.HasData(
                         new
@@ -314,7 +314,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("EmpleadoLogId");
 
-                    b.ToTable("LogueosEmpleados");
+                    b.ToTable("LogueosEmpleados", (string)null);
 
                     b.HasData(
                         new
@@ -381,7 +381,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("EstadoDeMesaId");
 
-                    b.ToTable("Mesas");
+                    b.ToTable("Mesas", (string)null);
 
                     b.HasData(
                         new
@@ -455,7 +455,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("ProductoDelPedidoId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
 
                     b.HasData(
                         new
@@ -559,7 +559,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasIndex("SectorProductoId");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
 
                     b.HasData(
                         new
@@ -650,7 +650,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasKey("IdRol");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -694,7 +694,7 @@ namespace LabAWS_RiusLaura.Migrations
 
                     b.HasKey("IdSector");
 
-                    b.ToTable("Sectores");
+                    b.ToTable("Sectores", (string)null);
 
                     b.HasData(
                         new

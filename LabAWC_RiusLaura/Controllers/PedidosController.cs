@@ -21,31 +21,32 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
 
-        // GET de todos los pedidos, historial 
-        [HttpGet("GetPedidos")]
-        public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
-        {
-            try
-            {
-                // Obtiene la lista de todos los pedidos desde la BBDD
-                var pedidos = await _context.Pedidos.ToListAsync();
+        //// GET de todos los pedidos, historial 
+        //[HttpGet("GetPedidos")]
+        //public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
+        //{
+        //    try
+        //    {
+        //        // Obtiene la lista de todos los pedidos desde la BBDD
+        //        var pedidos = await _context.Pedidos.ToListAsync();
 
-                // Verifica si la lista está vacía
-                if (pedidos == null || !pedidos.Any()) // devuelve true si la lista está vacía o es null.
-                {
-                    return NoContent();
-                }
+        //        // Verifica si la lista está vacía
+        //        if (pedidos == null || !pedidos.Any()) // devuelve true si la lista está vacía o es null.
+        //        {
+        //            return NoContent();
+        //        }
 
-                // Retorna la lista de pedidos con un código de estado 200 OK
-                return Ok(pedidos);
-            }
-            catch (Exception ex)
-            {                
-                return StatusCode(500, $"Error al obtener los pedidos: {ex.Message}");
-            }
-        }
+        //        // Retorna la lista de pedidos con un código de estado 200 OK
+        //        return Ok(pedidos);
+        //    }
+        //    catch (Exception ex)
+        //    {                
+        //        return StatusCode(500, $"Error al obtener los pedidos: {ex.Message}");
+        //    }
+        //}
 
         // GET de 1 pedido por su ID 
+
         [HttpGet("GetPedidoBy/{id}")]
         public async Task<ActionResult<Pedido>> GetPedidoById(int id)
         {
@@ -196,7 +197,7 @@ namespace LabAWS_RiusLaura.Controllers
                     Cantidad = cantidad,
                     EstadoDelPedidoId = 1, // se inicializa en 1 "Pendiente"
                     FechaCreacion = DateTime.Now,
-                    TiempoEstimado = tiempoEstimado,
+                    TiempoEstimado = 0, // Inicializa en cero
                     CodigoCliente = codigoCliente,
                     ObservacionesDelPedido = observaciones
                 };

@@ -20,10 +20,6 @@ namespace LabAWS_RiusLaura.Controllers
 
         // ----- Listado de funcionalidades mínimas evaluadas:-----
 
-        // GET // Listar todos los productos pendientes de este tipo de empleado
-        // Falta resolver ????
-
-
         // PUT // Debe cambiar el estado a “en preparación” y agregarle el tiempo de preparación (NUEVO ATRIBUTO DE TiempoEstimado). 
         [HttpPut("PonerPedidoEnPreparacion/{idPedido}")]
         public async Task<ActionResult<Pedido>> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado)
@@ -151,7 +147,8 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-
+        // GET // Listar todos los productos pendientes de este tipo de empleado
+        // Sería un GET ALL productos pendientes de cada Rol 1, 2 y 3 Bartender, cervecero y cocinero.
 
 
     }

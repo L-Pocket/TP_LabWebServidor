@@ -60,7 +60,7 @@ namespace LabAWS_RiusLaura.Controllers
                 var resultado = new
                 {                    
                     TiempoEstimado = tiempoEstimado,                    
-                    Demorado = Math.Round(tiempoReal - tiempoEstimado, 2) // Redondear a dos decimales
+                    Su_Pedido_Esta_Demorado = Math.Round(tiempoReal - tiempoEstimado, 0) // Redondear a cero decimales
                 };
 
                 return Ok(resultado);

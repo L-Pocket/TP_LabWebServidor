@@ -104,37 +104,6 @@ namespace LabAWS_RiusLaura.Controllers
         // ----- Requerimientos de la aplicación: -----
 
         // GET //Los días y horarios que se Ingresaron al sistema los empleados.
-        [HttpGet("ListarLogueosEmpleados")]
-        public async Task<ActionResult<IEnumerable<object>>> ListarLogueosEmpleados()
-        {
-            try
-            {
-                var logueos = await _context.LogueosEmpleados // Busca los logueos en la BBDD
-                    .Select(l => new
-                    {
-                        l.EmpleadoLogId,
-                        l.EmpleadoLog.Nombre, // Obtener el nombre del empleado
-                        FechaLogueo = l.FechaLogueo.ToString("yyyy-MM-dd HH:mm:ss"), // Convierte a string ya que es un tipo DateTime
-                        // Operador condicional, ? si HasValue es True convierte a string, : si es false devuelve null como tipo string
-                        FechaDeslogueo = l.FechaDeslogueo.HasValue ? l.FechaDeslogueo.Value.ToString("yyyy-MM-dd HH:mm:ss") : (string)null
-                    })
-                    .ToListAsync();
-
-                if (!logueos.Any())
-                {
-                    return NotFound("No hay registros de logueo de empleados.");
-                }
-
-                return Ok(logueos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
-            }
-        }
-        // GET
-        //Cantidad de operaciones de todos por sector.
-        //Descripción: listar empleados por sector. 
         [HttpGet("CantidadEmpleadosPorSector")]
         public async Task<ActionResult<IEnumerable<object>>> CantidadEmpleadosPorSector()
         {
@@ -156,10 +125,6 @@ namespace LabAWS_RiusLaura.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
-        // GET
-        //Cantidad de operaciones de todos por sector, listada por cada empleado.
-        // Descripción: listar productos por empleado.
-        // FALTA definir atributo al igual que en el endpoint "Listar todos los productos pendientes de este tipo de empleado"
 
         // POST //Posibilidad de dar de alta a nuevos empleados.
         [HttpPost("AgregarEmpleado")]
@@ -251,6 +216,46 @@ namespace LabAWS_RiusLaura.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+
+        // FALTA-------------------------------------------------------------
+
+        // GET
+        //Cantidad de operaciones de todos por sector, listada por cada empleado.
+        // Descripción: listar productos por empleado.
+
+        
+        [HttpGet("ListarLogueosEmpleados")]
+        public async Task<ActionResult<IEnumerable<object>>> ListarLogueosEmpleados()
+        {
+            try
+            {
+                var logueos = await _context.LogueosEmpleados // Busca los logueos en la BBDD
+                    .Select(l => new
+                    {
+                        l.EmpleadoLogId,
+                        l.EmpleadoLog.Nombre, // Obtener el nombre del empleado
+                        FechaLogueo = l.FechaLogueo.ToString("yyyy-MM-dd HH:mm:ss"), // Convierte a string ya que es un tipo DateTime
+                        // Operador condicional, ? si HasValue es True convierte a string, : si es false devuelve null como tipo string
+                        FechaDeslogueo = l.FechaDeslogueo.HasValue ? l.FechaDeslogueo.Value.ToString("yyyy-MM-dd HH:mm:ss") : (string)null
+                    })
+                    .ToListAsync();
+
+                if (!logueos.Any())
+                {
+                    return NotFound("No hay registros de logueo de empleados.");
+                }
+
+                return Ok(logueos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+        // GET
+        //Cantidad de operaciones de todos por sector.
+        //Descripción: listar empleados por sector. 
 
     }
 }

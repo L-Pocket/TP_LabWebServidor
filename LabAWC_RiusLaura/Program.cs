@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using LabAWC_RiusLaura.DAL.Data;
+using LabAWS_RiusLaura.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +13,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(op => op.UseSqlServer(
     builder.Configuration.GetConnectionString("ConnectionStringEF")));
-
+//Inyeccion de dependecia de los Servicio, Scoped se crea una nueva instancia por ámbito o sea en cada petición HTTP
+builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
 var app = builder.Build();
+
+//------------------------------------------------------------------------------------------------
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,4 +1,6 @@
-﻿using LabAWC_RiusLaura.DAL.Data;
+﻿using Entidades;
+using LabAWC_RiusLaura.DAL.Data;
+using LabAWS_RiusLaura.Servicios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +11,35 @@ namespace LabAWS_RiusLaura.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly DataContext _context;
+
+        private readonly IClienteServicio _clienteServicio;
+
+        public ClientesController(IClienteServicio clienteServicio)
+        {
+            _clienteServicio = clienteServicio;
+        }
+        [HttpGet("GetDemora")]
+
+        public async Task<IActionResult> GetDemora(string codigoMesa, string idPedido)
+        {
+            var (success, errorMessage, mesa, pedido, resultado) = await _clienteServicio.GetDemora(codigoMesa, idPedido);
+
+            if (!success)
+            {
+                if (mesa == null)
+                {
+                    return NotFound(errorMessage);
+                }
+
+                return BadRequest(errorMessage);
+            }
+
+            return Ok(resultado);
+        }
+        //private readonly DataContext _context;
 
         // Constructor
-        public ClientesController(DataContext context)
+        /*public ClientesController(DataContext context)
         {
             _context = context;
         }
@@ -70,7 +97,7 @@ namespace LabAWS_RiusLaura.Controllers
             {
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
-        }
+        }*/
     }
 }
 

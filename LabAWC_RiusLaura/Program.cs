@@ -15,6 +15,7 @@ builder.Services.AddDbContext<DataContext>(op => op.UseSqlServer(
     builder.Configuration.GetConnectionString("ConnectionStringEF")));
 //Inyeccion de dependecia de los Servicio, Scoped se crea una nueva instancia por ámbito o sea en cada petición HTTP
 builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
+builder.Services.AddScoped<IMesaServicio, MesaServicio>();
 var app = builder.Build();
 
 //------------------------------------------------------------------------------------------------

@@ -1,6 +1,92 @@
 ﻿using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using LabAWS_RiusLaura.Servicios;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using LabAWS_RiusLaura.DTO;
+
+namespace LabAWS_RiusLaura.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SocioController : ControllerBase
+    {
+        private readonly ISocioServicio _socioServicio;
+
+        public SocioController(ISocioServicio socioServicio)
+        {
+            _socioServicio = socioServicio;
+        }
+
+        [HttpPut("CerrarMesa/{idMesa}")]
+        public async Task<ActionResult<Mesa>> CerrarMesa(int idMesa)
+        {
+            var result = await _socioServicio.CerrarMesa(idMesa);
+            return result;
+        }
+
+        [HttpGet("ListarPedidosConDemora")]
+        public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
+        {
+            var result = await _socioServicio.ListarPedidosConDemora();
+            return result;
+        }
+
+        [HttpGet("ListarMesasConEstados")]
+        public async Task<ActionResult<IEnumerable<MesaEstadoDto>>> ListarMesasConEstados()
+        {
+            var result = await _socioServicio.ListarMesasConEstados();
+            return result;
+        }
+
+        [HttpGet("CantidadEmpleadosPorSector")]
+        public async Task<ActionResult<IEnumerable<CantidadEmpleadosPorSectorDto>>> CantidadEmpleadosPorSector()
+        {
+            var result = await _socioServicio.CantidadEmpleadosPorSector();
+            return result;
+        }
+
+        [HttpPost("AgregarEmpleado")]
+        public async Task<ActionResult<EmpleadoDto>> AgregarEmpleado([FromQuery] string nombre, [FromQuery] string usuario, [FromQuery] string password,
+            [FromQuery] int sectorDelEmpleadoId, [FromQuery] int rolDelEmpleadoId)
+        {
+            var result = await _socioServicio.AgregarEmpleado(nombre, usuario, password, sectorDelEmpleadoId, rolDelEmpleadoId);
+            return result;
+        }
+
+        [HttpPut("SuspenderEmpleado/{idEmpleado}")]
+        public async Task<ActionResult<EmpleadoDto>> SuspenderEmpleado(int idEmpleado)
+        {
+            var result = await _socioServicio.SuspenderEmpleado(idEmpleado);
+            return result;
+        }
+
+        [HttpDelete("BorrarEmpleado/{idEmpleado}")]
+        public async Task<ActionResult> BorrarEmpleado(int idEmpleado)
+        {
+            var result = await _socioServicio.BorrarEmpleado(idEmpleado);
+            return result;
+        }
+
+        [HttpGet("ListarLogueosEmpleados")]
+        public async Task<ActionResult<IEnumerable<LogueoEmpleadoDto>>> ListarLogueosEmpleados()
+        {
+            var result = await _socioServicio.ListarLogueosEmpleados();
+            return result;
+        }
+    }
+}
+
+
+
+
+/*
+using Entidades;
+using LabAWC_RiusLaura.DAL.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -259,3 +345,4 @@ namespace LabAWS_RiusLaura.Controllers
 
     }
 }
+*/

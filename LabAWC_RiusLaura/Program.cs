@@ -18,6 +18,8 @@ builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
 builder.Services.AddScoped<IMesaServicio, MesaServicio>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<ISocioServicio, SocioServicio>();
+builder.Services.AddScoped<IEmpleadoServicio, EmpleadoServicio>();
+
 var app = builder.Build();
 
 //------------------------------------------------------------------------------------------------

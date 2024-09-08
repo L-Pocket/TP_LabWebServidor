@@ -1,4 +1,55 @@
-﻿using Entidades;
+﻿using LabAWS_RiusLaura.DTO;
+using LabAWS_RiusLaura.Servicios;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace LabAWS_RiusLaura.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmpleadosController : ControllerBase
+    {
+        private readonly IEmpleadoServicio _empleadoServicio;
+
+        public EmpleadosController(IEmpleadoServicio empleadoServicio)
+        {
+            _empleadoServicio = empleadoServicio;
+        }
+
+        [HttpPut("PonerPedidoEnPreparacion/{idPedido}")]
+        public async Task<ActionResult> PonerPedidoEnPreparacion(int idPedido, [FromQuery] int tiempoEstimado)
+        {
+            var result = await _empleadoServicio.PonerPedidoEnPreparacion(idPedido, tiempoEstimado);
+            return result;
+        }
+
+        [HttpPut("PonerPedidoListoParaServir/{idPedido}")]
+        public async Task<ActionResult> PonerPedidoListoParaServir(int idPedido)
+        {
+            var result = await _empleadoServicio.PonerPedidoListoParaServir(idPedido);
+            return result;
+        }
+
+        [HttpPut("CambiarEstadoMesaClienteComiendo/{idMesa}")]
+        public async Task<ActionResult> CambiarEstadoMesaClienteComiendo(int idMesa)
+        {
+            var result = await _empleadoServicio.CambiarEstadoMesaClienteComiendo(idMesa);
+            return result;
+        }
+
+        [HttpPut("CambiarEstadoMesaClientePagando/{idMesa}")]
+        public async Task<ActionResult> CambiarEstadoMesaClientePagando(int idMesa)
+        {
+            var result = await _empleadoServicio.CambiarEstadoMesaClientePagando(idMesa);
+            return result;
+        }
+    }
+}
+
+
+
+/*
+using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -153,3 +204,4 @@ namespace LabAWS_RiusLaura.Controllers
 
     }
 }
+*/

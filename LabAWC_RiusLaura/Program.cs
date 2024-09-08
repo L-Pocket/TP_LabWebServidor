@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(op => op.UseSqlServer(
 builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
 builder.Services.AddScoped<IMesaServicio, MesaServicio>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
+builder.Services.AddScoped<ISocioServicio, SocioServicio>();
 var app = builder.Build();
 
 //------------------------------------------------------------------------------------------------

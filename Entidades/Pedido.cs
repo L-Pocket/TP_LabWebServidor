@@ -87,9 +87,9 @@ namespace Entidades
             get => tiempoEstimado;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
-                    throw new ArgumentException("El tiempo estimado debe ser un número positivo.");
+                    throw new ArgumentException("El tiempo estimado no puede ser menor a cero.");
                 }
                 tiempoEstimado = value;
             }

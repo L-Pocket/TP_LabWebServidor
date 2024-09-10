@@ -19,6 +19,7 @@ builder.Services.AddScoped<IMesaServicio, MesaServicio>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<ISocioServicio, SocioServicio>();
 builder.Services.AddScoped<IEmpleadoServicio, EmpleadoServicio>();
+builder.Services.AddScoped<IComandaServicio, ComandaServicio>();
 
 var app = builder.Build();
 

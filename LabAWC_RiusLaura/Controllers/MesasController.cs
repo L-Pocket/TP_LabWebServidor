@@ -23,8 +23,8 @@ namespace LabAWS_RiusLaura.Controllers
 
         public async Task<ActionResult<List<Mesa>>> GetMesas()
         {
-            var resultado = await _mesaServicio.GetAll();
-            return resultado;
+            var mesas = await _mesaServicio.GetAll();
+            return Ok(mesas);
         }
 
 

@@ -119,11 +119,11 @@ namespace LabAWS_RiusLaura.Controllers
                 ComandaDelPedidoId = comandaId,
                 ProductoDelPedidoId = productoId,
                 Cantidad = cantidad,
-                EstadoDelPedidoId = 1,
-                TiempoEstimado = 0,
+                //EstadoDelPedidoId = 1,
+                //TiempoEstimado = 0,
                 CodigoCliente = codigoCliente,
                 ObservacionesDelPedido = observaciones,
-                FechaCreacion = DateTime.Now // Puedes ajustar esto si necesitas una fecha específica
+                //FechaCreacion = DateTime.Now // Puedes ajustar esto si necesitas una fecha específica
             };
 
 

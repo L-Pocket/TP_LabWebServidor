@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabAWS_RiusLaura", "LabAWC_RiusLaura\LabAWS_RiusLaura.csproj", "{0AF27593-148A-42BC-AEE1-E7DFB4AEE7E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurante_API", "LabAWC_RiusLaura\Restaurante_API.csproj", "{0AF27593-148A-42BC-AEE1-E7DFB4AEE7E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Entidades.csproj", "{1CA76165-0A98-435D-B0EF-22C24153F3B5}"
 EndProject

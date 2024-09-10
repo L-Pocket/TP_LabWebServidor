@@ -23,6 +23,11 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("GetPedidoBy/{id}")]
         public async Task<ActionResult<Pedido>> GetPedidoById(int id)
         {
+            // Verificar si el ID proporcionado es mayor que 0
+            if (id <= 0)
+            {
+                return BadRequest("El ID proporcionado no es válido. Debe ser un número mayor que 0.");
+            }
             try
             {
                 // Guarda el pedido en una variable que va a llamar al Servicio 

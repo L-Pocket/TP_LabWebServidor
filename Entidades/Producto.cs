@@ -66,7 +66,17 @@ namespace Entidades
                 }
                 precioProducto = value;
             }
-        }        
+        }
+
+        public void ReducirStock(int cantidad)
+        {
+            int nuevoStock = this.StockProducto - cantidad;
+            if (nuevoStock < 0)
+            {
+                throw new ArgumentException($"No se puede reducir el stock ya que el stock actual es {this.StockProducto}");
+            }
+            this.StockProducto = nuevoStock;
+        }
 
         // -----------------------------------------------------
         // Código viejo:
@@ -82,6 +92,6 @@ namespace Entidades
         //public int StockProducto { get; set; }
         //[Required]
         //public decimal PrecioProducto { get; set;}
-        
+
     }
 }

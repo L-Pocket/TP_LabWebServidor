@@ -10,6 +10,13 @@ namespace Entidades
 {
     public class Pedido    
     {
+        public Pedido()
+        {
+            this.FechaCreacion = DateTime.Now;
+            this.estadoDelPedidoId = 1; // Se inicializa en 1 "Pendiente"
+            this.tiempoEstimado = 0; // Se inicializa en cero ya que después e preparación se le asigna un tiempo.
+            this.ObservacionesDelPedido = "Sin observaciones";
+        }
 
         private int idPedido;
         private int comandaDelPedidoId;

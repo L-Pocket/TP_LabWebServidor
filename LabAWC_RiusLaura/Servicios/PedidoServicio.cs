@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using AutoMapper;
+using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -13,25 +14,24 @@ namespace LabAWS_RiusLaura.Servicios
         Task<PedidoResponseDto> CrearPedido(PedidoCreateDto pedidoDto);
     }
 
-    public class PedidoService : IPedidoService
+    public class PedidoServicio : IPedidoService
     {
         private readonly DataContext _context;
+        private readonly ILogger<PedidoServicio> logger;
+        private readonly IMapper mapper;
 
         // Constructor que recibe el contexto de la BBDD
-        public PedidoService(DataContext context)
+        public PedidoServicio(DataContext context, ILogger<PedidoServicio> logger, IMapper mapper)
         {
-            _context = context;
+            this._context = context;
+            this.logger = logger;
+            this.mapper = mapper;
         }
 
 
         // GET de 1 pedido por su ID 
         public async Task<PedidoResponseDto?> GetPedidoById(int id)
-        {
-            // Verificar si el ID proporcionado es mayor que 0
-            if (id <= 0)
-            {
-                return null;
-            }
+        {            
             // Buscar el pedido en la BBDD por su ID
             var pedido = await _context.Pedidos.FindAsync(id);
             if (pedido == null) return null;
@@ -138,7 +138,6 @@ namespace LabAWS_RiusLaura.Servicios
                 return null; // Si la comanda no existe, retorna null
             }
 
-
             //Verificar si el producto existe
             var productoExistente = await _context.Productos.FindAsync(pedidoDto.ProductoDelPedidoId);
             if (productoExistente == null)
@@ -146,33 +145,29 @@ namespace LabAWS_RiusLaura.Servicios
                 return null; // Si el producto no existe, retorna null
             }
 
-            //Crear una nueva instancia de Pedido con los parámetros proporcionados
-            var nuevoPedido = new Pedido
-            {
-                ComandaDelPedidoId = pedidoDto.ComandaDelPedidoId,
-                ProductoDelPedidoId = pedidoDto.ProductoDelPedidoId,
-                Cantidad = pedidoDto.Cantidad,
-                EstadoDelPedidoId = 1, // Se inicializa en 1 "Pendiente"
-                FechaCreacion = pedidoDto.FechaCreacion,
-                TiempoEstimado = pedidoDto.TiempoEstimado,
-                CodigoCliente = pedidoDto.CodigoCliente,
-                ObservacionesDelPedido = pedidoDto.ObservacionesDelPedido
-            };
+            // Modifico la cantidad de productos:
+            productoExistente.ReducirStock(pedidoDto.Cantidad);
+            _context.Productos.Update(productoExistente);
 
-            _context.Pedidos.Add(nuevoPedido); // Añadir el nuevo pedido a la base de datos
+            //Pedido pedido = this.mapper.ConvertirAEntidad(pedidoDto); //Versión mapeo manual
+            Pedido pedido = this.mapper.Map<Pedido>(pedidoDto); // Versión automapper   
+            _context.Pedidos.Add(pedido); // Añadir el nuevo pedido a la base de datos
+
+
             await _context.SaveChangesAsync(); // Guardar los cambios en la base de datos
 
+            // Retorna un nuevo objeto, mapeando la entidad Pedido a PedidoResponseDto
             return new PedidoResponseDto
             {
-                IdPedido = nuevoPedido.IdPedido,
-                ComandaDelPedidoId = nuevoPedido.ComandaDelPedidoId,
-                ProductoDelPedidoId = nuevoPedido.ProductoDelPedidoId,
-                Cantidad = nuevoPedido.Cantidad,
-                EstadoDelPedidoId = nuevoPedido.EstadoDelPedidoId,
-                FechaCreacion = nuevoPedido.FechaCreacion,
-                FechaFinalizacion = nuevoPedido.FechaFinalizacion,
-                TiempoEstimado = nuevoPedido.TiempoEstimado,
-                ObservacionesDelPedido = nuevoPedido.ObservacionesDelPedido
+                IdPedido = pedido.IdPedido,
+                ComandaDelPedidoId = pedido.ComandaDelPedidoId,
+                ProductoDelPedidoId = pedido.ProductoDelPedidoId,
+                Cantidad = pedido.Cantidad,
+                EstadoDelPedidoId = pedido.EstadoDelPedidoId,
+                FechaCreacion = pedido.FechaCreacion,
+                FechaFinalizacion = pedido.FechaFinalizacion,
+                TiempoEstimado = pedido.TiempoEstimado,
+                ObservacionesDelPedido = pedido.ObservacionesDelPedido
             };
         }
 

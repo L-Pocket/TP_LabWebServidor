@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using AutoMapper;
+using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,12 @@ namespace LabAWS_RiusLaura.Servicios
     public class ClienteServicio : IClienteServicio
     {
         private readonly DataContext _context;
-        public ClienteServicio(DataContext context) //recibe una instancia de DataContext,
+        private readonly IMapper _mapper;
+        public ClienteServicio(DataContext context, IMapper mapper) //recibe una instancia de DataContext,
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));//se lanza una excepción, lo que asegura que el servicio no intente operar con una dependencia no válida.
-        }
+            _mapper = mapper;
+    }
         public async Task<(bool Success, string ErrorMessage, Mesa Mesa, Pedido Pedido, ClienteResponseDto Resultado)> GetDemora(string codigoMesa, string idPedido)
         {
             //throw new NotImplementedException();
@@ -51,14 +54,9 @@ namespace LabAWS_RiusLaura.Servicios
                     return (false,"El pedido no está asociado con la mesa proporcionada.", null, null, null);
                 }
 
-                var tiempoReal = (DateTime.Now - pedido.FechaCreacion).TotalMinutes;
-                var tiempoEstimado = pedido.TiempoEstimado;
-
-                var resultadoDto = new ClienteResponseDto
-                {
-                    tiempoEstimado = tiempoEstimado,
-                    tiempoDemorado = (int)Math.Round(tiempoReal - tiempoEstimado, 0) // Redondear a cero decimales
-                };
+                
+                // Mapear usando AutoMapper
+                var resultadoDto = _mapper.Map<ClienteResponseDto>(pedido);
 
                 return (true, null, mesa, pedido, resultadoDto);
 

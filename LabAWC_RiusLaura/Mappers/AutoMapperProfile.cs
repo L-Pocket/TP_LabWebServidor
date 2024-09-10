@@ -12,6 +12,10 @@ namespace Restaurante_API.Mappers
             this.CreateMap<PedidoCreateDto, Pedido>().ReverseMap();
             this.CreateMap<PedidoResponseDto, Pedido>().ReverseMap();
 
+            CreateMap<Pedido, ClienteResponseDto>()
+               .ForMember(dest => dest.tiempoEstimado, opt => opt.MapFrom(src => src.TiempoEstimado))
+               .ForMember(dest => dest.tiempoDemorado, opt => opt.MapFrom(src => (int)Math.Round((DateTime.Now - src.FechaCreacion).TotalMinutes - src.TiempoEstimado, 0)));
+
         }
 
         //public PedidoCreateDto ConvertirADTO(Pedido pedido)

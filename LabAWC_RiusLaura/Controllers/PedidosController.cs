@@ -99,38 +99,19 @@ namespace LabAWS_RiusLaura.Controllers
 
         // POST Crear un pedido nuevo
         [HttpPost("CrearPedido")]
-        public async Task<ActionResult<PedidoResponseDto>> CrearPedido(
-                            [FromQuery] int comandaId,
-                            [FromQuery] int productoId,
-                            [FromQuery] int cantidad,
-                            [FromQuery] string codigoCliente,
-                            [FromQuery] string? observaciones = null)
+        public async Task<ActionResult<PedidoResponseDto>> CrearPedido([FromBody] PedidoCreateDto pedido)
         {
 
             // Verifica que todos los parámetros sean válidos y no estén vacíos
-            if (comandaId <= 0 || productoId <= 0 || cantidad <= 0 || string.IsNullOrEmpty(codigoCliente))
+            if (pedido.ComandaDelPedidoId <= 0 || pedido.ProductoDelPedidoId <= 0 || pedido.Cantidad <= 0 || string.IsNullOrEmpty(pedido.CodigoCliente))
             {
-                return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad, TiempoEstimado y CodigoCliente son obligatorios y deben ser válidos.");
+                return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad y CodigoCliente son obligatorios y deben ser válidos.");
             }
-
-            // guarda el nuevo pedido en una variable para poder mandarlo al servicio:
-            var pedidoDto = new PedidoCreateDto
-            {
-                ComandaDelPedidoId = comandaId,
-                ProductoDelPedidoId = productoId,
-                Cantidad = cantidad,
-                //EstadoDelPedidoId = 1,
-                //TiempoEstimado = 0,
-                CodigoCliente = codigoCliente,
-                ObservacionesDelPedido = observaciones,
-                //FechaCreacion = DateTime.Now // Puedes ajustar esto si necesitas una fecha específica
-            };
-
 
             try
             {
                 // Llama al servicio para crear el nuevo pedido
-                var nuevoPedido = await _pedidoService.CrearPedido(pedidoDto);
+                var nuevoPedido = await _pedidoService.CrearPedido(pedido);
 
                 // Si el pedido no se pudo crear devuelve un mensaje de error
                 if (nuevoPedido == null)

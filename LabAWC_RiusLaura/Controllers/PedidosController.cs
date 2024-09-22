@@ -102,10 +102,16 @@ namespace LabAWS_RiusLaura.Controllers
         public async Task<ActionResult<PedidoResponseDto>> CrearPedido([FromBody] PedidoCreateDto pedido)
         {
 
-            // Verifica que todos los parámetros sean válidos y no estén vacíos
-            if (pedido.ComandaDelPedidoId <= 0 || pedido.ProductoDelPedidoId <= 0 || pedido.Cantidad <= 0 || string.IsNullOrEmpty(pedido.CodigoCliente))
+            // Verifica que Comanda, Producto y Cantidad sean válidos y no estén vacíos
+            if (pedido.ComandaDelPedidoId <= 0 || pedido.ProductoDelPedidoId <= 0 || pedido.Cantidad <= 0)
             {
-                return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad y CodigoCliente son obligatorios y deben ser válidos.");
+                return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad son obligatorios y deben ser válidos.");
+            }
+
+            // Verificación de CodigoCliente
+            if (string.IsNullOrEmpty(pedido.CodigoCliente) || pedido.CodigoCliente.Length != 5)
+            {
+                return BadRequest("CodigoCliente es obligatorio y debe tener exactamente 5 caracteres.");
             }
 
             try
@@ -116,7 +122,7 @@ namespace LabAWS_RiusLaura.Controllers
                 // Si el pedido no se pudo crear devuelve un mensaje de error
                 if (nuevoPedido == null)
                 {
-                    return NotFound("Comanda o producto no encontrados.");
+                    return NotFound("No se pudo crear el pedido ya que la Comanda o el Producto no fueron encontrados.");
                 }
 
                 // Devuelve el nuevo pedido con un código de estado 200 OK

@@ -18,6 +18,12 @@ namespace Restaurante_API.Mappers
                .ForMember(dest => dest.tiempoEstimado, opt => opt.MapFrom(src => src.TiempoEstimado))
                .ForMember(dest => dest.tiempoDemorado, opt => opt.MapFrom(src => (int)Math.Round((DateTime.Now - src.FechaCreacion).TotalMinutes - src.TiempoEstimado, 0)));
 
+            // Mapeo de Producto a ProductoVendidoDto
+            CreateMap<Producto, ProductoVendidoDto>()
+                .ForMember(dest => dest.IdProducto, opt => opt.MapFrom(src => src.IdProducto))
+                .ForMember(dest => dest.NombreDescProducto, opt => opt.MapFrom(src => src.NombreDescProducto))
+                .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore()); // Ignoramos CantidadVendida ya que no proviene de la entidad Producto
+
         }
 
         //public PedidoCreateDto ConvertirADTO(Pedido pedido)

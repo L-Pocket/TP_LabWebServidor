@@ -12,6 +12,7 @@ namespace LabAWS_RiusLaura.Servicios
         Task<ProductoVendidoDto> GetProductoMasVendido();
         Task<ProductoVendidoDto> GetProductoMenosVendido();
         Task<PedidoResponseDto> CrearPedido(PedidoCreateDto pedidoDto);
+        Task<List<ProductoVendidoDto>> GetAllProductosXSector(int sectorI);
     }
 
     public class PedidoServicio : IPedidoService
@@ -192,6 +193,23 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Retorna
             return pedidoResponseDto;
+
+        }
+        public async Task<List<ProductoVendidoDto>> GetAllProductosXSector(int sectorId)
+        {
+            var productos = await _context.Productos
+                                  .Join(_context.Pedidos,//join entre tablas
+                                        producto => producto.IdProducto,
+                                        pedido => pedido.ProductoDelPedidoId,
+                                        (producto, pedido) => new { producto, pedido })
+                                  .Where(p => p.producto.SectorProductoId == sectorId
+                                          && p.pedido.EstadoDelPedidoId == 1) // 1 = Estado Pendiente
+                                  .Select(p => p.producto) // Seleccionamos solo los productos en estado pendiente
+                                  .ToListAsync();
+
+            var resultado = mapper.Map<List<ProductoVendidoDto>>(productos);
+            return resultado;
+
 
         }
 

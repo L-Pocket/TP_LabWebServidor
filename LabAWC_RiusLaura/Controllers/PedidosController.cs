@@ -135,6 +135,27 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
+        [HttpGet("GetProductos en estado pendiente por sector")]
+        public async Task<ActionResult<List<Producto>>> GetProductosxSector(int sectorI)
+        {
+            try
+            {
+                var productos = await _pedidoService.GetAllProductosXSector(sectorI);
+                if (productos == null || !productos.Any())
+                {
+                    return NotFound("No se encontró ningún producto vendido para este sector en estado pendiente.");
+                }
+                return Ok(productos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al obtener el producto: {ex.Message}");
+
+            }
+
+
+        }
+
 
         // CODIGO VIEJO CON LÓGICA EN EL CONTROLLER ---------------
         //private readonly DataContext _context;

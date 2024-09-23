@@ -23,7 +23,7 @@ namespace LabAWS_RiusLaura.Servicios
         // Constructor
         public PedidoServicio(DataContext context, ILogger<PedidoServicio> logger, IMapper mapper)
         {
-            this._context = context;
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
             this.logger = logger;
             this.mapper = mapper;
         }

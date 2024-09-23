@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entidades;
 using LabAWS_RiusLaura.DTO;
+using Restaurante_API.DTO;
 
 namespace Restaurante_API.Mappers
 {
@@ -13,6 +14,7 @@ namespace Restaurante_API.Mappers
             this.CreateMap<PedidoResponseDto, Pedido>().ReverseMap();
             this.CreateMap<MesaDto, Mesa>().ReverseMap();
             this.CreateMap<ComandaDto, Comanda>().ReverseMap();
+            this.CreateMap<Empleado, EmpleadoCreateDto>().ReverseMap();
 
             CreateMap<Pedido, ClienteResponseDto>()
                .ForMember(dest => dest.tiempoEstimado, opt => opt.MapFrom(src => src.TiempoEstimado))

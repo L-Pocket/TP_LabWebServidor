@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using LabAWS_RiusLaura.DTO;
+using Restaurante_API.DTO;
 
 namespace LabAWS_RiusLaura.Controllers
 {
@@ -22,61 +23,161 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         [HttpPut("CerrarMesa/{idMesa}")]
-        public async Task<ActionResult<Mesa>> CerrarMesa(int idMesa)
+        public async Task<ActionResult<MesaDto>> CerrarMesa(int idMesa)
         {
-            var result = await _socioServicio.CerrarMesa(idMesa);
-            return result;
-        }
+            // Verifica que id mesa sea válido
+            if (idMesa <= 0)
+            {
+                return BadRequest("IdMesa debe ser válido.");
+            }
+            try
+            {
+                // Llama al servicio para modificar mesa
+                var resultado = await _socioServicio.CerrarMesa(idMesa);
 
-        [HttpGet("ListarPedidosConDemora")]
-        public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
-        {
-            var result = await _socioServicio.ListarPedidosConDemora();
-            return result;
-        }
+                if (resultado == null)
+                {
+                    return NotFound($"La mesa con el id {idMesa} no existe o no está en un estado válido para cerrar.");
+                }
 
-        [HttpGet("ListarMesasConEstados")]
-        public async Task<ActionResult<IEnumerable<MesaEstadoDto>>> ListarMesasConEstados()
-        {
-            var result = await _socioServicio.ListarMesasConEstados();
-            return result;
+                // Devuelve el nuevo pedido con un código de estado 200 OK
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Error al intentar cerrar la mesa: {ex.Message}");
+            }
+
+
         }
 
         [HttpGet("CantidadEmpleadosPorSector")]
-        public async Task<ActionResult<IEnumerable<CantidadEmpleadosPorSectorDto>>> CantidadEmpleadosPorSector()
+        public async Task<ActionResult<IEnumerable<EmpleadosPorSectorResponseDto>>> CantidadEmpleadosPorSector()
         {
-            var result = await _socioServicio.CantidadEmpleadosPorSector();
-            return result;
+            try
+            {
+                // Llama al servicio para obtener la cantidad de empleados
+                var resultado = await _socioServicio.CantidadEmpleadosPorSector();
+
+                // Si no hay empleados
+                if (resultado == null)
+                {
+
+                    return NotFound("No se encontró ningún empleado");
+                }
+
+                // Devuelve el el resultado con un código de estado 200 OK
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al obtener el producto más vendido: {ex.Message}");
+            }
+
+
         }
 
         [HttpPost("AgregarEmpleado")]
-        public async Task<ActionResult<EmpleadoDto>> AgregarEmpleado([FromQuery] string nombre, [FromQuery] string usuario, [FromQuery] string password,
+        public async Task<ActionResult<EmpleadoCreateDto>> AgregarEmpleado([FromQuery] string nombre, [FromQuery] string usuario, [FromQuery] string password,
             [FromQuery] int sectorDelEmpleadoId, [FromQuery] int rolDelEmpleadoId)
         {
-            var result = await _socioServicio.AgregarEmpleado(nombre, usuario, password, sectorDelEmpleadoId, rolDelEmpleadoId);
-            return result;
+            // Verifica que todos los parámetros sean válidos y no estén vacíos
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password) ||
+                sectorDelEmpleadoId <= 0 || rolDelEmpleadoId <= 0)
+            {
+                return BadRequest("Nombre, usuario, contraseña, sectorDelEmpleadoId y rolDelEmpleadoId son obligatorios y deben ser válidos.");
+            }
+
+            try
+            {
+                // Llama al servicio para agregar empleado
+                var resultado = await _socioServicio.AgregarEmpleado(nombre, usuario, password, sectorDelEmpleadoId, rolDelEmpleadoId);
+
+                if (resultado == null)
+                {
+                    return NotFound("No se agregó empleado");
+                }
+                // Devuelve un código de estado 200 OK con el empleado creado
+                return Ok(resultado);
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Ocurrió un error al agregar empleado: {ex.Message}");
+            }
+
         }
 
         [HttpPut("SuspenderEmpleado/{idEmpleado}")]
-        public async Task<ActionResult<EmpleadoDto>> SuspenderEmpleado(int idEmpleado)
+        public async Task<ActionResult> SuspenderEmpleado(int idEmpleado)
         {
-            var result = await _socioServicio.SuspenderEmpleado(idEmpleado);
-            return result;
+            // Verifica que id sea válido
+            if (idEmpleado <= 0)
+            {
+                return BadRequest("IdEmpleado debe ser válido.");
+            }
+            try
+            {
+                // Llama al servicio
+                var resultado = await _socioServicio.SuspenderEmpleado(idEmpleado);
+
+                if (resultado == null)
+                {
+                    return NotFound($"El empleado con el id {idEmpleado} no existe o ya se encuentra suspendido.");
+                }
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al intentar suspender empleado: {ex.Message}");
+            }
+
+
         }
 
         [HttpDelete("BorrarEmpleado/{idEmpleado}")]
         public async Task<ActionResult> BorrarEmpleado(int idEmpleado)
         {
-            var result = await _socioServicio.BorrarEmpleado(idEmpleado);
-            return result;
+            // Verifica que id sea válido
+            if (idEmpleado <= 0)
+            {
+                return BadRequest("IdEmpleado debe ser válido.");
+            }
+            try
+            {
+                // Llama al servicio
+                var resultado = await _socioServicio.BorrarEmpleado(idEmpleado);
+
+                if (resultado == null)
+                {
+                    return NotFound($"El empleado con el id {idEmpleado} no existe.");
+                }
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al intentar eliminar empleado: {ex.Message}");
+            }
+
         }
 
-        [HttpGet("ListarLogueosEmpleados")]
-        public async Task<ActionResult<IEnumerable<LogueoEmpleadoDto>>> ListarLogueosEmpleados()
-        {
-            var result = await _socioServicio.ListarLogueosEmpleados();
-            return result;
-        }
+        //[HttpGet("ListarPedidosConDemora")]
+        //public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
+        //{
+        //    var result = await _socioServicio.ListarPedidosConDemora();
+        //    return result;
+        //}
+
+        //[HttpGet("ListarLogueosEmpleados")]
+        //public async Task<ActionResult<IEnumerable<LogueoEmpleadoDto>>> ListarLogueosEmpleados()
+        //{
+        //    var result = await _socioServicio.ListarLogueosEmpleados();
+        //    return result;
+        //}
     }
 }
 

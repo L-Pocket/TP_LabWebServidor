@@ -26,6 +26,11 @@ namespace Restaurante_API.Mappers
                 .ForMember(dest => dest.NombreDescProducto, opt => opt.MapFrom(src => src.NombreDescProducto))
                 .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore()); // Ignoramos CantidadVendida ya que no proviene de la entidad Producto
 
+            //mapeo operaciones por sector (informe) -socioservicio
+            CreateMap<OperacionesPorSectorDto, OperacionesPorSectorDto>();
+
+
+
         }
 
         //public PedidoCreateDto ConvertirADTO(Pedido pedido)

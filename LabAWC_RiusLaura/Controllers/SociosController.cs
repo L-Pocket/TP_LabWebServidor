@@ -165,6 +165,31 @@ namespace LabAWS_RiusLaura.Controllers
 
         }
 
+
+        [HttpGet("CantidadOperacionesPorSector/{idSector}")]
+        public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(int idSector)
+        {
+            try
+            {
+                var resultado = await _socioServicio.CantidadOperacionesPorSector(idSector);
+
+                if (resultado == null || !resultado.Any())
+                {
+                    return NotFound($"No se encontraron operaciones para el sector con ID: {idSector}");
+                }
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al obtener la cantidad de operaciones por sector: {ex.Message}");
+            }
+        }
+
+
+
+
+
         //[HttpGet("ListarPedidosConDemora")]
         //public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
         //{

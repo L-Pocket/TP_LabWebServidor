@@ -20,6 +20,8 @@ namespace LabAWS_RiusLaura.Servicios
         Task<ActionResult<bool>> SuspenderEmpleado(int idEmpleado);
         Task<ActionResult<bool>> BorrarEmpleado(int idEmpleado);
 
+        Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector);
+
         //Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora();      
         //Task<ActionResult<IEnumerable<LogueoEmpleadoDto>>> ListarLogueosEmpleados();
     }
@@ -187,6 +189,37 @@ namespace LabAWS_RiusLaura.Servicios
             return true;
 
         }
+
+        //CANTIDAD DE OPERACIONES POR SECTOR (Cuantos pedidos se hicieron para "x" sector)
+        public async Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector)
+        {
+            var operaciones = await _context.Pedidos
+                .Join(
+                    _context.Productos,
+                    pedido => pedido.ProductoDelPedidoId,
+                    producto => producto.IdProducto,
+                    (pedido, producto) => new { pedido, producto })
+                .Where(pp => pp.producto.SectorProductoId == idSector)
+                .GroupBy(pp => pp.producto.SectorProducto.DescripcionSector)
+                .Select(g => new OperacionesPorSectorDto // dto
+                {
+                    DescripcionSector = g.Key,
+                    CantidadOperaciones = g.Count()
+                })
+                .ToListAsync();
+
+            // Mapeo usando AutoMapper
+            var resultado = this.mapper.Map<IEnumerable<OperacionesPorSectorDto>>(operaciones);
+            return resultado;
+        }
+
+
+
+
+
+
+
+
 
         //public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
         //{

@@ -19,8 +19,29 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpPut("PonerPedidoEnPreparacion/{idPedido}")]
         public async Task<ActionResult> PonerPedidoEnPreparacion(int idPedido, [FromQuery] int tiempoEstimado)
         {
-            var result = await _empleadoServicio.PonerPedidoEnPreparacion(idPedido, tiempoEstimado);
-            return result;
+            // Verifica que todos los parámetros sean válidos
+            if (idPedido <= 0 || tiempoEstimado <= 0)
+            {
+                return BadRequest("Los parámetros 'idPedido' y 'tiempoEstimado' son obligatorios y deben ser mayores que cero.");
+            }
+
+            try
+            {
+                // Llama al servicio para poner el pedido en preparación
+                var resultado = await _empleadoServicio.PonerPedidoEnPreparacion(idPedido, tiempoEstimado);
+
+                if (resultado == null)
+                {
+                    return NotFound("No se encontró el pedido.");
+                }
+                // Devuelve un código de estado 200 OK 
+                return Ok($"Se modificó el pedido con el ID {idPedido}.");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores generales
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
 
         [HttpPut("PonerPedidoListoParaServir/{idPedido}")]

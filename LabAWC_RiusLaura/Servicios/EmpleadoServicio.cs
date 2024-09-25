@@ -20,52 +20,48 @@ namespace LabAWS_RiusLaura.Servicios
     public class EmpleadoServicio : IEmpleadoServicio
     {
         private readonly DataContext _context;
+        private readonly ILogger<ClienteServicio> logger;
 
-        public EmpleadoServicio(DataContext context)
+        public EmpleadoServicio(DataContext context, ILogger<ClienteServicio> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.logger = logger;   
         }
 
         public async Task<ActionResult> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado)
         {
-            try
+            this.logger.LogInformation("Iniciando poner pedido en Preparación.");
+            // Busca el pedido por ID
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+
+            if (pedido == null)
             {
-                var pedido = await _context.Pedidos.FindAsync(idPedido);
-                if (pedido == null)
-                {
-                    return new NotFoundObjectResult($"No se encontró un pedido con el id {idPedido}.");
-                }
-
-                if (pedido.EstadoDelPedidoId == 1) // 1 = "pendiente"
-                {
-                    pedido.EstadoDelPedidoId = 2; // 2 = "en preparación"
-                    pedido.TiempoEstimado = tiempoEstimado;
-                    await _context.SaveChangesAsync();
-
-                    return new OkObjectResult(new EmpleadoResponseDto
-                    {
-                        Success = true,
-                        Message = $"El pedido con el id {idPedido} ha sido puesto en preparación."
-                    });
-                }
-                else
-                {
-                    return new BadRequestObjectResult(new EmpleadoResponseDto
-                    {
-                        Success = false,
-                        Message = $"El pedido con el id {idPedido} ya no está en estado pendiente."
-                    });
-                }
+                this.logger.LogWarning($"No se encontró un pedido con el ID: {idPedido}.");
+                throw new KeyNotFoundException($"No se encontró un pedido con el ID: {idPedido}.");
             }
-            catch (Exception ex)
+
+            if (pedido.EstadoDelPedidoId == 1) // 1 = "pendiente"
             {
-                return new ObjectResult(new EmpleadoResponseDto
+                pedido.EstadoDelPedidoId = 2; // 2 = "en preparación"
+                pedido.TiempoEstimado = tiempoEstimado;
+                await _context.SaveChangesAsync();
+
+                return new OkObjectResult(new EmpleadoResponseDto
+                {
+                    Success = true,
+                    Message = $"El pedido con el id {idPedido} ha sido puesto en preparación."
+                });
+            }
+            else
+            {
+                this.logger.LogWarning($"El pedido con el ID {idPedido} ya no está en estado pendiente.");
+                return new BadRequestObjectResult(new EmpleadoResponseDto
                 {
                     Success = false,
-                    Message = $"Error interno del servidor: {ex.Message}"
-                })
-                { StatusCode = 500 };
+                    Message = $"El pedido con el id {idPedido} ya no está en estado pendiente."
+                });
             }
+            
         }
 
         public async Task<ActionResult> PonerPedidoListoParaServir(int idPedido)
@@ -81,6 +77,8 @@ namespace LabAWS_RiusLaura.Servicios
                 if (pedido.EstadoDelPedidoId == 2) // 2 = "en preparación"
                 {
                     pedido.EstadoDelPedidoId = 3; // 3 = "Listo para servir"
+                    pedido.FechaFinalizacion = DateTime.Now;
+
                     await _context.SaveChangesAsync();
 
                     return new OkObjectResult(new EmpleadoResponseDto
@@ -126,6 +124,7 @@ namespace LabAWS_RiusLaura.Servicios
                 if (pedidosListosParaServir.Any())
                 {
                     mesa.EstadoDeMesaId = 2; // 2 = "cliente comiendo"
+                    
                     await _context.SaveChangesAsync();
 
                     return new OkObjectResult(new EmpleadoResponseDto

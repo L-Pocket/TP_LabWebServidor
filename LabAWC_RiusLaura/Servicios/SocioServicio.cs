@@ -20,6 +20,8 @@ namespace LabAWS_RiusLaura.Servicios
         Task<bool> BorrarEmpleado(int idEmpleado);
         Task<IEnumerable<EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector();
         Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector);
+        Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados();
+        Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado);
         Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(); 
         
     }
@@ -222,6 +224,76 @@ namespace LabAWS_RiusLaura.Servicios
             // Mapeo usando AutoMapper
             //var resultado = this.mapper.Map<IEnumerable<OperacionesPorSectorDto>>(operaciones);
             //return resultado;
+        }
+
+
+
+
+        //cantidad de operaciones de todos por sector listada por cada empleado (c)
+
+        public async Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados()
+        {
+            var resultado = await (from emp in _context.Empleados
+                                   join sec in _context.Sectores on emp.SectorDelEmpleadoId equals sec.IdSector
+                                   join prod in _context.Productos on sec.IdSector equals prod.SectorProductoId
+                                   join ped in _context.Pedidos on prod.IdProducto equals ped.ProductoDelPedidoId
+                                   group new { emp, sec } by new
+                                   {
+                                       emp.IdEmpleado,
+                                       emp.Nombre,
+                                       sec.DescripcionSector // Incluir la descripción del sector
+                                   } into empGroup
+                                   select new OperacionesEmpleadoDto
+                                   {
+                                       IdEmpleado = empGroup.Key.IdEmpleado,
+                                       Nombre = empGroup.Key.Nombre,
+                                       DescripcionSector = empGroup.Key.DescripcionSector, // Asignar descripción del sector
+                                       CantidadOperaciones = empGroup.Count() // Contar el número de pedidos
+                                   }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
+
+            // Si no se encuentra devuelve un mensaje de error
+            if (resultado == null)
+            {
+                this.logger.LogWarning("No se encontró ninguna operación.");
+                return null;
+            }
+
+            this.logger.LogInformation("Busqueda finalizada con exito.");
+            return resultado;
+        }
+
+
+        // //cantidad de operaciones de cada uno por separado (d)
+        public async Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado)
+        {
+            var resultado = await (from emp in _context.Empleados
+                                   join sec in _context.Sectores on emp.SectorDelEmpleadoId equals sec.IdSector
+                                   join prod in _context.Productos on sec.IdSector equals prod.SectorProductoId
+                                   join ped in _context.Pedidos on prod.IdProducto equals ped.ProductoDelPedidoId
+                                   where emp.IdEmpleado == idEmpleado
+                                   group new { emp, sec } by new
+                                   {
+                                       emp.IdEmpleado,
+                                       emp.Nombre,
+                                       sec.DescripcionSector
+                                   } into empGroup
+                                   select new OperacionesEmpleadoDto
+                                   {
+                                       IdEmpleado = empGroup.Key.IdEmpleado,
+                                       Nombre = empGroup.Key.Nombre,
+                                       DescripcionSector = empGroup.Key.DescripcionSector,
+                                       CantidadOperaciones = empGroup.Count() // Cuenta el número de pedidos
+                                   }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
+
+            // Si no se encuentra devuelve un mensaje de error
+            if (resultado == null)
+            {
+                this.logger.LogWarning("No se encontró ninguna operación.");
+                return null;
+            }
+
+            this.logger.LogInformation("Busqueda finalizada con exito.");
+            return resultado;
         }
 
         public async Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora()

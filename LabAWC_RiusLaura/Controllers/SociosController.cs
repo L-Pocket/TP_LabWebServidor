@@ -191,6 +191,39 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
 
+        //cantidad de operaciones de todos por sector listada por cada empleado (c)
+
+        [HttpGet("OperacionesDeTodosLosEmpleados")]
+        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados()
+        {
+            var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados();
+
+            if (operaciones == null || !operaciones.Any())
+            {
+                return NotFound("No se encontraron operaciones.");
+            }
+
+            return Ok(operaciones);
+        }
+
+
+        //cantidad de operaciones de cada uno por separado (d)
+
+        [HttpGet("OperacionesPorEmpleado/{idEmpleado}")]
+        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado)
+        {
+            var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado);
+
+            if (operaciones == null || !operaciones.Any())
+            {
+                return NotFound($"Empleado con Id {idEmpleado} no encontrado.");
+            }
+
+            return Ok(operaciones);
+        }
+
+
+
         [HttpGet("ListarPedidosConDemora")]
         public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
         {

@@ -27,9 +27,20 @@ namespace LabAWS_RiusLaura.Servicios
         public async Task<List<MesaDto>> GetAll()
         {
 
+            var mesas = await _context.Mesas
+               .Include(m => m.EstadoDeMesa) // Incluir la relación con Estados_Mesas
+               .ToListAsync();
+
+            var resultado = mapper.Map<List<MesaDto>>(mesas); // Mapear a MesaDto
+            return resultado;
+
+            /*
+
             var mesas = await _context.Mesas.ToListAsync();
             var resultado = mapper.Map<List<MesaDto>>(mesas);
             return resultado;
+
+            */
 
             /*public async Task<List<Mesa>> GetAll()
             {

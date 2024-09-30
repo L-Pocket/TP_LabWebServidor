@@ -2,10 +2,12 @@
 using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using LabAWS_RiusLaura.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design;
+using System.Security.Claims;
 
 namespace LabAWS_RiusLaura.Controllers
 {
@@ -47,11 +49,17 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         //// GET Lo que MÁS se vendió.
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMasVendido")]
         public async Task<IActionResult> GetProductoMasVendido()
         {
             try
             {
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (userRole != "Socio")
+                {
+                    return Forbid("No tienes permiso para acceder a este recurso.");
+                }
                 // Llama al servicio para obtener el producto más vendido
                 var productoMasVendido = await _pedidoService.GetProductoMasVendido();
 
@@ -73,11 +81,17 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         // GET Lo que MENOS se vendió.
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMenosVendido")]
         public async Task<IActionResult> GetProductoMenosVendido()
         {
             try
             {
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (userRole != "Socio")
+                {
+                    return Forbid("No tienes permiso para acceder a este recurso.");
+                }
                 // Llama al servicio para obtener el producto menos vendido
                 var productoMenosVendido = await _pedidoService.GetProductoMenosVendido();
 

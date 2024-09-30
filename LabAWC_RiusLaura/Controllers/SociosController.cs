@@ -58,11 +58,16 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
 
-        }        
-
+        }
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpPost("AgregarEmpleado")]
         public async Task<ActionResult<EmpleadoCreateDto>> AgregarEmpleado([Required] string nombre, [Required] string usuario, [Required] string password, [Required] int sectorDelEmpleadoId, [Required] int rolDelEmpleadoId)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             // Verifica que todos los parámetros sean válidos y no estén vacíos
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password) ||
                 sectorDelEmpleadoId <= 0 || rolDelEmpleadoId <= 0)
@@ -90,10 +95,15 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
         }
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpPut("SuspenderEmpleado/{idEmpleado}")]
         public async Task<ActionResult> SuspenderEmpleado(int idEmpleado)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
@@ -118,10 +128,15 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpDelete("BorrarEmpleado/{idEmpleado}")]
         public async Task<ActionResult> BorrarEmpleado(int idEmpleado)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
@@ -145,10 +160,15 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
         }
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("CantidadEmpleadosPorSector")]
         public async Task<ActionResult<IEnumerable<EmpleadosPorSectorResponseDto>>> CantidadEmpleadosPorSector()
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             try
             {
                 // Llama al servicio para obtener la cantidad de empleados
@@ -171,10 +191,15 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("CantidadOperacionesPorSector/{idSector}")]
         public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(int idSector)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             // Verifica que id sea válido
             if (idSector <= 0)
             {
@@ -199,10 +224,15 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         //cantidad de operaciones de todos por sector listada por cada empleado (c)
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("OperacionesDeTodosLosEmpleados")]
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados()
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados();
 
             if (operaciones == null || !operaciones.Any())
@@ -215,10 +245,15 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         //cantidad de operaciones de cada uno por separado (d)
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("OperacionesPorEmpleado/{idEmpleado}")]
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado);
 
             if (operaciones == null || !operaciones.Any())

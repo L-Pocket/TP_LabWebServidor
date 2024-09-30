@@ -57,7 +57,7 @@ namespace LabAWS_RiusLaura.Servicios
                 if (mesa == null)
                 {
                     this.logger.LogWarning("No se encontró una mesa con el id: {MesaDeComandaId}", comandaCrearDto.MesaDeComandaId);
-                    return (false, $"No se encontró una Mesa con el id {comandaCrearDto.MesaDeComandaId}.", null);
+                    return (false, $"No se encontró una Mesa con el id {comandaCrearDto.MesaDeComandaId}.",null);
                 }
 
                 var comanda = this.mapper.Map<Comanda>(comandaCrearDto);
@@ -68,12 +68,14 @@ namespace LabAWS_RiusLaura.Servicios
                 var comandaDtoResult = this.mapper.Map<ComandaDto>(comanda); // Mapear la entidad Comanda a ComandaDto
 
                 this.logger.LogInformation("Comanda creada exitosamente con ID: {IdComanda}", comandaDtoResult.IdComanda);
-                return (true, null, comandaDtoResult);
+                //return (true, null, comandaDtoResult);
+                return (true, "", comandaDtoResult);
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Error al crear la comanda para la mesa ID: {MesaDeComandaId}", comandaCrearDto.MesaDeComandaId);
-                return (false, $"Error interno del servidor: {ex.Message}", null);
+               // return (false, $"Error interno del servidor: {ex.Message}", null);
+                return (false, $"Error interno del servidor: {ex.Message}", new ComandaDto());
             }
         }
 
@@ -92,12 +94,13 @@ namespace LabAWS_RiusLaura.Servicios
 
                 this.logger.LogInformation("Obtenidas {Count} comandas", comandasDto.Count);
 
-                return (true, null, comandasDto);
+                return (true, "", comandasDto);
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Error al obtener todas las comandas");
-                return (false, $"Error interno del servidor: {ex.Message}", null);
+                 return (false, $"Error interno del servidor: {ex.Message}", null);
+                
             }
         }
 
@@ -122,7 +125,7 @@ namespace LabAWS_RiusLaura.Servicios
 
                 this.logger.LogInformation("Comanda obtenida exitosamente con Id: {IdComanda}", comandaDto.IdComanda);
 
-                return (true, null, comandaDto);
+                return (true, "", comandaDto);
             }
             catch (Exception ex)
             {
@@ -166,7 +169,7 @@ namespace LabAWS_RiusLaura.Servicios
                 await _context.SaveChangesAsync();
 
                 this.logger.LogInformation("Comanda modificada exitosamente con Id: {IdComanda}", idComanda);
-                return (true, null);
+                return (true,"");
             }
             catch (Exception ex)
             {

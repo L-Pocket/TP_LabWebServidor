@@ -63,11 +63,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpPost("AgregarEmpleado")]
         public async Task<ActionResult<EmpleadoCreateDto>> AgregarEmpleado([Required] string nombre, [Required] string usuario, [Required] string password, [Required] int sectorDelEmpleadoId, [Required] int rolDelEmpleadoId)
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+            
             // Verifica que todos los parámetros sean válidos y no estén vacíos
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password) ||
                 sectorDelEmpleadoId <= 0 || rolDelEmpleadoId <= 0)
@@ -99,11 +95,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpPut("SuspenderEmpleado/{idEmpleado}")]
         public async Task<ActionResult> SuspenderEmpleado(int idEmpleado)
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+           
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
@@ -132,11 +124,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpDelete("BorrarEmpleado/{idEmpleado}")]
         public async Task<ActionResult> BorrarEmpleado(int idEmpleado)
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+           
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
@@ -164,11 +152,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("CantidadEmpleadosPorSector")]
         public async Task<ActionResult<IEnumerable<EmpleadosPorSectorResponseDto>>> CantidadEmpleadosPorSector()
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+           
             try
             {
                 // Llama al servicio para obtener la cantidad de empleados
@@ -195,11 +179,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("CantidadOperacionesPorSector/{idSector}")]
         public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(int idSector)
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+            
             // Verifica que id sea válido
             if (idSector <= 0)
             {
@@ -228,11 +208,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("OperacionesDeTodosLosEmpleados")]
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados()
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+            
             var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados();
 
             if (operaciones == null || !operaciones.Any())
@@ -249,11 +225,7 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("OperacionesPorEmpleado/{idEmpleado}")]
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado)
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+            
             var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado);
 
             if (operaciones == null || !operaciones.Any())

@@ -20,11 +20,7 @@ namespace Restaurante_API.Controllers
         [HttpGet("logs")]
         public async Task<IActionResult> Getlogs()
         {
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Socio")
-            {
-                return Forbid("No tienes permiso para acceder a este recurso.");
-            }
+          
             var logs = await _LogEmpleadoServicio.GetLog();
             return Ok(logs);
         }

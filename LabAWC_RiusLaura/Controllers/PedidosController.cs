@@ -55,11 +55,7 @@ namespace LabAWS_RiusLaura.Controllers
         {
             try
             {
-                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-                if (userRole != "Socio")
-                {
-                    return Forbid("No tienes permiso para acceder a este recurso.");
-                }
+                
                 // Llama al servicio para obtener el producto más vendido
                 var productoMasVendido = await _pedidoService.GetProductoMasVendido();
 
@@ -87,11 +83,7 @@ namespace LabAWS_RiusLaura.Controllers
         {
             try
             {
-                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-                if (userRole != "Socio")
-                {
-                    return Forbid("No tienes permiso para acceder a este recurso.");
-                }
+                
                 // Llama al servicio para obtener el producto menos vendido
                 var productoMenosVendido = await _pedidoService.GetProductoMenosVendido();
 

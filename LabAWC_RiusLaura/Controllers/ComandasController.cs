@@ -3,6 +3,7 @@ using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using LabAWS_RiusLaura.Servicios;
 using Microsoft.AspNetCore.Mvc;
+using Restaurante_API.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,9 +21,9 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         [HttpPost("CrearComanda")]
-        public async Task<IActionResult> CrearComanda([FromQuery] ComandaDto comandaDto)
+        public async Task<IActionResult> CrearComanda([FromBody] ComandaCrearDto comandacrearDto)
         {
-            var (success, errorMessage, nuevaComanda) = await _comandaServicio.CrearComanda(comandaDto);
+            var (success, errorMessage, nuevaComanda) = await _comandaServicio.CrearComanda(comandacrearDto);
 
             if (!success)
             {
@@ -31,7 +32,6 @@ namespace LabAWS_RiusLaura.Controllers
 
             return CreatedAtAction(nameof(ObtenerComandaPorId), new { id = nuevaComanda.IdComanda }, nuevaComanda);
         }
-
 
         [HttpGet("ObtenerTodasLasComandas")]
         public async Task<IActionResult> ObtenerTodasLasComandas()
@@ -49,6 +49,12 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("ObtenerComandaPorId/{id}")]
         public async Task<IActionResult> ObtenerComandaPorId(int id)
         {
+            // Verificamos si el ID es mayor que 0
+            if (id <= 0)
+            {
+                return BadRequest("El ID proporcionado debe ser mayor que 0.");
+            }
+
             var (success, errorMessage, comanda) = await _comandaServicio.ObtenerComandaPorId(id);
 
             if (!success)
@@ -58,19 +64,18 @@ namespace LabAWS_RiusLaura.Controllers
 
             return Ok(comanda);
         }
-
         [HttpPut("ModificarComanda/{idComanda}")]
-        public async Task<IActionResult> ModificarComanda(int idComanda, [FromQuery] ComandaDto comandaDto)
+        public async Task<IActionResult> ModificarComanda(int idComanda, [FromBody] ComandaDto comandaDto)
         {
             var (success, errorMessage) = await _comandaServicio.ModificarComanda(idComanda, comandaDto);
 
             if (!success)
             {
-                return NotFound(errorMessage);
+                return NotFound(errorMessage); // Devuelve un 404 si no se encuentra la comanda
             }
 
-            return NoContent();
+           
+            return Ok(new { mensaje = "Comanda modificada con éxito" });
         }
-
     }
 }

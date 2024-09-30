@@ -18,6 +18,10 @@ namespace Restaurante_API.Mappers
              .ForMember(dest => dest.DescripcionMesa, opt => opt.MapFrom(src => src.EstadoDeMesa.DescripcionMesa))
              .ReverseMap();
 
+            // Mapeo desde ComandaCrearDto a Comanda
+            CreateMap<ComandaCrearDto, Comanda>()
+                .ForMember(dest => dest.IdComanda, opt => opt.Ignore()); // Ignoramos el IdComanda por ser un campo de identidad
+
             this.CreateMap<ComandaDto, Comanda>().ReverseMap();
             this.CreateMap<Empleado, EmpleadoCreateDto>().ReverseMap();
 

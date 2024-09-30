@@ -19,7 +19,7 @@ namespace LabAWS_RiusLaura.Servicios
         private readonly IMapper mapper;
         public MesaServicio(DataContext context, ILogger<MesaServicio> logger, IMapper mapper) //recibe una instancia de DataContext,
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));//se lanza una excepción, lo que asegura que el servicio no intente operar con una dependencia no válida.
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             this.logger = logger;
             this.mapper = mapper;
         }

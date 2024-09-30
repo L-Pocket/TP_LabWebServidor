@@ -34,7 +34,7 @@ namespace Restaurante_API.Mappers
             //mapeo operaciones por sector (informe) -socioservicio
             CreateMap<OperacionesPorSectorDto, OperacionesPorSectorDto>();
 
-            
+            CreateMap<Empleado, LoginRequestDto>();
 
         }
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurante_API.Servicios;
+using System.Security.Claims;
 
 namespace Restaurante_API.Controllers
 {
@@ -14,9 +16,15 @@ namespace Restaurante_API.Controllers
             this._LogEmpleadoServicio = LogEmpleadoServicio;
         }
 
-        [HttpGet]
+        [Authorize(Policy = "RequireSocioRole")]
+        [HttpGet("logs")]
         public async Task<IActionResult> Getlogs()
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             var logs = await _LogEmpleadoServicio.GetLog();
             return Ok(logs);
         }

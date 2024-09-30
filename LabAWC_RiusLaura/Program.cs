@@ -4,6 +4,11 @@ using LabAWS_RiusLaura.Servicios;
 using System.Reflection;
 using Restaurante_API.Servicios;
 using Restaurante_API.Middleware;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Restaurante_API;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +17,68 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+//---------------------------------------JWT Swagger-----------------------------
+
+//builder.Services.AddSwaggerGen();//para que aparezca aut en Swagger
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "JWT", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Ingrese Token",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+        {
+        {new OpenApiSecurityScheme
+        {
+             Reference = new OpenApiReference
+             { Type = ReferenceType.SecurityScheme,
+              Id = "Bearer"
+             }
+        },
+        new string[]{}
+
+        }
+    });
+});
+
+//--------------------------------------------------------------------------------
+//-----------------------------JWT---------------------------------------------
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    JwtSettings? jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                    SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
+
+                    TokenValidationParameters tokenValidationParameters = new TokenValidationParameters();
+
+                    tokenValidationParameters.ValidateIssuerSigningKey = true;
+                    tokenValidationParameters.ValidIssuer = jwtSettings.Issuer;
+                    tokenValidationParameters.ValidAudience = jwtSettings.Audience;
+                    tokenValidationParameters.IssuerSigningKey = key;
+                    tokenValidationParameters.ClockSkew = TimeSpan.Zero;
+
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
+
+///----------------------------------------------------------------------------
+///----------------------------------------------------------------------------
+
+
+// **Configuración de Autorización con Roles**
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireSocioRole", policy => policy.RequireRole("Socio"));
+    options.AddPolicy("RequireEmpleadoRole", policy => policy.RequireRole("Socio", "Empleado"));
+});
+
+//----------------------------------------------------------------------------
 builder.Services.AddDbContext<DataContext>(op => op.UseSqlServer(
     builder.Configuration.GetConnectionString("ConnectionStringEF")));
 
@@ -29,7 +94,7 @@ builder.Services.AddScoped<ISocioServicio, SocioServicio>();
 builder.Services.AddScoped<IEmpleadoServicio, EmpleadoServicio>();
 builder.Services.AddScoped<IComandaServicio, ComandaServicio>();
 builder.Services.AddScoped<ILogEmpleadoServicio, LogEmpleadoServicio>();
-
+builder.Services.AddScoped<AuthServicio>();
 // Configurar la caché en memoria para las sesiones
 builder.Services.AddDistributedMemoryCache();
 
@@ -59,6 +124,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -6,7 +6,7 @@ namespace Restaurante_API.Servicios
 {
     public interface ILogEmpleadoServicio
     {
-        public Task<int> IniciarSesion(string usuario, string password);
+        public Task<Empleado> IniciarSesion(string usuario, string password);
         public Task RegistrarLogueo(int empleadoId);
         public Task RegistrarDeslogueo(int empleadoId);
 
@@ -22,15 +22,18 @@ namespace Restaurante_API.Servicios
             _context = context;
         }
 
-        public async Task<int> IniciarSesion(string usuario, string password)
+        public async Task<Empleado> IniciarSesion(string usuario, string password)
         {
-            var empleado = await _context.Empleados.FirstOrDefaultAsync(e => e.Usuario == usuario && e.Password == password);
+            var empleado = await _context.Empleados
+                .Include(e => e.RolDelEmpleado)  // Incluye la tabla de roles
+                .FirstOrDefaultAsync(e => e.Usuario == usuario && e.Password == password);
 
             if (empleado == null)
             {
                 throw new Exception("Usuario o contraseña incorrectos");
             }
-            return empleado.IdEmpleado;
+            
+            return empleado;
         }
         public async Task RegistrarLogueo(int empleadoId)
         {

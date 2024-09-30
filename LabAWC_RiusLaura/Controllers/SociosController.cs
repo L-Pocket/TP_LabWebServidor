@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using LabAWS_RiusLaura.DTO;
 using Restaurante_API.DTO;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace LabAWS_RiusLaura.Controllers
 {
@@ -22,10 +24,15 @@ namespace LabAWS_RiusLaura.Controllers
         {
             _socioServicio = socioServicio;
         }
-
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpPut("CerrarMesa/{idMesa}")]
         public async Task<ActionResult<MesaDto>> CerrarMesa(int idMesa)
         {
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userRole != "Socio")
+            {
+                return Forbid("No tienes permiso para acceder a este recurso.");
+            }
             // Verifica que id mesa sea válido
             if (idMesa <= 0)
             {

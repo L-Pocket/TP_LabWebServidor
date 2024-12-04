@@ -38,16 +38,7 @@ namespace Entidades
             }
         }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdComanda { get; set; }
-        //[Required]
-        //public int MesaDeComandaId { get; set; } // FK para Mesa
-        //public virtual Mesa MesaDeComanda { get; set; } 
-        //[Required, MaxLength(50)]
-        //public string NombreCliente { get; set; }
+        
 
     }
 }

@@ -32,7 +32,7 @@ namespace Restaurante_API.Servicios
             {
                 throw new Exception("Usuario o contraseña incorrectos");
             }
-            
+            RegistrarLogueo(empleado.IdEmpleado);
             return empleado;
         }
         public async Task RegistrarLogueo(int empleadoId)

@@ -51,18 +51,6 @@ namespace Entidades
             }
         } 
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdLogueo { get; set; }
-
-        //[Required]
-        //public int EmpleadoLogId { get; set; } // FK para Empleado
-        //public virtual Empleado EmpleadoLog { get; set; } 
-
-        //[Required]
-        //public DateTime FechaLogueo { get; set; }
-        //public DateTime? FechaDeslogueo { get; set; }   // Puede ser null   
+       
     }
 }

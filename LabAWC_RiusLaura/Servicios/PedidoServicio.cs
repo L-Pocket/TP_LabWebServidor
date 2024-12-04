@@ -90,14 +90,7 @@ namespace LabAWS_RiusLaura.Servicios
 
             return productoMasVendidoDto;
 
-            // Codigoo viejo, mapeando en el service
-            //// Retorna un nuevo objeto, mapeando la entidad Pedido a PedidoResponseDto
-            //return new ProductoVendidoDto
-            //{
-            //    IdProducto = producto.IdProducto,
-            //    NombreDescProducto = producto.NombreDescProducto,
-            //    CantidadVendida = productoMasVendido.CantidadVendida
-            //};
+           
 
         }
 
@@ -143,14 +136,7 @@ namespace LabAWS_RiusLaura.Servicios
 
             return productoMenosVendidoDto;
 
-            // Codigoo viejo, mapeando en el service
-            //// Retorna un nuevo objeto, mapeando la entidad Producto a ProductoVendidoDto
-            //return new ProductoVendidoDto
-            //{
-            //    IdProducto = producto.IdProducto,
-            //    NombreDescProducto = producto.NombreDescProducto,
-            //    CantidadVendida = productoMenosVendido.CantidadVendida
-            //};
+           
         }
 
         // POST de un nuevo pedido
@@ -173,8 +159,7 @@ namespace LabAWS_RiusLaura.Servicios
                 return null; // Si el producto no existe, retorna null
             }
 
-            //Versión mapeo manual:
-            //Pedido pedido = this.mapper.ConvertirAEntidad(pedidoDto); 
+            
 
             // Versión automapper.Mapear pedidoDTO a entidad Pedido:
             Pedido pedido = this.mapper.Map<Pedido>(pedidoDto);

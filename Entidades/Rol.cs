@@ -38,12 +38,5 @@ namespace Entidades
             }
         }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required] 
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdRol { get; set; }
-        //[Required]
-        //public string DescripcionRol { get; set; }
     }
 }

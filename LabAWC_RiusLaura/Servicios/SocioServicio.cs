@@ -221,9 +221,7 @@ namespace LabAWS_RiusLaura.Servicios
             this.logger.LogInformation("Busqueda finalizada con exito.");
             return operaciones;
 
-            // Mapeo usando AutoMapper
-            //var resultado = this.mapper.Map<IEnumerable<OperacionesPorSectorDto>>(operaciones);
-            //return resultado;
+            
         }
 
 

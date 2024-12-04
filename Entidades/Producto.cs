@@ -78,20 +78,7 @@ namespace Entidades
             this.StockProducto = nuevoStock;
         }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdProducto { get; set; }
-        //[Required]
-        //public int SectorProductoId { get; set; } // FK de Sector
-        //public virtual Sector? SectorProducto { get; set; } 
-        //[Required]
-        //public string NombreDescProducto { get; set; }
-        //[Required]
-        //public int StockProducto { get; set; }
-        //[Required]
-        //public decimal PrecioProducto { get; set;}
+       
 
     }
 }

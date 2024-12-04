@@ -11,13 +11,7 @@
 
     
 
-    //public class LogueoEmpleadoDto
-    //{
-    //    public int EmpleadoLogId { get; set; }
-    //    public string Nombre { get; set; }
-    //    public string FechaLogueo { get; set; }
-    //    public string FechaDeslogueo { get; set; }
-    //}
+   
 
     
 }

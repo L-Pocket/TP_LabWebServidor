@@ -141,7 +141,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-        [HttpGet("GetProductos en estado pendiente por sector")]
+        [HttpGet("GetProductosEnEstadoPendientePorSector")]
         public async Task<ActionResult<List<Producto>>> GetProductosxSector(int sectorI)
         {
             try

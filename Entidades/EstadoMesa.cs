@@ -37,12 +37,6 @@ namespace Entidades
             }
         }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdEstadoMesa { get; set; }
-        //[Required]
-        //public string DescripcionMesa { get; set; }
+        
     }
 }

@@ -19,7 +19,7 @@ namespace LabAWS_RiusLaura.Controllers
             _mesaServicio = mesaServicio;
         }
 
-        [HttpGet("listado de mesas")]
+        [HttpGet("listadoDeMesas")]
 
         public async Task<ActionResult<List<Mesa>>> GetMesas()
         {
@@ -28,23 +28,7 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
 
-        /*
-        private readonly DataContext _context;
-
-        // Constructor
-        public MesasController(DataContext context)
-        {
-            _context = context;
-        }
-
-        [HttpGet("listado de mesas")]
-
-        public async Task<ActionResult<List<Mesa>>> GetMesas()
-        {
-            return Ok(await _context.Mesas.ToListAsync());
-        }
-
-        */
+        
     }
 
 }

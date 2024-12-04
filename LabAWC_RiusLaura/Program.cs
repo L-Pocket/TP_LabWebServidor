@@ -98,19 +98,12 @@ builder.Services.AddScoped<AuthServicio>();
 // Configurar la caché en memoria para las sesiones
 builder.Services.AddDistributedMemoryCache();
 
-// Configurar la sesión para guardar los logs
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Configurar el tiempo de espera de la sesión
-    options.Cookie.HttpOnly = true; // Configurar la cookie de sesión como HttpOnly
-    options.Cookie.IsEssential = true; // Marcar la cookie como esencial
-});
+
 
 
 var app = builder.Build();
 
-// Usar la sesión
-app.UseSession();
+
 
 app.UseMiddleware<LogMiddleware>(); //Inyecto Middleware
 

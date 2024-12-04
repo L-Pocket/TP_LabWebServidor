@@ -15,45 +15,13 @@ namespace Restaurante_API.Middleware
         }
         public async Task Invoke(HttpContext context)
         {
-            var logueoEmpleadoServicio = context.RequestServices.GetRequiredService<ILogEmpleadoServicio>();
 
-            int empleadoId = ObtenerEmpleadoId(context);
-
-            if (empleadoId != 0)
-            {
-
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-
-                await logueoEmpleadoServicio.RegistrarLogueo(empleadoId);
-                this._logger.LogInformation($"Empleado {empleadoId} ingreso al sistema{DateTime.Now}");
-                try { await _next(context); }
-                finally
-                {
-                    stopwatch.Stop();
-
-                    await logueoEmpleadoServicio.RegistrarDeslogueo(empleadoId);
-                    this._logger.LogInformation($"El empleado {empleadoId} salio del sistema:{DateTime.Now}");
-                    this._logger.LogInformation($"Tiempo de sesión del empleado {empleadoId}: {stopwatch.Elapsed}");
-                }
-
-
-            }
-            else
-            {
-                await _next(context); // Continuar con el siguiente middleware si no hay empleadoId
-            }
-
+            this._logger.LogInformation("Antes de ejecutar en endpoint");
+            await _next(context);
+            this._logger.LogInformation("Despues de ejecutar en endpoint");
 
         }
-        private int ObtenerEmpleadoId(HttpContext context)
-        {
-           
-            var empleadoId = context.Session.GetInt32("EmpleadoId") ?? 0;
-            Console.WriteLine($"EmpleadoId obtenido de la sesión en el middleware: {empleadoId}");
-
-            return empleadoId;
-        }
+        
 
     }
 }

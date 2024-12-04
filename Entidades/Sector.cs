@@ -39,12 +39,6 @@ namespace Entidades
                 
         }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]  
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int IdSector { get; set; }
-        //[Required]
-        //public string DescripcionSector { get; set; }
+       
     }
 }

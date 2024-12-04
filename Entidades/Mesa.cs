@@ -37,15 +37,7 @@ namespace Entidades
         public int EstadoDeMesaId { get => estadoDeMesaId; set => estadoDeMesaId = value; } // FK para EstadoMesa
         public EstadoMesa EstadoDeMesa { get => estadoDeMesa; set => estadoDeMesa = value; }
 
-        // -----------------------------------------------------
-        // Código viejo:
-        //[Key, Required]
-        //public int IdMesa { get; set; }
-        //[Required, StringLength(5, MinimumLength = 5)]
-        //public string CodigoMesa { get; set; } // Las mesas tienen un ID alfanumérico de 5 caracteres
-        //[Required]
-        //public int EstadoDeMesaId { get; set; } // FK para EstadoMesa
-        //public virtual EstadoMesa EstadoDeMesa { get; set; } // 
+        
 
     }
 }

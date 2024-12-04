@@ -66,46 +66,9 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
 
-        [HttpPut("ModificarComanda/{idComanda}")]
-        public async Task<IActionResult> ModificarComanda(int idComanda, [FromBody] ComandaCrearDto comandaCrearDto)
-
-        {
-            // Validar que el idComanda sea mayor a 0
-            if (idComanda <= 0)
-            {
-                return BadRequest("El ID de la comanda debe ser un número mayor a 0.");
-            }
-
-            if (comandaCrearDto == null)
-            {
-                return BadRequest("La información de la comanda no puede estar vacía.");
-            }
-
-            var result = await _comandaServicio.ModificarComanda(idComanda, comandaCrearDto);
-
-            if (!result.Success)
-            {
-                return NotFound(result.ErrorMessage);
-            }
-
-            return Ok("Comanda modificada exitosamente.");
-        }
+        
 
 
-        /*
-        [HttpPut("ModificarComanda/{idComanda}")]
-        public async Task<IActionResult> ModificarComanda(int idComanda, [FromBody] ComandaDto comandaDto)
-        {
-            var (success, errorMessage) = await _comandaServicio.ModificarComanda(idComanda, comandaDto);
-
-            if (!success)
-            {
-                return NotFound(errorMessage); // Devuelve un 404 si no se encuentra la comanda
-            }
-
-           
-            return Ok(new { mensaje = "Comanda modificada con éxito" });
-        }
-        */
+        
     }
 }

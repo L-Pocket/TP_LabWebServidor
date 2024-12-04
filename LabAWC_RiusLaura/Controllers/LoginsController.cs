@@ -22,24 +22,7 @@ namespace LabAWS_RiusLaura.Controllers
             this._authServicio = authServicio;
             this._logger = logger;
         }
-        // codigo viejo
-        /*[HttpPost]
-
-        public async Task<IActionResult> Login( string userName, string password)
-        {
-            try{ 
-            
-                var empleadoId = await _logEmpleadoServicio.IniciarSesion(userName, password);
-                // Guarda el empleadoId en la sesión
-                HttpContext.Session.SetInt32("EmpleadoId", empleadoId);
-                var GuardaEmpleadoId = HttpContext.Session.GetInt32("EmpleadoId");
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-        }*/
+       
         [HttpPost("login")]
 
         public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
@@ -48,11 +31,11 @@ namespace LabAWS_RiusLaura.Controllers
             try
             {
                 var empleadoId = await _logEmpleadoServicio.IniciarSesion(login.usuario, login.password);
-                HttpContext.Session.SetInt32("EmpleadoId", empleadoId.RolDelEmpleadoId);// Guarda el empleadoId en la sesión
-                var GuardaEmpleadoId = HttpContext.Session.GetInt32("EmpleadoId");
+               
+                
                 
                 var rol = empleadoId.RolDelEmpleado.DescripcionRol == "Socio" ? "Socio" : "Empleado";
-                var token = _authServicio.CreateToken(login, rol);
+                var token = _authServicio.CreateToken(login, rol, empleadoId.IdEmpleado);
 
                 return Ok(new { token = token });
             }
@@ -62,6 +45,31 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
 
+        }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                // Obtengo el empleadoId del token JWT
+                var empleadoIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "EmpleadoId");
+                if (empleadoIdClaim == null)
+                {
+                    return Unauthorized("No se pudo obtener el ID del empleado del token.");
+                }
+
+                int empleadoId = int.Parse(empleadoIdClaim.Value);
+
+                // Llama a registrar el deslogueo
+                await _logEmpleadoServicio.RegistrarDeslogueo(empleadoId);
+
+                return Ok(new { mensaje = "Deslogueo exitoso." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar desloguear.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al desloguear.");
+            }
         }
     }
 }

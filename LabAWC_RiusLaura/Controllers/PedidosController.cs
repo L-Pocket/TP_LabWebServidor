@@ -22,6 +22,7 @@ namespace LabAWS_RiusLaura.Controllers
             _pedidoService = pedidoService;
         }
 
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetPedidoBy/{id}")]
         public async Task<ActionResult<PedidoResponseDto>> GetPedidoById(int id)
         {
@@ -82,8 +83,7 @@ namespace LabAWS_RiusLaura.Controllers
         public async Task<IActionResult> GetProductoMenosVendido()
         {
             try
-            {
-                
+            {                
                 // Llama al servicio para obtener el producto menos vendido
                 var productoMenosVendido = await _pedidoService.GetProductoMenosVendido();
 
@@ -104,12 +104,13 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         // POST Crear un pedido nuevo
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpPost("CrearPedido")]
         public async Task<ActionResult<PedidoResponseDto>> CrearPedido([FromBody] PedidoCreateDto pedido)
         {
 
             // Verifica que Comanda, Producto y Cantidad sean válidos y no estén vacíos
-            if (pedido.ComandaDelPedidoId <= 0 || pedido.ProductoDelPedidoId <= 0 || pedido.Cantidad <= 0)
+            if (pedido.ComandaId <= 0 || pedido.ProductoId <= 0 || pedido.Cantidad <= 0)
             {
                 return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad son obligatorios y deben ser válidos.");
             }
@@ -141,6 +142,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductosEnEstadoPendientePorSector")]
         public async Task<ActionResult<List<Producto>>> GetProductosxSector(int sectorI)
         {

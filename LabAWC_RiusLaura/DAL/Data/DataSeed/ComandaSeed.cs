@@ -8,40 +8,39 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
     {
         public void Configure(EntityTypeBuilder<Comanda> builder)
         {
-            builder.HasData(
-            new Comanda
-            {
+             builder.HasData(
+             new Comanda
+             {
+                 Id = 1,
+                 MesaId = 1,
+                 NombreCliente = "Cliente A",
+             },
+             new Comanda
+             {
+                 Id = 2,
+                 MesaId = 2,
+                 NombreCliente = "Cliente B"
+             },
+             new Comanda
+             {
+                 Id = 3,
+                 MesaId = 3,
+                 NombreCliente = "Cliente C"
+             },
+             new Comanda
+             {
+                 Id = 4,
+                 MesaId = 4,
+                 NombreCliente = "Cliente D"
+             },
+             new Comanda
+             {
 
-                IdComanda = 1,
-                MesaDeComandaId = 1,
-                NombreCliente = "Cliente A",
-            },
-            new Comanda
-            {
-                IdComanda = 2,
-                MesaDeComandaId = 2,
-                NombreCliente = "Cliente B"
-            },
-            new Comanda
-            {
-                IdComanda = 3,
-                MesaDeComandaId = 3,
-                NombreCliente = "Cliente C"
-            },
-            new Comanda
-            {
-                IdComanda = 4,
-                MesaDeComandaId = 4,
-                NombreCliente = "Cliente D"
-            },
-            new Comanda
-            {
-
-                IdComanda = 5,
-                MesaDeComandaId = 1,
-                NombreCliente = "Cliente E"
-            }
-            );
+                 Id = 5,
+                 MesaId = 1,
+                 NombreCliente = "Cliente E"
+             }
+             );
         }
     }
 }

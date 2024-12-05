@@ -10,22 +10,27 @@ namespace Entidades
 {
     public class Empleado
     {
-        private int idEmpleado;
+        public Empleado()
+        {
+            this.EmpleadoActivo = true; // Se inicializa activo = true
+        }
+
+        private int id;
         private string nombre;
         private string usuario;
         private string password;
-        private int sectorDelEmpleadoId;
-        private Sector sectorDelEmpleado;
-        private int rolDelEmpleadoId;
-        private Rol rolDelEmpleado;
+        private int sectorId;
+        private Sector sector;
+        private int rolId;
+        private Rol rol;
         private bool empleadoActivo;
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdEmpleado { get => idEmpleado; set => idEmpleado = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required, MaxLength(100)]
-        public string Nombre 
+        public string Nombre
         {
             get => nombre;
             set
@@ -39,7 +44,8 @@ namespace Entidades
         }
 
         [Required, MaxLength(50)]
-        public string Usuario {
+        public string Usuario
+        {
             get => usuario;
             set
             {
@@ -52,7 +58,8 @@ namespace Entidades
         }
 
         [Required, MaxLength(50)]
-        public string Password {
+        public string Password
+        {
             get => password;
             set
             {
@@ -65,17 +72,17 @@ namespace Entidades
         }
 
         [Required]
-        public int SectorDelEmpleadoId { get => sectorDelEmpleadoId; set => sectorDelEmpleadoId = value; } // FK para Sector
-        public virtual Sector SectorDelEmpleado { get => sectorDelEmpleado; set => sectorDelEmpleado = value; }
+        public int SectorId { get => sectorId; set => sectorId = value; } // FK para Sector
+        public virtual Sector Sector { get => sector; set => sector = value; }
 
         [Required]
-        public int RolDelEmpleadoId { get => rolDelEmpleadoId; set => rolDelEmpleadoId = value; } // FK para Rol      
-        public virtual Rol RolDelEmpleado { get => rolDelEmpleado; set => rolDelEmpleado = value; }
+        public int RolId { get => rolId; set => rolId = value; } // FK para Rol      
+        public virtual Rol Rol { get => rol; set => rol = value; }
 
         [Required]
         public bool EmpleadoActivo { get => empleadoActivo; set => empleadoActivo = value; } //Posibilidad de suspender empleados. Suspendido = False
 
 
-        
+
     }
 }

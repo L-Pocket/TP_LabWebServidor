@@ -2,10 +2,8 @@
 {
     public class ProductoVendidoDto
     {
-        public int IdProducto { get; set; }
-
-        public string NombreDescProducto { get; set; }
-
+        public int Id { get; set; }
+        public string NombreDesc { get; set; }
         public int CantidadVendida { get; set; }
     }
 }

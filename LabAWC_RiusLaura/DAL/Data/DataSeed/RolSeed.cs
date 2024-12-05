@@ -11,28 +11,28 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
             builder.HasData(
             new Rol
             {
-                IdRol = 1,
-                DescripcionRol = "Bartender"
+                Id = 1,
+                Descripcion = "Bartender"
             },
             new Rol
             {
-                IdRol = 2,
-                DescripcionRol = "Cervecero"
+                Id = 2,
+                Descripcion = "Cervecero"
             },
             new Rol
             {
-                IdRol = 3,
-                DescripcionRol = "Cocinero"
+                Id = 3,
+                Descripcion = "Cocinero"
             },
             new Rol
             {
-                IdRol = 4,
-                DescripcionRol = "Mozo"
+                Id = 4,
+                Descripcion = "Mozo"
             },
             new Rol
             {
-                IdRol = 5,
-                DescripcionRol = "Socio"
+                Id = 5,
+                Descripcion = "Socio"
             }
             );
         }

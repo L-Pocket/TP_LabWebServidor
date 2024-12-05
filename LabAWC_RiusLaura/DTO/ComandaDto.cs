@@ -2,8 +2,8 @@
 {
     public class ComandaDto
     {
-        public int IdComanda { get; set; }
-        public int MesaDeComandaId { get; set; }
+        public int Id { get; set; }
+        public int MesaId { get; set; }
         public string NombreCliente { get; set; } = string.Empty;
     }
 }

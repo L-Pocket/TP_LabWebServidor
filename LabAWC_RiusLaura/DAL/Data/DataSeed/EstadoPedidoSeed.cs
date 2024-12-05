@@ -11,28 +11,28 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
             builder.HasData(
             new EstadoPedido
             {
-                IdEstadoPedido = 1,
-                DescripcionPedido = "Pendiente"
+                Id = 1,
+                Descripcion = "Pendiente"
             },
             new EstadoPedido
             {
-                IdEstadoPedido = 2,
-                DescripcionPedido = "En Preparacion"
+                Id = 2,
+                Descripcion = "En Preparacion"
             },
             new EstadoPedido
             {
-                IdEstadoPedido = 3,
-                DescripcionPedido = "Listo Para Servir"
+                Id = 3,
+                Descripcion = "Listo Para Servir"
             },
             new EstadoPedido
             {
-                IdEstadoPedido = 4,
-                DescripcionPedido = "Servido"
+                Id = 4,
+                Descripcion = "Servido"
             },
             new EstadoPedido
             {
-                IdEstadoPedido = 5,
-                DescripcionPedido = "Cancelado"
+                Id = 5,
+                Descripcion = "Cancelado"
             }
             );
         }

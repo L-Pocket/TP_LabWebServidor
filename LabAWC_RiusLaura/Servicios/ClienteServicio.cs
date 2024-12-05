@@ -8,7 +8,7 @@ namespace LabAWS_RiusLaura.Servicios
 {
     public interface IClienteServicio {
         //public Task<(bool Success, string ErrorMessage, Mesa Mesa, Pedido Pedido, ClienteResponseDto Resultado)> GetDemora(string codigoMesa, string idPedido);
-        Task<ClienteResponseDto> GetDemoraV2(string codigoMesa, string idPedido);
+        Task<ClienteResponseDto> GetDemora(string codigoMesa, string idPedido);
     }
     public class ClienteServicio : IClienteServicio
     {
@@ -24,12 +24,12 @@ namespace LabAWS_RiusLaura.Servicios
         
         
 
-        public async Task<ClienteResponseDto> GetDemoraV2(string codigoMesa, string idPedido)
+        public async Task<ClienteResponseDto> GetDemora(string codigoMesa, string idPedido)
         {
             this.logger.LogInformation("Iniciando la búsqueda del empleados por sector.");
             // Buscar la mesa por código
             var mesa = await _context.Mesas
-                .Where(m => m.CodigoMesa == codigoMesa)
+                .Where(m => m.Codigo == codigoMesa)
                 .FirstOrDefaultAsync();
 
             if (mesa == null)
@@ -51,7 +51,7 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Verificar que el pedido esté asociado con la mesa correcta
             var comanda = await _context.Comandas
-                .Where(c => c.IdComanda == pedido.ComandaDelPedidoId && c.MesaDeComandaId == mesa.IdMesa)
+                .Where(c => c.Id == pedido.ComandaId && c.MesaId == mesa.Id)
                 .FirstOrDefaultAsync();
 
             if (comanda == null)

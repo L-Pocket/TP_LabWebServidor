@@ -2,7 +2,7 @@
 {
     public class ComandaCrearDto
     {
-        public int MesaDeComandaId { get; set; }
+        public int MesaId { get; set; }
         public string NombreCliente { get; set; } = string.Empty;
     }
 }

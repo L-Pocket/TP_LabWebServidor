@@ -24,6 +24,7 @@ namespace LabAWS_RiusLaura.Controllers
         {
             _socioServicio = socioServicio;
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpPut("CerrarMesa/{idMesa}")]
         public async Task<ActionResult<MesaDto>> CerrarMesa(int idMesa)
@@ -59,6 +60,7 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpPost("AgregarEmpleado")]
         public async Task<ActionResult<EmpleadoCreateDto>> AgregarEmpleado([Required] string nombre, [Required] string usuario, [Required] string password, [Required] int sectorDelEmpleadoId, [Required] int rolDelEmpleadoId)
@@ -91,6 +93,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpPut("SuspenderEmpleado/{idEmpleado}")]
         public async Task<ActionResult> SuspenderEmpleado(int idEmpleado)
@@ -120,6 +123,7 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpDelete("BorrarEmpleado/{idEmpleado}")]
         public async Task<ActionResult> BorrarEmpleado(int idEmpleado)
@@ -148,6 +152,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
 
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("CantidadEmpleadosPorSector")]
         public async Task<ActionResult<IEnumerable<EmpleadosPorSectorResponseDto>>> CantidadEmpleadosPorSector()
@@ -175,6 +180,7 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
+
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("CantidadOperacionesPorSector/{idSector}")]
         public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(int idSector)
@@ -202,7 +208,6 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-
         //cantidad de operaciones de todos por sector listada por cada empleado (c)
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("OperacionesDeTodosLosEmpleados")]
@@ -218,7 +223,6 @@ namespace LabAWS_RiusLaura.Controllers
 
             return Ok(operaciones);
         }
-
 
         //cantidad de operaciones de cada uno por separado (d)
         [Authorize(Policy = "RequireSocioRole")]
@@ -236,8 +240,7 @@ namespace LabAWS_RiusLaura.Controllers
             return Ok(operaciones);
         }
 
-
-
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpGet("ListarPedidosConDemora")]
         public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
         {

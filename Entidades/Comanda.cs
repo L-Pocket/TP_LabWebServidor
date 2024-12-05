@@ -11,21 +11,21 @@ namespace Entidades
     public class Comanda
 
     {
-        private int idComanda;
-        private int mesaDeComandaId;
-        private Mesa mesaDeComanda;
+        private int id;
+        private int mesaId;
+        private Mesa mesa;
         private string nombreCliente;
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdComanda { get => idComanda; set => idComanda = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required]
-        public int MesaDeComandaId { get => mesaDeComandaId; set => mesaDeComandaId = value; } // FK para Mesa
-        public Mesa MesaDeComanda { get => mesaDeComanda; set => mesaDeComanda = value; }
+        public int MesaId { get => mesaId; set => mesaId = value; } // FK para Mesa
+        public Mesa Mesa { get => mesa; set => mesa = value; }
 
         [Required, MaxLength(50)]
-        public string NombreCliente 
+        public string NombreCliente
         {
             get => nombreCliente;
             set
@@ -37,8 +37,6 @@ namespace Entidades
                 nombreCliente = value;
             }
         }
-
-        
 
     }
 }

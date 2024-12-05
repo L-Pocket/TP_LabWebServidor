@@ -15,12 +15,12 @@ namespace Restaurante_API.Mappers
 
             //this.CreateMap<MesaDto, Mesa>().ReverseMap(); 
             CreateMap<Mesa, MesaDto>()
-             .ForMember(dest => dest.DescripcionMesa, opt => opt.MapFrom(src => src.EstadoDeMesa.DescripcionMesa))
+             .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.EstadoMesa.Descripcion))
              .ReverseMap();
 
             // Mapeo desde ComandaCrearDto a Comanda
             CreateMap<ComandaCrearDto, Comanda>()
-                .ForMember(dest => dest.IdComanda, opt => opt.Ignore()); // Ignoramos el IdComanda por ser un campo de identidad
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignoramos el IdComanda por ser un campo de identidad
 
             this.CreateMap<ComandaDto, Comanda>().ReverseMap();
             this.CreateMap<Empleado, EmpleadoCreateDto>().ReverseMap();
@@ -31,8 +31,8 @@ namespace Restaurante_API.Mappers
 
             // Mapeo de Producto a ProductoVendidoDto
             CreateMap<Producto, ProductoVendidoDto>()
-                .ForMember(dest => dest.IdProducto, opt => opt.MapFrom(src => src.IdProducto))
-                .ForMember(dest => dest.NombreDescProducto, opt => opt.MapFrom(src => src.NombreDescProducto))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.NombreDesc, opt => opt.MapFrom(src => src.NombreDesc))
                 .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore()); // Ignoramos CantidadVendida ya que no proviene de la entidad Producto
 
             //mapeo operaciones por sector (informe) -socioservicio

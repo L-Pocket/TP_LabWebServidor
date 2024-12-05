@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LabAWS_RiusLaura.Migrations
+namespace Restaurante_API.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -24,13 +24,13 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Comanda", b =>
                 {
-                    b.Property<int>("IdComanda")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdComanda"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MesaDeComandaId")
+                    b.Property<int>("MesaId")
                         .HasColumnType("int");
 
                     b.Property<string>("NombreCliente")
@@ -38,52 +38,52 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("IdComanda");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MesaDeComandaId");
+                    b.HasIndex("MesaId");
 
                     b.ToTable("Comandas");
 
                     b.HasData(
                         new
                         {
-                            IdComanda = 1,
-                            MesaDeComandaId = 1,
+                            Id = 1,
+                            MesaId = 1,
                             NombreCliente = "Cliente A"
                         },
                         new
                         {
-                            IdComanda = 2,
-                            MesaDeComandaId = 2,
+                            Id = 2,
+                            MesaId = 2,
                             NombreCliente = "Cliente B"
                         },
                         new
                         {
-                            IdComanda = 3,
-                            MesaDeComandaId = 3,
+                            Id = 3,
+                            MesaId = 3,
                             NombreCliente = "Cliente C"
                         },
                         new
                         {
-                            IdComanda = 4,
-                            MesaDeComandaId = 4,
+                            Id = 4,
+                            MesaId = 4,
                             NombreCliente = "Cliente D"
                         },
                         new
                         {
-                            IdComanda = 5,
-                            MesaDeComandaId = 1,
+                            Id = 5,
+                            MesaId = 1,
                             NombreCliente = "Cliente E"
                         });
                 });
 
             modelBuilder.Entity("Entidades.Empleado", b =>
                 {
-                    b.Property<int>("IdEmpleado")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEmpleado"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("EmpleadoActivo")
                         .HasColumnType("bit");
@@ -98,10 +98,10 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("RolDelEmpleadoId")
+                    b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SectorDelEmpleadoId")
+                    b.Property<int>("SectorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Usuario")
@@ -109,197 +109,197 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("IdEmpleado");
+                    b.HasKey("Id");
 
-                    b.HasIndex("RolDelEmpleadoId");
+                    b.HasIndex("RolId");
 
-                    b.HasIndex("SectorDelEmpleadoId");
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Empleados");
 
                     b.HasData(
                         new
                         {
-                            IdEmpleado = 1,
+                            Id = 1,
                             EmpleadoActivo = true,
                             Nombre = "Juan Pérez",
-                            Password = "password1",
-                            RolDelEmpleadoId = 1,
-                            SectorDelEmpleadoId = 1,
-                            Usuario = "jperez"
+                            Password = "bartender1",
+                            RolId = 1,
+                            SectorId = 1,
+                            Usuario = "bartender1"
                         },
                         new
                         {
-                            IdEmpleado = 2,
+                            Id = 2,
                             EmpleadoActivo = true,
                             Nombre = "María Gómez",
-                            Password = "password2",
-                            RolDelEmpleadoId = 2,
-                            SectorDelEmpleadoId = 2,
-                            Usuario = "mgomez"
+                            Password = "cervecero1",
+                            RolId = 2,
+                            SectorId = 2,
+                            Usuario = "cervecero1"
                         },
                         new
                         {
-                            IdEmpleado = 3,
+                            Id = 3,
                             EmpleadoActivo = true,
                             Nombre = "Carlos López",
-                            Password = "password3",
-                            RolDelEmpleadoId = 3,
-                            SectorDelEmpleadoId = 3,
-                            Usuario = "clopez"
+                            Password = "cocinero1",
+                            RolId = 3,
+                            SectorId = 3,
+                            Usuario = "cocinero1"
                         },
                         new
                         {
-                            IdEmpleado = 4,
+                            Id = 4,
                             EmpleadoActivo = true,
                             Nombre = "Ana Martínez",
-                            Password = "password4",
-                            RolDelEmpleadoId = 4,
-                            SectorDelEmpleadoId = 4,
-                            Usuario = "amartinez"
+                            Password = "mozo1",
+                            RolId = 4,
+                            SectorId = 4,
+                            Usuario = "mozo1"
                         },
                         new
                         {
-                            IdEmpleado = 5,
+                            Id = 5,
                             EmpleadoActivo = true,
                             Nombre = "Jorge García",
-                            Password = "password5",
-                            RolDelEmpleadoId = 5,
-                            SectorDelEmpleadoId = 5,
-                            Usuario = "jgarcia"
+                            Password = "socio1",
+                            RolId = 5,
+                            SectorId = 5,
+                            Usuario = "socio1"
                         },
                         new
                         {
-                            IdEmpleado = 6,
+                            Id = 6,
                             EmpleadoActivo = false,
                             Nombre = "Laura Torres",
-                            Password = "password6",
-                            RolDelEmpleadoId = 1,
-                            SectorDelEmpleadoId = 1,
-                            Usuario = "ltorres"
+                            Password = "bartender2",
+                            RolId = 1,
+                            SectorId = 1,
+                            Usuario = "bartender2"
                         },
                         new
                         {
-                            IdEmpleado = 7,
+                            Id = 7,
                             EmpleadoActivo = true,
                             Nombre = "Esteban Rodriguez",
-                            Password = "password7",
-                            RolDelEmpleadoId = 5,
-                            SectorDelEmpleadoId = 5,
-                            Usuario = "erodriguez"
+                            Password = "socio2",
+                            RolId = 5,
+                            SectorId = 5,
+                            Usuario = "socio2"
                         },
                         new
                         {
-                            IdEmpleado = 8,
+                            Id = 8,
                             EmpleadoActivo = true,
                             Nombre = "Pedro Ramirez",
-                            Password = "password8",
-                            RolDelEmpleadoId = 3,
-                            SectorDelEmpleadoId = 3,
-                            Usuario = "pramirez"
+                            Password = "cocinero2",
+                            RolId = 3,
+                            SectorId = 3,
+                            Usuario = "cocinero2"
                         },
                         new
                         {
-                            IdEmpleado = 9,
+                            Id = 9,
                             EmpleadoActivo = false,
                             Nombre = "Gonzalo Fernandez",
-                            Password = "password9",
-                            RolDelEmpleadoId = 5,
-                            SectorDelEmpleadoId = 5,
-                            Usuario = "gfernandez"
+                            Password = "socio3",
+                            RolId = 5,
+                            SectorId = 5,
+                            Usuario = "socio3"
                         });
                 });
 
             modelBuilder.Entity("Entidades.EstadoMesa", b =>
                 {
-                    b.Property<int>("IdEstadoMesa")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoMesa"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionMesa")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdEstadoMesa");
+                    b.HasKey("Id");
 
                     b.ToTable("Estados_Mesas");
 
                     b.HasData(
                         new
                         {
-                            IdEstadoMesa = 1,
-                            DescripcionMesa = "Cliente Esperando Pedido"
+                            Id = 1,
+                            Descripcion = "Cliente Esperando Pedido"
                         },
                         new
                         {
-                            IdEstadoMesa = 2,
-                            DescripcionMesa = "Cliente Comiendo"
+                            Id = 2,
+                            Descripcion = "Cliente Comiendo"
                         },
                         new
                         {
-                            IdEstadoMesa = 3,
-                            DescripcionMesa = "Cliente Pagando"
+                            Id = 3,
+                            Descripcion = "Cliente Pagando"
                         },
                         new
                         {
-                            IdEstadoMesa = 4,
-                            DescripcionMesa = "Cerrada"
+                            Id = 4,
+                            Descripcion = "Cerrada"
                         });
                 });
 
             modelBuilder.Entity("Entidades.EstadoPedido", b =>
                 {
-                    b.Property<int>("IdEstadoPedido")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoPedido"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionPedido")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdEstadoPedido");
+                    b.HasKey("Id");
 
                     b.ToTable("Estados_Pedidos");
 
                     b.HasData(
                         new
                         {
-                            IdEstadoPedido = 1,
-                            DescripcionPedido = "Pendiente"
+                            Id = 1,
+                            Descripcion = "Pendiente"
                         },
                         new
                         {
-                            IdEstadoPedido = 2,
-                            DescripcionPedido = "En Preparacion"
+                            Id = 2,
+                            Descripcion = "En Preparacion"
                         },
                         new
                         {
-                            IdEstadoPedido = 3,
-                            DescripcionPedido = "Listo Para Servir"
+                            Id = 3,
+                            Descripcion = "Listo Para Servir"
                         },
                         new
                         {
-                            IdEstadoPedido = 4,
-                            DescripcionPedido = "Servido"
+                            Id = 4,
+                            Descripcion = "Servido"
                         },
                         new
                         {
-                            IdEstadoPedido = 5,
-                            DescripcionPedido = "Cancelado"
+                            Id = 5,
+                            Descripcion = "Cancelado"
                         });
                 });
 
             modelBuilder.Entity("Entidades.LogueoEmpleado", b =>
                 {
-                    b.Property<int>("IdLogueo")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLogueo"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EmpleadoLogId")
                         .HasColumnType("int");
@@ -310,7 +310,7 @@ namespace LabAWS_RiusLaura.Migrations
                     b.Property<DateTime>("FechaLogueo")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdLogueo");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmpleadoLogId");
 
@@ -319,42 +319,42 @@ namespace LabAWS_RiusLaura.Migrations
                     b.HasData(
                         new
                         {
-                            IdLogueo = 1,
+                            Id = 1,
                             EmpleadoLogId = 1,
                             FechaDeslogueo = new DateTime(2024, 8, 12, 23, 59, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 12, 19, 6, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
-                            IdLogueo = 2,
+                            Id = 2,
                             EmpleadoLogId = 2,
                             FechaDeslogueo = new DateTime(2024, 8, 12, 23, 59, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 12, 19, 1, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
-                            IdLogueo = 3,
+                            Id = 3,
                             EmpleadoLogId = 3,
                             FechaDeslogueo = new DateTime(2024, 8, 12, 23, 49, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 12, 17, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
-                            IdLogueo = 4,
+                            Id = 4,
                             EmpleadoLogId = 4,
                             FechaDeslogueo = new DateTime(2024, 8, 12, 23, 15, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 12, 18, 16, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
-                            IdLogueo = 5,
+                            Id = 5,
                             EmpleadoLogId = 5,
                             FechaDeslogueo = new DateTime(2024, 8, 13, 23, 33, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 13, 19, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
-                            IdLogueo = 6,
+                            Id = 6,
                             EmpleadoLogId = 6,
                             FechaDeslogueo = new DateTime(2024, 8, 13, 23, 55, 0, 0, DateTimeKind.Local),
                             FechaLogueo = new DateTime(2024, 8, 13, 19, 30, 0, 0, DateTimeKind.Local)
@@ -363,60 +363,60 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Mesa", b =>
                 {
-                    b.Property<int>("IdMesa")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMesa"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CodigoMesa")
+                    b.Property<string>("Codigo")
                         .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("EstadoDeMesaId")
+                    b.Property<int>("EstadoMesaId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdMesa");
+                    b.HasKey("Id");
 
-                    b.HasIndex("EstadoDeMesaId");
+                    b.HasIndex("EstadoMesaId");
 
                     b.ToTable("Mesas");
 
                     b.HasData(
                         new
                         {
-                            IdMesa = 1,
-                            CodigoMesa = "M1001",
-                            EstadoDeMesaId = 1
+                            Id = 1,
+                            Codigo = "KA8D2",
+                            EstadoMesaId = 1
                         },
                         new
                         {
-                            IdMesa = 2,
-                            CodigoMesa = "M1002",
-                            EstadoDeMesaId = 1
+                            Id = 2,
+                            Codigo = "VTOPN",
+                            EstadoMesaId = 1
                         },
                         new
                         {
-                            IdMesa = 3,
-                            CodigoMesa = "M1003",
-                            EstadoDeMesaId = 4
+                            Id = 3,
+                            Codigo = "72CER",
+                            EstadoMesaId = 4
                         },
                         new
                         {
-                            IdMesa = 4,
-                            CodigoMesa = "M1004",
-                            EstadoDeMesaId = 1
+                            Id = 4,
+                            Codigo = "2FFV0",
+                            EstadoMesaId = 1
                         });
                 });
 
             modelBuilder.Entity("Entidades.Pedido", b =>
                 {
-                    b.Property<int>("IdPedido")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPedido"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
@@ -426,10 +426,10 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("ComandaDelPedidoId")
+                    b.Property<int>("ComandaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstadoDelPedidoId")
+                    b.Property<int>("EstadoPedidoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaCreacion")
@@ -438,320 +438,320 @@ namespace LabAWS_RiusLaura.Migrations
                     b.Property<DateTime?>("FechaFinalizacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ObservacionesDelPedido")
+                    b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductoDelPedidoId")
+                    b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
                     b.Property<int>("TiempoEstimado")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPedido");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ComandaDelPedidoId");
+                    b.HasIndex("ComandaId");
 
-                    b.HasIndex("EstadoDelPedidoId");
+                    b.HasIndex("EstadoPedidoId");
 
-                    b.HasIndex("ProductoDelPedidoId");
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("Pedidos");
 
                     b.HasData(
                         new
                         {
-                            IdPedido = 1,
+                            Id = 1,
                             Cantidad = 1,
-                            CodigoCliente = "MBC12",
-                            ComandaDelPedidoId = 1,
-                            EstadoDelPedidoId = 1,
+                            CodigoCliente = "KSPO7",
+                            ComandaId = 1,
+                            EstadoPedidoId = 1,
                             FechaCreacion = new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "Con hielo",
-                            ProductoDelPedidoId = 1,
+                            Observaciones = "Con hielo",
+                            ProductoId = 1,
                             TiempoEstimado = 10
                         },
                         new
                         {
-                            IdPedido = 2,
+                            Id = 2,
                             Cantidad = 2,
-                            CodigoCliente = "MBC12",
-                            ComandaDelPedidoId = 1,
-                            EstadoDelPedidoId = 1,
+                            CodigoCliente = "NMKN5",
+                            ComandaId = 1,
+                            EstadoPedidoId = 1,
                             FechaCreacion = new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "",
-                            ProductoDelPedidoId = 3,
+                            Observaciones = "",
+                            ProductoId = 3,
                             TiempoEstimado = 20
                         },
                         new
                         {
-                            IdPedido = 3,
+                            Id = 3,
                             Cantidad = 3,
-                            CodigoCliente = "MBC12",
-                            ComandaDelPedidoId = 1,
-                            EstadoDelPedidoId = 1,
+                            CodigoCliente = "3RIM0",
+                            ComandaId = 1,
+                            EstadoPedidoId = 1,
                             FechaCreacion = new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "",
-                            ProductoDelPedidoId = 3,
+                            Observaciones = "",
+                            ProductoId = 3,
                             TiempoEstimado = 30
                         },
                         new
                         {
-                            IdPedido = 4,
+                            Id = 4,
                             Cantidad = 2,
-                            CodigoCliente = "AD32S",
-                            ComandaDelPedidoId = 2,
-                            EstadoDelPedidoId = 1,
+                            CodigoCliente = "4O35J",
+                            ComandaId = 2,
+                            EstadoPedidoId = 1,
                             FechaCreacion = new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "",
-                            ProductoDelPedidoId = 8,
+                            Observaciones = "",
+                            ProductoId = 8,
                             TiempoEstimado = 15
                         },
                         new
                         {
-                            IdPedido = 5,
+                            Id = 5,
                             Cantidad = 2,
-                            CodigoCliente = "KAE2K",
-                            ComandaDelPedidoId = 3,
-                            EstadoDelPedidoId = 1,
+                            CodigoCliente = "UT98J",
+                            ComandaId = 3,
+                            EstadoPedidoId = 1,
                             FechaCreacion = new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "",
-                            ProductoDelPedidoId = 9,
+                            Observaciones = "",
+                            ProductoId = 9,
                             TiempoEstimado = 40
                         },
                         new
                         {
-                            IdPedido = 6,
+                            Id = 6,
                             Cantidad = 4,
-                            CodigoCliente = "TYH3K",
-                            ComandaDelPedidoId = 5,
-                            EstadoDelPedidoId = 4,
+                            CodigoCliente = "WV5VZ",
+                            ComandaId = 5,
+                            EstadoPedidoId = 4,
                             FechaCreacion = new DateTime(2024, 8, 24, 19, 30, 0, 0, DateTimeKind.Local),
                             FechaFinalizacion = new DateTime(2024, 8, 24, 19, 47, 0, 0, DateTimeKind.Local),
-                            ObservacionesDelPedido = "bien frío",
-                            ProductoDelPedidoId = 2,
+                            Observaciones = "bien frío",
+                            ProductoId = 2,
                             TiempoEstimado = 15
                         });
                 });
 
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
-                    b.Property<int>("IdProducto")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProducto"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("NombreDescProducto")
+                    b.Property<string>("NombreDesc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioProducto")
+                    b.Property<decimal>("Precio")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SectorProductoId")
+                    b.Property<int>("SectorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StockProducto")
+                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.HasKey("IdProducto");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SectorProductoId");
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Productos");
 
                     b.HasData(
                         new
                         {
-                            IdProducto = 1,
-                            NombreDescProducto = "Vino tinto Malbec",
-                            PrecioProducto = 14000.00m,
-                            SectorProductoId = 1,
-                            StockProducto = 50
+                            Id = 1,
+                            NombreDesc = "Vino tinto Malbec",
+                            Precio = 14000.00m,
+                            SectorId = 1,
+                            Stock = 50
                         },
                         new
                         {
-                            IdProducto = 2,
-                            NombreDescProducto = "Vino tinto Cabernet",
-                            PrecioProducto = 14000.00m,
-                            SectorProductoId = 1,
-                            StockProducto = 40
+                            Id = 2,
+                            NombreDesc = "Vino tinto Cabernet",
+                            Precio = 14000.00m,
+                            SectorId = 1,
+                            Stock = 40
                         },
                         new
                         {
-                            IdProducto = 3,
-                            NombreDescProducto = "Cerveza artesanal IPA Roja",
-                            PrecioProducto = 3700.00m,
-                            SectorProductoId = 2,
-                            StockProducto = 200
+                            Id = 3,
+                            NombreDesc = "Cerveza artesanal IPA Roja",
+                            Precio = 3700.00m,
+                            SectorId = 2,
+                            Stock = 200
                         },
                         new
                         {
-                            IdProducto = 4,
-                            NombreDescProducto = "Cerveza artesanal Negra",
-                            PrecioProducto = 3700.00m,
-                            SectorProductoId = 2,
-                            StockProducto = 150
+                            Id = 4,
+                            NombreDesc = "Cerveza artesanal Negra",
+                            Precio = 3700.00m,
+                            SectorId = 2,
+                            Stock = 150
                         },
                         new
                         {
-                            IdProducto = 5,
-                            NombreDescProducto = "Empanadas de Carne",
-                            PrecioProducto = 1500.00m,
-                            SectorProductoId = 3,
-                            StockProducto = 200
+                            Id = 5,
+                            NombreDesc = "Empanadas de Carne",
+                            Precio = 1500.00m,
+                            SectorId = 3,
+                            Stock = 200
                         },
                         new
                         {
-                            IdProducto = 6,
-                            NombreDescProducto = "Empanadas de Verdura",
-                            PrecioProducto = 1500.00m,
-                            SectorProductoId = 3,
-                            StockProducto = 100
+                            Id = 6,
+                            NombreDesc = "Empanadas de Verdura",
+                            Precio = 1500.00m,
+                            SectorId = 3,
+                            Stock = 100
                         },
                         new
                         {
-                            IdProducto = 7,
-                            NombreDescProducto = "Empanadas de Pollo",
-                            PrecioProducto = 1500.00m,
-                            SectorProductoId = 3,
-                            StockProducto = 150
+                            Id = 7,
+                            NombreDesc = "Empanadas de Pollo",
+                            Precio = 1500.00m,
+                            SectorId = 3,
+                            Stock = 150
                         },
                         new
                         {
-                            IdProducto = 8,
-                            NombreDescProducto = "Postre Tiramisú",
-                            PrecioProducto = 5000.00m,
-                            SectorProductoId = 4,
-                            StockProducto = 40
+                            Id = 8,
+                            NombreDesc = "Postre Tiramisú",
+                            Precio = 5000.00m,
+                            SectorId = 4,
+                            Stock = 40
                         },
                         new
                         {
-                            IdProducto = 9,
-                            NombreDescProducto = "Café",
-                            PrecioProducto = 2500.00m,
-                            SectorProductoId = 4,
-                            StockProducto = 400
+                            Id = 9,
+                            NombreDesc = "Café",
+                            Precio = 2500.00m,
+                            SectorId = 4,
+                            Stock = 400
                         });
                 });
 
             modelBuilder.Entity("Entidades.Rol", b =>
                 {
-                    b.Property<int>("IdRol")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRol"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionRol")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdRol");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
-                            IdRol = 1,
-                            DescripcionRol = "Bartender"
+                            Id = 1,
+                            Descripcion = "Bartender"
                         },
                         new
                         {
-                            IdRol = 2,
-                            DescripcionRol = "Cervecero"
+                            Id = 2,
+                            Descripcion = "Cervecero"
                         },
                         new
                         {
-                            IdRol = 3,
-                            DescripcionRol = "Cocinero"
+                            Id = 3,
+                            Descripcion = "Cocinero"
                         },
                         new
                         {
-                            IdRol = 4,
-                            DescripcionRol = "Mozo"
+                            Id = 4,
+                            Descripcion = "Mozo"
                         },
                         new
                         {
-                            IdRol = 5,
-                            DescripcionRol = "Socio"
+                            Id = 5,
+                            Descripcion = "Socio"
                         });
                 });
 
             modelBuilder.Entity("Entidades.Sector", b =>
                 {
-                    b.Property<int>("IdSector")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSector"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionSector")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdSector");
+                    b.HasKey("Id");
 
                     b.ToTable("Sectores");
 
                     b.HasData(
                         new
                         {
-                            IdSector = 1,
-                            DescripcionSector = "Barra Tragos Y Vino"
+                            Id = 1,
+                            Descripcion = "Barra Tragos Y Vino"
                         },
                         new
                         {
-                            IdSector = 2,
-                            DescripcionSector = "Cerveza Artesanal"
+                            Id = 2,
+                            Descripcion = "Cerveza Artesanal"
                         },
                         new
                         {
-                            IdSector = 3,
-                            DescripcionSector = "Cocina"
+                            Id = 3,
+                            Descripcion = "Cocina"
                         },
                         new
                         {
-                            IdSector = 4,
-                            DescripcionSector = "Candybar"
+                            Id = 4,
+                            Descripcion = "Candybar"
                         },
                         new
                         {
-                            IdSector = 5,
-                            DescripcionSector = "General"
+                            Id = 5,
+                            Descripcion = "General"
                         });
                 });
 
             modelBuilder.Entity("Entidades.Comanda", b =>
                 {
-                    b.HasOne("Entidades.Mesa", "MesaDeComanda")
+                    b.HasOne("Entidades.Mesa", "Mesa")
                         .WithMany()
-                        .HasForeignKey("MesaDeComandaId")
+                        .HasForeignKey("MesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MesaDeComanda");
+                    b.Navigation("Mesa");
                 });
 
             modelBuilder.Entity("Entidades.Empleado", b =>
                 {
-                    b.HasOne("Entidades.Rol", "RolDelEmpleado")
+                    b.HasOne("Entidades.Rol", "Rol")
                         .WithMany()
-                        .HasForeignKey("RolDelEmpleadoId")
+                        .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.Sector", "SectorDelEmpleado")
+                    b.HasOne("Entidades.Sector", "Sector")
                         .WithMany()
-                        .HasForeignKey("SectorDelEmpleadoId")
+                        .HasForeignKey("SectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RolDelEmpleado");
+                    b.Navigation("Rol");
 
-                    b.Navigation("SectorDelEmpleado");
+                    b.Navigation("Sector");
                 });
 
             modelBuilder.Entity("Entidades.LogueoEmpleado", b =>
@@ -767,51 +767,51 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Mesa", b =>
                 {
-                    b.HasOne("Entidades.EstadoMesa", "EstadoDeMesa")
+                    b.HasOne("Entidades.EstadoMesa", "EstadoMesa")
                         .WithMany()
-                        .HasForeignKey("EstadoDeMesaId")
+                        .HasForeignKey("EstadoMesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EstadoDeMesa");
+                    b.Navigation("EstadoMesa");
                 });
 
             modelBuilder.Entity("Entidades.Pedido", b =>
                 {
-                    b.HasOne("Entidades.Comanda", "ComandaDelPedido")
+                    b.HasOne("Entidades.Comanda", "Comanda")
                         .WithMany()
-                        .HasForeignKey("ComandaDelPedidoId")
+                        .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.EstadoPedido", "EstadoDelPedido")
+                    b.HasOne("Entidades.EstadoPedido", "EstadoPedido")
                         .WithMany()
-                        .HasForeignKey("EstadoDelPedidoId")
+                        .HasForeignKey("EstadoPedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.Producto", "ProductoDelPedido")
+                    b.HasOne("Entidades.Producto", "Producto")
                         .WithMany()
-                        .HasForeignKey("ProductoDelPedidoId")
+                        .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ComandaDelPedido");
+                    b.Navigation("Comanda");
 
-                    b.Navigation("EstadoDelPedido");
+                    b.Navigation("EstadoPedido");
 
-                    b.Navigation("ProductoDelPedido");
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
-                    b.HasOne("Entidades.Sector", "SectorProducto")
+                    b.HasOne("Entidades.Sector", "Sector")
                         .WithMany()
-                        .HasForeignKey("SectorProductoId")
+                        .HasForeignKey("SectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SectorProducto");
+                    b.Navigation("Sector");
                 });
 #pragma warning restore 612, 618
         }

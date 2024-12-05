@@ -5,13 +5,13 @@ namespace LabAWS_RiusLaura.DTO
 {
     public class PedidoCreateDto
     {
-        public int ComandaDelPedidoId { get; set; }
-        public int ProductoDelPedidoId { get; set; }
+        public int ComandaId { get; set; }
+        public int ProductoId { get; set; }
         public int Cantidad { get; set; }
         public string CodigoCliente { get; set; }
-        
+
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         [DefaultValue("Sin observaciones")]
-        public string ObservacionesDelPedido { get; set; } = "Sin observaciones"; // Valor por defecto
+        public string Observaciones { get; set; } = "Sin observaciones"; // Valor por defecto
     }
 }

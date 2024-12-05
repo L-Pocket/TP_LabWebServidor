@@ -10,7 +10,7 @@ namespace LabAWC_RiusLaura.DAL.Data
         {
         }
 
-        // DataSeed para insertar registros en la BBDD. Ir descomentando de a uno para migrar.
+        // DataSeed para insertar registros en la BBDD. Primero migrar Tablas, luego Dataseeds.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,8 +19,6 @@ namespace LabAWC_RiusLaura.DAL.Data
             modelBuilder.ApplyConfiguration(new SectorSeed());
             modelBuilder.ApplyConfiguration(new EstadoMesaSeed());
             modelBuilder.ApplyConfiguration(new EstadoPedidoSeed());
-
-
             modelBuilder.ApplyConfiguration(new ComandaSeed());
             modelBuilder.ApplyConfiguration(new EmpleadoSeed());
             modelBuilder.ApplyConfiguration(new MesaSeed());

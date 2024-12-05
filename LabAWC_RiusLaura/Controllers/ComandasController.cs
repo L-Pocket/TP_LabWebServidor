@@ -2,6 +2,7 @@
 using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using LabAWS_RiusLaura.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurante_API.DTO;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace LabAWS_RiusLaura.Controllers
             _comandaServicio = comandaServicio;
         }
 
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpPost("CrearComanda")]
         public async Task<IActionResult> CrearComanda([FromBody] ComandaCrearDto comandacrearDto)
         {
@@ -30,9 +32,10 @@ namespace LabAWS_RiusLaura.Controllers
                 return StatusCode(500, errorMessage);
             }
 
-            return CreatedAtAction(nameof(ObtenerComandaPorId), new { id = nuevaComanda.IdComanda }, nuevaComanda);
+            return CreatedAtAction(nameof(ObtenerComandaPorId), new { id = nuevaComanda.Id }, nuevaComanda);
         }
 
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpGet("ObtenerTodasLasComandas")]
         public async Task<IActionResult> ObtenerTodasLasComandas()
         {
@@ -46,6 +49,7 @@ namespace LabAWS_RiusLaura.Controllers
             return Ok(comandas);
         }
 
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpGet("ObtenerComandaPorId/{id}")]
         public async Task<IActionResult> ObtenerComandaPorId(int id)
         {

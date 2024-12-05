@@ -8,41 +8,42 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entidades
 {
-    public class Pedido    
+    public class Pedido
     {
         public Pedido()
         {
             this.FechaCreacion = DateTime.Now;
-            this.estadoDelPedidoId = 1; // Se inicializa en 1 "Pendiente"
+            this.estadoPedidoId = 1; // Se inicializa en 1 "Pendiente"
             this.tiempoEstimado = 0; // Se inicializa en cero ya que después e preparación se le asigna un tiempo.
-            this.ObservacionesDelPedido = "Sin observaciones";
+            this.codigoCliente = GenerarCodigo(); // Asignar un valor por defecto al crear la instancia.
+            this.Observaciones = "Sin observaciones";
         }
 
-        private int idPedido;
-        private int comandaDelPedidoId;
-        private Comanda comandaDelPedido;
-        private int productoDelPedidoId;
-        private Producto productoDelPedido;
+        private int id;
+        private int comandaId;
+        private Comanda comanda;
+        private int productoId;
+        private Producto producto;
         private int cantidad;
-        private int estadoDelPedidoId;
-        private EstadoPedido estadoDelPedido;
+        private int estadoPedidoId;
+        private EstadoPedido estadoPedido;
         private DateTime fechaCreacion;
         private DateTime? fechaFinalizacion;
         private int tiempoEstimado;
         private string codigoCliente;
-        private string? observacionesDelPedido;
+        private string? observaciones;
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdPedido { get => idPedido; set => idPedido = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required]
-        public int ComandaDelPedidoId { get => comandaDelPedidoId; set => comandaDelPedidoId = value; } // FK para Comanda
-        public Comanda ComandaDelPedido { get => comandaDelPedido; set => comandaDelPedido = value; }
+        public int ComandaId { get => comandaId; set => comandaId = value; } // FK para Comanda
+        public Comanda Comanda { get => comanda; set => comanda = value; }
 
         [Required]
-        public int ProductoDelPedidoId { get => productoDelPedidoId; set => productoDelPedidoId = value; } // FK para Producto
-        public Producto ProductoDelPedido { get => productoDelPedido; set => productoDelPedido = value; }
+        public int ProductoId { get => productoId; set => productoId = value; } // FK para Producto
+        public Producto Producto { get => producto; set => producto = value; }
 
         [Required]
         public int Cantidad
@@ -59,8 +60,8 @@ namespace Entidades
         }
 
         [Required]
-        public int EstadoDelPedidoId { get => estadoDelPedidoId; set => estadoDelPedidoId = value; } // FK para EstadoPedido
-        public EstadoPedido EstadoDelPedido { get => estadoDelPedido; set => estadoDelPedido = value; }
+        public int EstadoPedidoId { get => estadoPedidoId; set => estadoPedidoId = value; } // FK para EstadoPedido
+        public EstadoPedido EstadoPedido { get => estadoPedido; set => estadoPedido = value; }
 
         [Required]
         public DateTime FechaCreacion
@@ -106,18 +107,29 @@ namespace Entidades
         public string CodigoCliente
         {
             get => codigoCliente;
-            set
-            {
-                if (value.Length != 5)
-                {
-                    throw new ArgumentException("El código del cliente debe tener exactamente 5 caracteres.");
-                }
-                codigoCliente = value;
-            }
+            private set => codigoCliente = value; // Solo el constructor pueda establecer el valor.
+            //get => codigoCliente;
+            //set
+            //{
+            //    if (value.Length != 5)
+            //    {
+            //        throw new ArgumentException("El código del cliente debe tener exactamente 5 caracteres.");
+            //    }
+            //    codigoCliente = value;
+            //}
         }
-        public string? ObservacionesDelPedido { get => observacionesDelPedido; set => observacionesDelPedido = value; }
+        public string? Observaciones { get => observaciones; set => observaciones = value; }
 
-       
+        // Método para generar un código alfanumérico de 5 caracteres.
+        private string GenerarCodigo()
+        {
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(caracteres, 5)
+                                        .Select(s => s[random.Next(s.Length)])
+                                        .ToArray());
+        }
+
 
     }
 }

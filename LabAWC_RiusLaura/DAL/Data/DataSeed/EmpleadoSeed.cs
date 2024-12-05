@@ -8,106 +8,106 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
     {
         public void Configure(EntityTypeBuilder<Empleado> builder)
         {
-            builder.HasData(
-            new Empleado
-            {
-                IdEmpleado = 1,
-                Nombre = "Juan Pérez",
-                Usuario = "jperez",
-                Password = "password1",
-                SectorDelEmpleadoId = 1,
-                RolDelEmpleadoId = 1,
-                EmpleadoActivo = true
-            },
-            new Empleado
-            {
-                IdEmpleado = 2,
-                Nombre = "María Gómez",
-                Usuario = "mgomez",
-                Password = "password2",
-                SectorDelEmpleadoId = 2,
-                RolDelEmpleadoId = 2,
-                EmpleadoActivo = true
+           builder.HasData(
+           new Empleado
+           {
+               Id = 1,
+               Nombre = "Juan Pérez",
+               Usuario = "bartender1",
+               Password = "bartender1",
+               SectorId = 1,
+               RolId = 1,
+               EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 2,
+               Nombre = "María Gómez",
+               Usuario = "cervecero1",
+               Password = "cervecero1",
+               SectorId = 2,
+               RolId = 2,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 3,
-                Nombre = "Carlos López",
-                Usuario = "clopez",
-                Password = "password3",
-                SectorDelEmpleadoId = 3,
-                RolDelEmpleadoId = 3,
-                EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 3,
+               Nombre = "Carlos López",
+               Usuario = "cocinero1",
+               Password = "cocinero1",
+               SectorId = 3,
+               RolId = 3,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 4,
-                Nombre = "Ana Martínez",
-                Usuario = "amartinez",
-                Password = "password4",
-                SectorDelEmpleadoId = 4,
-                RolDelEmpleadoId = 4,
-                EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 4,
+               Nombre = "Ana Martínez",
+               Usuario = "mozo1",
+               Password = "mozo1",
+               SectorId = 4,
+               RolId = 4,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 5,
-                Nombre = "Jorge García",
-                Usuario = "jgarcia",
-                Password = "password5",
-                SectorDelEmpleadoId = 5,
-                RolDelEmpleadoId = 5,
-                EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 5,
+               Nombre = "Jorge García",
+               Usuario = "socio1",
+               Password = "socio1",
+               SectorId = 5,
+               RolId = 5,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 6,
-                Nombre = "Laura Torres",
-                Usuario = "ltorres",
-                Password = "password6",
-                SectorDelEmpleadoId = 1,
-                RolDelEmpleadoId = 1,
-                EmpleadoActivo = false
+           },
+           new Empleado
+           {
+               Id = 6,
+               Nombre = "Laura Torres",
+               Usuario = "bartender2",
+               Password = "bartender2",
+               SectorId = 1,
+               RolId = 1,
+               EmpleadoActivo = false
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 7,
-                Nombre = "Esteban Rodriguez",
-                Usuario = "erodriguez",
-                Password = "password7",
-                SectorDelEmpleadoId = 5,
-                RolDelEmpleadoId = 5,
-                EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 7,
+               Nombre = "Esteban Rodriguez",
+               Usuario = "socio2",
+               Password = "socio2",
+               SectorId = 5,
+               RolId = 5,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 8,
-                Nombre = "Pedro Ramirez",
-                Usuario = "pramirez",
-                Password = "password8",
-                SectorDelEmpleadoId = 3,
-                RolDelEmpleadoId = 3,
-                EmpleadoActivo = true
+           },
+           new Empleado
+           {
+               Id = 8,
+               Nombre = "Pedro Ramirez",
+               Usuario = "cocinero2",
+               Password = "cocinero2",
+               SectorId = 3,
+               RolId = 3,
+               EmpleadoActivo = true
 
-            },
-            new Empleado
-            {
-                IdEmpleado = 9,
-                Nombre = "Gonzalo Fernandez",
-                Usuario = "gfernandez",
-                Password = "password9",
-                SectorDelEmpleadoId = 5,                
-                RolDelEmpleadoId = 5,
-                EmpleadoActivo = false
+           },
+           new Empleado
+           {
+               Id = 9,
+               Nombre = "Gonzalo Fernandez",
+               Usuario = "socio3",
+               Password = "socio3",
+               SectorId = 5,
+               RolId = 5,
+               EmpleadoActivo = false
 
-            }
-            );
+           }
+           );
         }
     }
 }

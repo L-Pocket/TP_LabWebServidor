@@ -44,7 +44,7 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Mapear Pedido a PedidoResponseDto para devolverlo al controller
             var pedidoResponseDto = this.mapper.Map<PedidoResponseDto>(pedido);
-            this.logger.LogInformation($"Pedido encontrado: {pedidoResponseDto.IdPedido}");
+            this.logger.LogInformation($"Pedido encontrado: {pedidoResponseDto.Id}");
 
             return pedidoResponseDto;
         }
@@ -55,7 +55,7 @@ namespace LabAWS_RiusLaura.Servicios
             this.logger.LogInformation("Iniciando la búsqueda del producto más vendido.");
             // Agrupa los pedidos por el ID del producto y calcula la cantidad total vendida por producto
             var productoMasVendido = await _context.Pedidos
-                .GroupBy(p => p.ProductoDelPedidoId)
+                .GroupBy(p => p.ProductoId)
                 .Select(g => new  // creamos un nuevo objeto anónimo con dos propiedades el Id del producto y la cantidad vendida
                 {
                     ProductoId = g.Key,
@@ -100,7 +100,7 @@ namespace LabAWS_RiusLaura.Servicios
             this.logger.LogInformation("Iniciando la búsqueda del producto menos vendido.");
             // Agrupa los pedidos por el ID del producto y calcula la cantidad total vendida por producto
             var productoMenosVendido = await _context.Pedidos
-                .GroupBy(p => p.ProductoDelPedidoId)
+                .GroupBy(p => p.ProductoId)
                 .Select(g => new // creamos un nuevo objeto anónimo con dos propiedades el Id del producto y la cantidad vendida
                 {
                     ProductoId = g.Key,
@@ -144,18 +144,18 @@ namespace LabAWS_RiusLaura.Servicios
         {
             this.logger.LogInformation("Iniciando la creación de un nuevo pedido.");
             //Verificar si la comanda existe
-            var comandaExistente = await _context.Comandas.FindAsync(pedidoDto.ComandaDelPedidoId);
+            var comandaExistente = await _context.Comandas.FindAsync(pedidoDto.ComandaId);
             if (comandaExistente == null)
             {
-                this.logger.LogWarning($"Comanda no encontrada con ID: {pedidoDto.ComandaDelPedidoId}");
+                this.logger.LogWarning($"Comanda no encontrada con ID: {pedidoDto.ComandaId}");
                 return null; // Si la comanda no existe, retorna null
             }
 
             //Verificar si el producto existe
-            var productoExistente = await _context.Productos.FindAsync(pedidoDto.ProductoDelPedidoId);
+            var productoExistente = await _context.Productos.FindAsync(pedidoDto.ProductoId);
             if (productoExistente == null)
             {
-                this.logger.LogWarning($"Producto no encontrado con ID: {pedidoDto.ProductoDelPedidoId}");
+                this.logger.LogWarning($"Producto no encontrado con ID: {pedidoDto.ProductoId}");
                 return null; // Si el producto no existe, retorna null
             }
 
@@ -184,11 +184,11 @@ namespace LabAWS_RiusLaura.Servicios
         {
             var productos = await _context.Productos
                                   .Join(_context.Pedidos,//join entre tablas
-                                        producto => producto.IdProducto,
-                                        pedido => pedido.ProductoDelPedidoId,
+                                        producto => producto.Id,
+                                        pedido => pedido.ProductoId,
                                         (producto, pedido) => new { producto, pedido })
-                                  .Where(p => p.producto.SectorProductoId == sectorId
-                                          && p.pedido.EstadoDelPedidoId == 1) // 1 = Estado Pendiente
+                                  .Where(p => p.producto.SectorId == sectorId
+                                          && p.pedido.EstadoPedidoId == 1) // 1 = Estado Pendiente
                                   .Select(p => p.producto) // Seleccionamos solo los productos en estado pendiente
                                   .ToListAsync();
 

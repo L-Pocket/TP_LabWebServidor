@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LabAWS_RiusLaura.Migrations
+namespace Restaurante_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InicialTablas : Migration
+    public partial class Tablas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,71 +15,71 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "Estados_Mesas",
                 columns: table => new
                 {
-                    IdEstadoMesa = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionMesa = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Estados_Mesas", x => x.IdEstadoMesa);
+                    table.PrimaryKey("PK_Estados_Mesas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Estados_Pedidos",
                 columns: table => new
                 {
-                    IdEstadoPedido = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionPedido = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Estados_Pedidos", x => x.IdEstadoPedido);
+                    table.PrimaryKey("PK_Estados_Pedidos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    IdRol = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionRol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.IdRol);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Sectores",
                 columns: table => new
                 {
-                    IdSector = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionSector = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sectores", x => x.IdSector);
+                    table.PrimaryKey("PK_Sectores", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Mesas",
                 columns: table => new
                 {
-                    IdMesa = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CodigoMesa = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    EstadoDeMesaId = table.Column<int>(type: "int", nullable: false)
+                    Codigo = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    EstadoMesaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mesas", x => x.IdMesa);
+                    table.PrimaryKey("PK_Mesas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Mesas_Estados_Mesas_EstadoDeMesaId",
-                        column: x => x.EstadoDeMesaId,
+                        name: "FK_Mesas_Estados_Mesas_EstadoMesaId",
+                        column: x => x.EstadoMesaId,
                         principalTable: "Estados_Mesas",
-                        principalColumn: "IdEstadoMesa",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -87,29 +87,29 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "Empleados",
                 columns: table => new
                 {
-                    IdEmpleado = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Usuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SectorDelEmpleadoId = table.Column<int>(type: "int", nullable: false),
-                    RolDelEmpleadoId = table.Column<int>(type: "int", nullable: false),
+                    SectorId = table.Column<int>(type: "int", nullable: false),
+                    RolId = table.Column<int>(type: "int", nullable: false),
                     EmpleadoActivo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empleados", x => x.IdEmpleado);
+                    table.PrimaryKey("PK_Empleados", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Empleados_Roles_RolDelEmpleadoId",
-                        column: x => x.RolDelEmpleadoId,
+                        name: "FK_Empleados_Roles_RolId",
+                        column: x => x.RolId,
                         principalTable: "Roles",
-                        principalColumn: "IdRol",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Empleados_Sectores_SectorDelEmpleadoId",
-                        column: x => x.SectorDelEmpleadoId,
+                        name: "FK_Empleados_Sectores_SectorId",
+                        column: x => x.SectorId,
                         principalTable: "Sectores",
-                        principalColumn: "IdSector",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -117,21 +117,21 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "Productos",
                 columns: table => new
                 {
-                    IdProducto = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SectorProductoId = table.Column<int>(type: "int", nullable: false),
-                    NombreDescProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StockProducto = table.Column<int>(type: "int", nullable: false),
-                    PrecioProducto = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                    SectorId = table.Column<int>(type: "int", nullable: false),
+                    NombreDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Productos", x => x.IdProducto);
+                    table.PrimaryKey("PK_Productos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Productos_Sectores_SectorProductoId",
-                        column: x => x.SectorProductoId,
+                        name: "FK_Productos_Sectores_SectorId",
+                        column: x => x.SectorId,
                         principalTable: "Sectores",
-                        principalColumn: "IdSector",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -139,19 +139,19 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "Comandas",
                 columns: table => new
                 {
-                    IdComanda = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MesaDeComandaId = table.Column<int>(type: "int", nullable: false),
+                    MesaId = table.Column<int>(type: "int", nullable: false),
                     NombreCliente = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comandas", x => x.IdComanda);
+                    table.PrimaryKey("PK_Comandas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comandas_Mesas_MesaDeComandaId",
-                        column: x => x.MesaDeComandaId,
+                        name: "FK_Comandas_Mesas_MesaId",
+                        column: x => x.MesaId,
                         principalTable: "Mesas",
-                        principalColumn: "IdMesa",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -159,7 +159,7 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "LogueosEmpleados",
                 columns: table => new
                 {
-                    IdLogueo = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmpleadoLogId = table.Column<int>(type: "int", nullable: false),
                     FechaLogueo = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -167,12 +167,12 @@ namespace LabAWS_RiusLaura.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LogueosEmpleados", x => x.IdLogueo);
+                    table.PrimaryKey("PK_LogueosEmpleados", x => x.Id);
                     table.ForeignKey(
                         name: "FK_LogueosEmpleados_Empleados_EmpleadoLogId",
                         column: x => x.EmpleadoLogId,
                         principalTable: "Empleados",
-                        principalColumn: "IdEmpleado",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -180,55 +180,55 @@ namespace LabAWS_RiusLaura.Migrations
                 name: "Pedidos",
                 columns: table => new
                 {
-                    IdPedido = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ComandaDelPedidoId = table.Column<int>(type: "int", nullable: false),
-                    ProductoDelPedidoId = table.Column<int>(type: "int", nullable: false),
+                    ComandaId = table.Column<int>(type: "int", nullable: false),
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
-                    EstadoDelPedidoId = table.Column<int>(type: "int", nullable: false),
+                    EstadoPedidoId = table.Column<int>(type: "int", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaFinalizacion = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TiempoEstimado = table.Column<int>(type: "int", nullable: false),
                     CodigoCliente = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    ObservacionesDelPedido = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pedidos", x => x.IdPedido);
+                    table.PrimaryKey("PK_Pedidos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Comandas_ComandaDelPedidoId",
-                        column: x => x.ComandaDelPedidoId,
+                        name: "FK_Pedidos_Comandas_ComandaId",
+                        column: x => x.ComandaId,
                         principalTable: "Comandas",
-                        principalColumn: "IdComanda",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Estados_Pedidos_EstadoDelPedidoId",
-                        column: x => x.EstadoDelPedidoId,
+                        name: "FK_Pedidos_Estados_Pedidos_EstadoPedidoId",
+                        column: x => x.EstadoPedidoId,
                         principalTable: "Estados_Pedidos",
-                        principalColumn: "IdEstadoPedido",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Productos_ProductoDelPedidoId",
-                        column: x => x.ProductoDelPedidoId,
+                        name: "FK_Pedidos_Productos_ProductoId",
+                        column: x => x.ProductoId,
                         principalTable: "Productos",
-                        principalColumn: "IdProducto",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comandas_MesaDeComandaId",
+                name: "IX_Comandas_MesaId",
                 table: "Comandas",
-                column: "MesaDeComandaId");
+                column: "MesaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleados_RolDelEmpleadoId",
+                name: "IX_Empleados_RolId",
                 table: "Empleados",
-                column: "RolDelEmpleadoId");
+                column: "RolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleados_SectorDelEmpleadoId",
+                name: "IX_Empleados_SectorId",
                 table: "Empleados",
-                column: "SectorDelEmpleadoId");
+                column: "SectorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LogueosEmpleados_EmpleadoLogId",
@@ -236,29 +236,29 @@ namespace LabAWS_RiusLaura.Migrations
                 column: "EmpleadoLogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mesas_EstadoDeMesaId",
+                name: "IX_Mesas_EstadoMesaId",
                 table: "Mesas",
-                column: "EstadoDeMesaId");
+                column: "EstadoMesaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_ComandaDelPedidoId",
+                name: "IX_Pedidos_ComandaId",
                 table: "Pedidos",
-                column: "ComandaDelPedidoId");
+                column: "ComandaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_EstadoDelPedidoId",
+                name: "IX_Pedidos_EstadoPedidoId",
                 table: "Pedidos",
-                column: "EstadoDelPedidoId");
+                column: "EstadoPedidoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_ProductoDelPedidoId",
+                name: "IX_Pedidos_ProductoId",
                 table: "Pedidos",
-                column: "ProductoDelPedidoId");
+                column: "ProductoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Productos_SectorProductoId",
+                name: "IX_Productos_SectorId",
                 table: "Productos",
-                column: "SectorProductoId");
+                column: "SectorId");
         }
 
         /// <inheritdoc />

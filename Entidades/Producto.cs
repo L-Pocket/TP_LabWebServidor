@@ -10,75 +10,76 @@ namespace Entidades
 {
     public class Producto
     {
-        private int idProducto;
-        private int sectorProductoId;
-        private Sector? sectorProducto;
-        private string nombreDescProducto;
-        private int stockProducto;
-        private decimal precioProducto;
-        private int empleadoId;
+
+        private int id;
+        private int sectorId;
+        private Sector? sector;
+        private string nombreDesc;
+        private int stock;
+        private decimal precio;
+
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdProducto { get => idProducto; set => idProducto = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required]
-        public int SectorProductoId { get => sectorProductoId; set => sectorProductoId = value; }  // FK de Sector
-        public Sector? SectorProducto { get => sectorProducto; set => sectorProducto = value; }
+        public int SectorId { get => sectorId; set => sectorId = value; }  // FK de Sector
+        public Sector? Sector { get => sector; set => sector = value; }
 
         [Required]
-        public string NombreDescProducto
+        public string NombreDesc
         {
-            get => nombreDescProducto;
+            get => nombreDesc;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentException("El nombre/descripción del producto no puede estar vacío.");
                 }
-                nombreDescProducto = value;
+                nombreDesc = value;
             }
         }
 
         [Required]
-        public int StockProducto
+        public int Stock
         {
-            get => stockProducto;
+            get => stock;
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentException("El stock del producto no puede ser negativo.");
                 }
-                stockProducto = value;
+                stock = value;
             }
         }
 
         [Required]
-        public decimal PrecioProducto
+        public decimal Precio
         {
-            get => precioProducto;
+            get => precio;
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentException("El precio del producto no puede ser negativo.");
                 }
-                precioProducto = value;
+                precio = value;
             }
         }
 
         public void ReducirStock(int cantidad)
         {
-            int nuevoStock = this.StockProducto - cantidad;
+            int nuevoStock = this.Stock - cantidad;
             if (nuevoStock < 0)
             {
-                throw new ArgumentException($"No se puede reducir el stock ya que el stock actual es {this.StockProducto}");
+                throw new ArgumentException($"No se puede reducir el stock ya que el stock actual es {this.Stock}");
             }
-            this.StockProducto = nuevoStock;
+            this.Stock = nuevoStock;
         }
 
-       
+
 
     }
 }

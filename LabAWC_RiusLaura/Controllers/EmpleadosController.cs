@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using LabAWS_RiusLaura.DTO;
 using LabAWS_RiusLaura.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace LabAWS_RiusLaura.Controllers
             _empleadoServicio = empleadoServicio;
         }
 
+        [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
         [HttpPut("PonerPedidoEnPreparacion/{idPedido}")]
         public async Task<ActionResult> PonerPedidoEnPreparacion(int idPedido, [FromQuery] int tiempoEstimado)
         {
@@ -51,6 +53,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
         [HttpPut("PonerPedidoListoParaServir/{idPedido}")]
         public async Task<ActionResult> PonerPedidoListoParaServir(int idPedido)
         {           
@@ -86,6 +89,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpPut("CambiarEstadoMesaClienteComiendo/{idMesa}")]
         public async Task<ActionResult> CambiarEstadoMesaClienteComiendo(int idMesa)
         {
@@ -122,6 +126,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpPut("CambiarEstadoMesaClientePagando/{idMesa}")]
         public async Task<ActionResult> CambiarEstadoMesaClientePagando(int idMesa)
         {

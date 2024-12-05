@@ -22,13 +22,13 @@ namespace LabAWS_RiusLaura.Controllers
 
         
 
-        [HttpGet("GetDemoraV2")]
-        public async Task<IActionResult> GetDemoraV2([Required] string codigoMesa, [Required] string CodigoCliente)
+        [HttpGet("GetDemora")]
+        public async Task<IActionResult> GetDemora([Required] string codigoMesa, [Required] string CodigoCliente)
         {
             try
             {
                 // Llamada al servicio para obtener la demora
-                var resultado = await _clienteServicio.GetDemoraV2(codigoMesa, CodigoCliente);
+                var resultado = await _clienteServicio.GetDemora(codigoMesa, CodigoCliente);
 
                 // Devolver resultado exitoso
                 return Ok(resultado);

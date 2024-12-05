@@ -8,28 +8,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entidades
 {
-    
+
     public class Rol
-    {        
-        private int idRol;
-        private string descripcionRol;
+    {
+        private int id;
+        private string descripcion;
         private static readonly string[] valoresPermitidos = { "Bartender", "Cervecero", "Cocinero", "Mozo", "Socio" };
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdRol { get => idRol; set => idRol = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required]
-        public string DescripcionRol
+        public string Descripcion
         {
-            get => descripcionRol;
+            get => descripcion;
             set
             {
                 //comprueba si el valor de rol es igual a value ignorando las diferencias entre mayúsculas y minúsculas
                 //gracias StringComparison.OrdinalIgnoreCase.
                 if (Array.Exists(valoresPermitidos, rol => rol.Equals(value, StringComparison.OrdinalIgnoreCase)))
                 {
-                    descripcionRol = value; // Si la condición es verdadera se asigna el valor proporcionado.
+                    descripcion = value; // Si la condición es verdadera se asigna el valor proporcionado.
                 }
                 else
                 {

@@ -2,16 +2,12 @@
 {
     public class PedidoDemoradoDto
     {
-        public int IdPedido { get; set; }
-        public int ComandaDelPedidoId { get; set; }
+        public int Id { get; set; }
+        public int ComandaId { get; set; }
         public int TiempoEstimado { get; set; }
         public double TiempoReal { get; set; }
         public string Estado { get; set; }
     }
-
-    
-
-   
 
     
 }

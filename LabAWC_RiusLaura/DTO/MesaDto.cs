@@ -3,13 +3,9 @@
     public class MesaDto
 
     {
-
-        
-        public string? codigoMesa { get; set; }
-        public int estadoDeMesaId { get; set; }
-        
-        public string? DescripcionMesa { get; set; }
-
+        public string? codigo { get; set; }
+        public int estadoMesaId { get; set; }
+        public string? Descripcion { get; set; }
 
     }
 }

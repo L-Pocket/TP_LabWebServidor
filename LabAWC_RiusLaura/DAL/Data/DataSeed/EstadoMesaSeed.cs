@@ -11,23 +11,23 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
             builder.HasData(
             new EstadoMesa
             {
-                IdEstadoMesa = 1,
-                DescripcionMesa = "Cliente Esperando Pedido"              
+                Id = 1,
+                Descripcion = "Cliente Esperando Pedido"
             },
             new EstadoMesa
             {
-                IdEstadoMesa = 2,
-                DescripcionMesa = "Cliente Comiendo"
+                Id = 2,
+                Descripcion = "Cliente Comiendo"
             },
             new EstadoMesa
             {
-                IdEstadoMesa = 3,
-                DescripcionMesa = "Cliente Pagando"
+                Id = 3,
+                Descripcion = "Cliente Pagando"
             },
             new EstadoMesa
             {
-                IdEstadoMesa = 4,
-                DescripcionMesa = "Cerrada"
+                Id = 4,
+                Descripcion = "Cerrada"
             }
             );
         }

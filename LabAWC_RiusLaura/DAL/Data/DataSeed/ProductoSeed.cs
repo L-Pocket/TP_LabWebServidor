@@ -11,75 +11,75 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
             builder.HasData(
             new Producto
             {
-                IdProducto = 1,
-                SectorProductoId = 1,
-                NombreDescProducto = "Vino tinto Malbec",
-                StockProducto = 50,
-                PrecioProducto = 14000.00m
+                Id = 1,
+                SectorId = 1,
+                NombreDesc = "Vino tinto Malbec",
+                Stock = 50,
+                Precio = 14000.00m
             },
             new Producto
             {
-                IdProducto = 2,
-                SectorProductoId = 1,
-                NombreDescProducto = "Vino tinto Cabernet",
-                StockProducto = 40,
-                PrecioProducto = 14000.00m
+                Id = 2,
+                SectorId = 1,
+                NombreDesc = "Vino tinto Cabernet",
+                Stock = 40,
+                Precio = 14000.00m
             },
             new Producto
             {
-                IdProducto = 3,
-                SectorProductoId = 2,
-                NombreDescProducto = "Cerveza artesanal IPA Roja",
-                StockProducto = 200,
-                PrecioProducto = 3700.00m
+                Id = 3,
+                SectorId = 2,
+                NombreDesc = "Cerveza artesanal IPA Roja",
+                Stock = 200,
+                Precio = 3700.00m
             },
             new Producto
             {
-                IdProducto = 4,
-                SectorProductoId = 2,
-                NombreDescProducto = "Cerveza artesanal Negra",
-                StockProducto = 150,
-                PrecioProducto = 3700.00m
+                Id = 4,
+                SectorId = 2,
+                NombreDesc = "Cerveza artesanal Negra",
+                Stock = 150,
+                Precio = 3700.00m
             },
             new Producto
             {
-                IdProducto = 5,
-                SectorProductoId = 3,
-                NombreDescProducto = "Empanadas de Carne",
-                StockProducto = 200,
-                PrecioProducto = 1500.00m
+                Id = 5,
+                SectorId = 3,
+                NombreDesc = "Empanadas de Carne",
+                Stock = 200,
+                Precio = 1500.00m
             },
             new Producto
             {
-                IdProducto = 6,
-                SectorProductoId = 3,
-                NombreDescProducto = "Empanadas de Verdura",
-                StockProducto = 100,
-                PrecioProducto = 1500.00m
+                Id = 6,
+                SectorId = 3,
+                NombreDesc = "Empanadas de Verdura",
+                Stock = 100,
+                Precio = 1500.00m
             },
             new Producto
             {
-                IdProducto = 7,
-                SectorProductoId = 3,
-                NombreDescProducto = "Empanadas de Pollo",
-                StockProducto = 150,
-                PrecioProducto = 1500.00m
+                Id = 7,
+                SectorId = 3,
+                NombreDesc = "Empanadas de Pollo",
+                Stock = 150,
+                Precio = 1500.00m
             },
             new Producto
             {
-                IdProducto = 8,
-                SectorProductoId = 4,
-                NombreDescProducto = "Postre Tiramisú",
-                StockProducto = 40,
-                PrecioProducto = 5000.00m
+                Id = 8,
+                SectorId = 4,
+                NombreDesc = "Postre Tiramisú",
+                Stock = 40,
+                Precio = 5000.00m
             },
             new Producto
             {
-                IdProducto = 9,
-                SectorProductoId = 4,
-                NombreDescProducto = "Café",
-                StockProducto = 400,
-                PrecioProducto = 2500.00m
+                Id = 9,
+                SectorId = 4,
+                NombreDesc = "Café",
+                Stock = 400,
+                Precio = 2500.00m
             }
             );
         }

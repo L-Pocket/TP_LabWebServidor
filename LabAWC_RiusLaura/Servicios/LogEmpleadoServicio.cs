@@ -25,14 +25,14 @@ namespace Restaurante_API.Servicios
         public async Task<Empleado> IniciarSesion(string usuario, string password)
         {
             var empleado = await _context.Empleados
-                .Include(e => e.RolDelEmpleado)  // Incluye la tabla de roles
+                .Include(e => e.Rol)  // Incluye la tabla de roles
                 .FirstOrDefaultAsync(e => e.Usuario == usuario && e.Password == password);
 
             if (empleado == null)
             {
                 throw new Exception("Usuario o contraseña incorrectos");
             }
-            RegistrarLogueo(empleado.IdEmpleado);
+            RegistrarLogueo(empleado.Id);
             return empleado;
         }
         public async Task RegistrarLogueo(int empleadoId)

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Restaurante_API;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,9 +74,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // **Configuración de Autorización con Roles**
 builder.Services.AddAuthorization(options =>
-{
+{    
     options.AddPolicy("RequireSocioRole", policy => policy.RequireRole("Socio"));
-    options.AddPolicy("RequireEmpleadoRole", policy => policy.RequireRole("Socio", "Empleado"));
+    options.AddPolicy("RequireMozoRole", policy => policy.RequireRole("Mozo"));
+    options.AddPolicy("RequireBartenderOrCerveceroOrCocineroRole", policy => policy.RequireRole("Bartender", "Cervecero", "Cocinero"));
+    
 });
 
 //----------------------------------------------------------------------------

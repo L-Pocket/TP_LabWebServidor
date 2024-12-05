@@ -2,7 +2,7 @@
 {
     public class OperacionesPorSectorDto
     {
-        public string DescripcionSector { get; set; }
+        public string Descripcion { get; set; }
         public int CantidadOperaciones { get; set; }
 
     }

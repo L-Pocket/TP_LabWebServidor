@@ -11,7 +11,7 @@ namespace Entidades
     public class LogueoEmpleado
     {
 
-        private int idLogueo;
+        private int id;
         private int empleadoLogId;
         private Empleado empleadoLog;
         private DateTime fechaLogueo;
@@ -19,16 +19,16 @@ namespace Entidades
 
         [Key, Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdLogueo { get => idLogueo; set => idLogueo = value; }
+        public int Id { get => id; set => id = value; }
 
         [Required]
         public int EmpleadoLogId { get => empleadoLogId; set => empleadoLogId = value; } // FK para Empleado
         public Empleado EmpleadoLog { get => empleadoLog; set => empleadoLog = value; }
 
         [Required]
-        public DateTime FechaLogueo 
-        { 
-            get => fechaLogueo; 
+        public DateTime FechaLogueo
+        {
+            get => fechaLogueo;
             set
             {
                 if (value == default)
@@ -38,8 +38,8 @@ namespace Entidades
                 fechaLogueo = value;
             }
         }
-        public DateTime? FechaDeslogueo 
-        { 
+        public DateTime? FechaDeslogueo
+        {
             get => fechaDeslogueo;
             set
             {
@@ -49,8 +49,8 @@ namespace Entidades
                 }
                 fechaDeslogueo = value;
             }
-        } 
+        }
 
-       
+
     }
 }

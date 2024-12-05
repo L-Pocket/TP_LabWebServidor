@@ -11,28 +11,28 @@ namespace LabAWC_RiusLaura.DAL.Data.DataSeed
             builder.HasData(
             new Sector
             {
-                IdSector = 1,
-                DescripcionSector = "Barra Tragos Y Vino"
+                Id = 1,
+                Descripcion = "Barra Tragos Y Vino"
             },
             new Sector
             {
-                IdSector = 2,
-                DescripcionSector = "Cerveza Artesanal"
+                Id = 2,
+                Descripcion = "Cerveza Artesanal"
             },
             new Sector
             {
-                IdSector = 3,
-                DescripcionSector = "Cocina"
+                Id = 3,
+                Descripcion = "Cocina"
             },
             new Sector
             {
-                IdSector = 4,
-                DescripcionSector = "Candybar"
+                Id = 4,
+                Descripcion = "Candybar"
             },
             new Sector
             {
-                IdSector = 5,
-                DescripcionSector = "General"
+                Id = 5,
+                Descripcion = "General"
             }
             );
         }

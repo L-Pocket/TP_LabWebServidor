@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LabAWS_RiusLaura.Migrations
+namespace Restaurante_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240902021455_InicialTablas")]
-    partial class InicialTablas
+    [Migration("20241205030213_Tablas")]
+    partial class Tablas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,13 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Comanda", b =>
                 {
-                    b.Property<int>("IdComanda")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdComanda"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MesaDeComandaId")
+                    b.Property<int>("MesaId")
                         .HasColumnType("int");
 
                     b.Property<string>("NombreCliente")
@@ -41,20 +41,20 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("IdComanda");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MesaDeComandaId");
+                    b.HasIndex("MesaId");
 
                     b.ToTable("Comandas");
                 });
 
             modelBuilder.Entity("Entidades.Empleado", b =>
                 {
-                    b.Property<int>("IdEmpleado")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEmpleado"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("EmpleadoActivo")
                         .HasColumnType("bit");
@@ -69,10 +69,10 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("RolDelEmpleadoId")
+                    b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SectorDelEmpleadoId")
+                    b.Property<int>("SectorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Usuario")
@@ -80,56 +80,56 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("IdEmpleado");
+                    b.HasKey("Id");
 
-                    b.HasIndex("RolDelEmpleadoId");
+                    b.HasIndex("RolId");
 
-                    b.HasIndex("SectorDelEmpleadoId");
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Empleados");
                 });
 
             modelBuilder.Entity("Entidades.EstadoMesa", b =>
                 {
-                    b.Property<int>("IdEstadoMesa")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoMesa"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionMesa")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdEstadoMesa");
+                    b.HasKey("Id");
 
                     b.ToTable("Estados_Mesas");
                 });
 
             modelBuilder.Entity("Entidades.EstadoPedido", b =>
                 {
-                    b.Property<int>("IdEstadoPedido")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstadoPedido"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionPedido")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdEstadoPedido");
+                    b.HasKey("Id");
 
                     b.ToTable("Estados_Pedidos");
                 });
 
             modelBuilder.Entity("Entidades.LogueoEmpleado", b =>
                 {
-                    b.Property<int>("IdLogueo")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLogueo"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EmpleadoLogId")
                         .HasColumnType("int");
@@ -140,7 +140,7 @@ namespace LabAWS_RiusLaura.Migrations
                     b.Property<DateTime>("FechaLogueo")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdLogueo");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmpleadoLogId");
 
@@ -149,34 +149,34 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Mesa", b =>
                 {
-                    b.Property<int>("IdMesa")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMesa"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CodigoMesa")
+                    b.Property<string>("Codigo")
                         .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("EstadoDeMesaId")
+                    b.Property<int>("EstadoMesaId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdMesa");
+                    b.HasKey("Id");
 
-                    b.HasIndex("EstadoDeMesaId");
+                    b.HasIndex("EstadoMesaId");
 
                     b.ToTable("Mesas");
                 });
 
             modelBuilder.Entity("Entidades.Pedido", b =>
                 {
-                    b.Property<int>("IdPedido")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPedido"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
@@ -186,10 +186,10 @@ namespace LabAWS_RiusLaura.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("ComandaDelPedidoId")
+                    b.Property<int>("ComandaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstadoDelPedidoId")
+                    b.Property<int>("EstadoPedidoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaCreacion")
@@ -198,117 +198,117 @@ namespace LabAWS_RiusLaura.Migrations
                     b.Property<DateTime?>("FechaFinalizacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ObservacionesDelPedido")
+                    b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductoDelPedidoId")
+                    b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
                     b.Property<int>("TiempoEstimado")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPedido");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ComandaDelPedidoId");
+                    b.HasIndex("ComandaId");
 
-                    b.HasIndex("EstadoDelPedidoId");
+                    b.HasIndex("EstadoPedidoId");
 
-                    b.HasIndex("ProductoDelPedidoId");
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
-                    b.Property<int>("IdProducto")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProducto"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("NombreDescProducto")
+                    b.Property<string>("NombreDesc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioProducto")
+                    b.Property<decimal>("Precio")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SectorProductoId")
+                    b.Property<int>("SectorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StockProducto")
+                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.HasKey("IdProducto");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SectorProductoId");
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("Entidades.Rol", b =>
                 {
-                    b.Property<int>("IdRol")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRol"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionRol")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdRol");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Entidades.Sector", b =>
                 {
-                    b.Property<int>("IdSector")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSector"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionSector")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdSector");
+                    b.HasKey("Id");
 
                     b.ToTable("Sectores");
                 });
 
             modelBuilder.Entity("Entidades.Comanda", b =>
                 {
-                    b.HasOne("Entidades.Mesa", "MesaDeComanda")
+                    b.HasOne("Entidades.Mesa", "Mesa")
                         .WithMany()
-                        .HasForeignKey("MesaDeComandaId")
+                        .HasForeignKey("MesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MesaDeComanda");
+                    b.Navigation("Mesa");
                 });
 
             modelBuilder.Entity("Entidades.Empleado", b =>
                 {
-                    b.HasOne("Entidades.Rol", "RolDelEmpleado")
+                    b.HasOne("Entidades.Rol", "Rol")
                         .WithMany()
-                        .HasForeignKey("RolDelEmpleadoId")
+                        .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.Sector", "SectorDelEmpleado")
+                    b.HasOne("Entidades.Sector", "Sector")
                         .WithMany()
-                        .HasForeignKey("SectorDelEmpleadoId")
+                        .HasForeignKey("SectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RolDelEmpleado");
+                    b.Navigation("Rol");
 
-                    b.Navigation("SectorDelEmpleado");
+                    b.Navigation("Sector");
                 });
 
             modelBuilder.Entity("Entidades.LogueoEmpleado", b =>
@@ -324,51 +324,51 @@ namespace LabAWS_RiusLaura.Migrations
 
             modelBuilder.Entity("Entidades.Mesa", b =>
                 {
-                    b.HasOne("Entidades.EstadoMesa", "EstadoDeMesa")
+                    b.HasOne("Entidades.EstadoMesa", "EstadoMesa")
                         .WithMany()
-                        .HasForeignKey("EstadoDeMesaId")
+                        .HasForeignKey("EstadoMesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EstadoDeMesa");
+                    b.Navigation("EstadoMesa");
                 });
 
             modelBuilder.Entity("Entidades.Pedido", b =>
                 {
-                    b.HasOne("Entidades.Comanda", "ComandaDelPedido")
+                    b.HasOne("Entidades.Comanda", "Comanda")
                         .WithMany()
-                        .HasForeignKey("ComandaDelPedidoId")
+                        .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.EstadoPedido", "EstadoDelPedido")
+                    b.HasOne("Entidades.EstadoPedido", "EstadoPedido")
                         .WithMany()
-                        .HasForeignKey("EstadoDelPedidoId")
+                        .HasForeignKey("EstadoPedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entidades.Producto", "ProductoDelPedido")
+                    b.HasOne("Entidades.Producto", "Producto")
                         .WithMany()
-                        .HasForeignKey("ProductoDelPedidoId")
+                        .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ComandaDelPedido");
+                    b.Navigation("Comanda");
 
-                    b.Navigation("EstadoDelPedido");
+                    b.Navigation("EstadoPedido");
 
-                    b.Navigation("ProductoDelPedido");
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
-                    b.HasOne("Entidades.Sector", "SectorProducto")
+                    b.HasOne("Entidades.Sector", "Sector")
                         .WithMany()
-                        .HasForeignKey("SectorProductoId")
+                        .HasForeignKey("SectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SectorProducto");
+                    b.Navigation("Sector");
                 });
 #pragma warning restore 612, 618
         }

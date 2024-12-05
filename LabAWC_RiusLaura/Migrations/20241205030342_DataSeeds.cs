@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace LabAWS_RiusLaura.Migrations
+namespace Restaurante_API.Migrations
 {
     /// <inheritdoc />
     public partial class DataSeeds : Migration
@@ -15,7 +15,7 @@ namespace LabAWS_RiusLaura.Migrations
         {
             migrationBuilder.InsertData(
                 table: "Estados_Mesas",
-                columns: new[] { "IdEstadoMesa", "DescripcionMesa" },
+                columns: new[] { "Id", "Descripcion" },
                 values: new object[,]
                 {
                     { 1, "Cliente Esperando Pedido" },
@@ -26,7 +26,7 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Estados_Pedidos",
-                columns: new[] { "IdEstadoPedido", "DescripcionPedido" },
+                columns: new[] { "Id", "Descripcion" },
                 values: new object[,]
                 {
                     { 1, "Pendiente" },
@@ -38,7 +38,7 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "IdRol", "DescripcionRol" },
+                columns: new[] { "Id", "Descripcion" },
                 values: new object[,]
                 {
                     { 1, "Bartender" },
@@ -50,7 +50,7 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Sectores",
-                columns: new[] { "IdSector", "DescripcionSector" },
+                columns: new[] { "Id", "Descripcion" },
                 values: new object[,]
                 {
                     { 1, "Barra Tragos Y Vino" },
@@ -62,34 +62,34 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Empleados",
-                columns: new[] { "IdEmpleado", "EmpleadoActivo", "Nombre", "Password", "RolDelEmpleadoId", "SectorDelEmpleadoId", "Usuario" },
+                columns: new[] { "Id", "EmpleadoActivo", "Nombre", "Password", "RolId", "SectorId", "Usuario" },
                 values: new object[,]
                 {
-                    { 1, true, "Juan Pérez", "password1", 1, 1, "jperez" },
-                    { 2, true, "María Gómez", "password2", 2, 2, "mgomez" },
-                    { 3, true, "Carlos López", "password3", 3, 3, "clopez" },
-                    { 4, true, "Ana Martínez", "password4", 4, 4, "amartinez" },
-                    { 5, true, "Jorge García", "password5", 5, 5, "jgarcia" },
-                    { 6, false, "Laura Torres", "password6", 1, 1, "ltorres" },
-                    { 7, true, "Esteban Rodriguez", "password7", 5, 5, "erodriguez" },
-                    { 8, true, "Pedro Ramirez", "password8", 3, 3, "pramirez" },
-                    { 9, false, "Gonzalo Fernandez", "password9", 5, 5, "gfernandez" }
+                    { 1, true, "Juan Pérez", "bartender1", 1, 1, "bartender1" },
+                    { 2, true, "María Gómez", "cervecero1", 2, 2, "cervecero1" },
+                    { 3, true, "Carlos López", "cocinero1", 3, 3, "cocinero1" },
+                    { 4, true, "Ana Martínez", "mozo1", 4, 4, "mozo1" },
+                    { 5, true, "Jorge García", "socio1", 5, 5, "socio1" },
+                    { 6, false, "Laura Torres", "bartender2", 1, 1, "bartender2" },
+                    { 7, true, "Esteban Rodriguez", "socio2", 5, 5, "socio2" },
+                    { 8, true, "Pedro Ramirez", "cocinero2", 3, 3, "cocinero2" },
+                    { 9, false, "Gonzalo Fernandez", "socio3", 5, 5, "socio3" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Mesas",
-                columns: new[] { "IdMesa", "CodigoMesa", "EstadoDeMesaId" },
+                columns: new[] { "Id", "Codigo", "EstadoMesaId" },
                 values: new object[,]
                 {
-                    { 1, "M1001", 1 },
-                    { 2, "M1002", 1 },
-                    { 3, "M1003", 4 },
-                    { 4, "M1004", 1 }
+                    { 1, "KA8D2", 1 },
+                    { 2, "VTOPN", 1 },
+                    { 3, "72CER", 4 },
+                    { 4, "2FFV0", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Productos",
-                columns: new[] { "IdProducto", "NombreDescProducto", "PrecioProducto", "SectorProductoId", "StockProducto" },
+                columns: new[] { "Id", "NombreDesc", "Precio", "SectorId", "Stock" },
                 values: new object[,]
                 {
                     { 1, "Vino tinto Malbec", 14000.00m, 1, 50 },
@@ -105,7 +105,7 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Comandas",
-                columns: new[] { "IdComanda", "MesaDeComandaId", "NombreCliente" },
+                columns: new[] { "Id", "MesaId", "NombreCliente" },
                 values: new object[,]
                 {
                     { 1, 1, "Cliente A" },
@@ -117,7 +117,7 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "LogueosEmpleados",
-                columns: new[] { "IdLogueo", "EmpleadoLogId", "FechaDeslogueo", "FechaLogueo" },
+                columns: new[] { "Id", "EmpleadoLogId", "FechaDeslogueo", "FechaLogueo" },
                 values: new object[,]
                 {
                     { 1, 1, new DateTime(2024, 8, 12, 23, 59, 0, 0, DateTimeKind.Local), new DateTime(2024, 8, 12, 19, 6, 0, 0, DateTimeKind.Local) },
@@ -130,15 +130,15 @@ namespace LabAWS_RiusLaura.Migrations
 
             migrationBuilder.InsertData(
                 table: "Pedidos",
-                columns: new[] { "IdPedido", "Cantidad", "CodigoCliente", "ComandaDelPedidoId", "EstadoDelPedidoId", "FechaCreacion", "FechaFinalizacion", "ObservacionesDelPedido", "ProductoDelPedidoId", "TiempoEstimado" },
+                columns: new[] { "Id", "Cantidad", "CodigoCliente", "ComandaId", "EstadoPedidoId", "FechaCreacion", "FechaFinalizacion", "Observaciones", "ProductoId", "TiempoEstimado" },
                 values: new object[,]
                 {
-                    { 1, 1, "MBC12", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "Con hielo", 1, 10 },
-                    { 2, 2, "MBC12", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 3, 20 },
-                    { 3, 3, "MBC12", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 3, 30 },
-                    { 4, 2, "AD32S", 2, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 8, 15 },
-                    { 5, 2, "KAE2K", 3, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 9, 40 },
-                    { 6, 4, "TYH3K", 5, 4, new DateTime(2024, 8, 24, 19, 30, 0, 0, DateTimeKind.Local), new DateTime(2024, 8, 24, 19, 47, 0, 0, DateTimeKind.Local), "bien frío", 2, 15 }
+                    { 1, 1, "KSPO7", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "Con hielo", 1, 10 },
+                    { 2, 2, "NMKN5", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 3, 20 },
+                    { 3, 3, "3RIM0", 1, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 3, 30 },
+                    { 4, 2, "4O35J", 2, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 8, 15 },
+                    { 5, 2, "UT98J", 3, 1, new DateTime(2024, 8, 12, 19, 30, 0, 0, DateTimeKind.Local), null, "", 9, 40 },
+                    { 6, 4, "WV5VZ", 5, 4, new DateTime(2024, 8, 24, 19, 30, 0, 0, DateTimeKind.Local), new DateTime(2024, 8, 24, 19, 47, 0, 0, DateTimeKind.Local), "bien frío", 2, 15 }
                 });
         }
 
@@ -147,292 +147,292 @@ namespace LabAWS_RiusLaura.Migrations
         {
             migrationBuilder.DeleteData(
                 table: "Comandas",
-                keyColumn: "IdComanda",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 7);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 8);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 9);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Mesas",
-                keyColumn: "IdEstadoMesa",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Mesas",
-                keyColumn: "IdEstadoMesa",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Pedidos",
-                keyColumn: "IdEstadoPedido",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Pedidos",
-                keyColumn: "IdEstadoPedido",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Pedidos",
-                keyColumn: "IdEstadoPedido",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "LogueosEmpleados",
-                keyColumn: "IdLogueo",
+                keyColumn: "Id",
                 keyValue: 6);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Pedidos",
-                keyColumn: "IdPedido",
+                keyColumn: "Id",
                 keyValue: 6);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 6);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 7);
 
             migrationBuilder.DeleteData(
                 table: "Comandas",
-                keyColumn: "IdComanda",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Comandas",
-                keyColumn: "IdComanda",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Comandas",
-                keyColumn: "IdComanda",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Comandas",
-                keyColumn: "IdComanda",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Empleados",
-                keyColumn: "IdEmpleado",
+                keyColumn: "Id",
                 keyValue: 6);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Pedidos",
-                keyColumn: "IdEstadoPedido",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Pedidos",
-                keyColumn: "IdEstadoPedido",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Mesas",
-                keyColumn: "IdMesa",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 8);
 
             migrationBuilder.DeleteData(
                 table: "Productos",
-                keyColumn: "IdProducto",
+                keyColumn: "Id",
                 keyValue: 9);
 
             migrationBuilder.DeleteData(
                 table: "Mesas",
-                keyColumn: "IdMesa",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Mesas",
-                keyColumn: "IdMesa",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Mesas",
-                keyColumn: "IdMesa",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Roles",
-                keyColumn: "IdRol",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Roles",
-                keyColumn: "IdRol",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Roles",
-                keyColumn: "IdRol",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Roles",
-                keyColumn: "IdRol",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Roles",
-                keyColumn: "IdRol",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Sectores",
-                keyColumn: "IdSector",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Sectores",
-                keyColumn: "IdSector",
+                keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Sectores",
-                keyColumn: "IdSector",
+                keyColumn: "Id",
                 keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "Sectores",
-                keyColumn: "IdSector",
+                keyColumn: "Id",
                 keyValue: 4);
 
             migrationBuilder.DeleteData(
                 table: "Sectores",
-                keyColumn: "IdSector",
+                keyColumn: "Id",
                 keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Mesas",
-                keyColumn: "IdEstadoMesa",
+                keyColumn: "Id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Estados_Mesas",
-                keyColumn: "IdEstadoMesa",
+                keyColumn: "Id",
                 keyValue: 4);
         }
     }

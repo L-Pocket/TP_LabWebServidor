@@ -43,9 +43,9 @@ namespace LabAWS_RiusLaura.Servicios
                 throw new KeyNotFoundException($"No se encontró un pedido con el ID: {idPedido}.");
             }
 
-            if (pedido.EstadoDelPedidoId == 1) // 1 = "pendiente"
+            if (pedido.EstadoPedidoId == 1) // 1 = "pendiente"
             {
-                pedido.EstadoDelPedidoId = 2; // 2 = "en preparación"
+                pedido.EstadoPedidoId = 2; // 2 = "en preparación"
                 pedido.TiempoEstimado = tiempoEstimado;
                 await _context.SaveChangesAsync();
                 this.logger.LogInformation("Acción finalizada con exito.");
@@ -76,9 +76,9 @@ namespace LabAWS_RiusLaura.Servicios
                 throw new KeyNotFoundException($"No se encontró un pedido con el ID: {idPedido}.");
             }
 
-            if (pedido.EstadoDelPedidoId == 2) // 2 = "en preparación"
+            if (pedido.EstadoPedidoId == 2) // 2 = "en preparación"
             {
-                pedido.EstadoDelPedidoId = 3; // 3 = "Listo para servir"
+                pedido.EstadoPedidoId = 3; // 3 = "Listo para servir"
                 pedido.FechaFinalizacion = DateTime.Now; // una vez listo, se establece la hora de finalización
                 await _context.SaveChangesAsync();
                 this.logger.LogInformation("Acción finalizada con exito.");
@@ -112,12 +112,12 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Buscar todos los pedidos asociados a la mesa y verificar si alguno está "listo para servir"
             var pedidosListosParaServir = await _context.Pedidos
-                .Where(p => p.ComandaDelPedido.MesaDeComandaId == idMesa && p.EstadoDelPedidoId == 3) // 3 = "listo para servir"
+                .Where(p => p.Comanda.MesaId == idMesa && p.EstadoPedidoId == 3) // 3 = "listo para servir"
                 .ToListAsync();
 
             if (pedidosListosParaServir.Any()) // Si encuentra algún pedido listo para servir ya puede cambiar el estado de la mesa
             {
-                mesa.EstadoDeMesaId = 2; // 2 = "cliente comiendo"
+                mesa.EstadoMesaId = 2; // 2 = "cliente comiendo"
                     
                 await _context.SaveChangesAsync(); // Guardar los cambios
                 this.logger.LogInformation($"La mesa {idMesa} ahora está en estado Cliente Comiendo");
@@ -125,8 +125,8 @@ namespace LabAWS_RiusLaura.Servicios
                 // Cambiar el estado de los pedidos encontrados a "Servido"
                 foreach (var pedido in pedidosListosParaServir)
                 {
-                    pedido.EstadoDelPedidoId = 4; // 4 = "Servido"
-                    this.logger.LogInformation($"Pedido {pedido.IdPedido} cambiado a 'Servido'.");
+                    pedido.EstadoPedidoId = 4; // 4 = "Servido"
+                    this.logger.LogInformation($"Pedido {pedido.Id} cambiado a 'Servido'.");
                 }
                 
                 await _context.SaveChangesAsync();// Guardar los cambios
@@ -155,10 +155,10 @@ namespace LabAWS_RiusLaura.Servicios
                 throw new KeyNotFoundException($"No se encontró una mesa con el id {idMesa}.");
             }
 
-            if (mesa.EstadoDeMesaId == 2) // 2 = "cliente comiendo"
+            if (mesa.EstadoMesaId == 2) // 2 = "cliente comiendo"
             {
-                mesa.EstadoDeMesaId = 3; // 3 = "cliente pagando"
-                this.logger.LogInformation($"Pedido {mesa.EstadoDeMesaId} cambiado a Cliente Pagando.");
+                mesa.EstadoMesaId = 3; // 3 = "cliente pagando"
+                this.logger.LogInformation($"Pedido {mesa.EstadoMesaId} cambiado a Cliente Pagando.");
                 await _context.SaveChangesAsync();// Guardar los cambios
 
                 // automapper Pedido a PedidoResponseDto 

@@ -31,11 +31,8 @@ namespace LabAWS_RiusLaura.Controllers
             try
             {
                 var empleadoId = await _logEmpleadoServicio.IniciarSesion(login.usuario, login.password);
-               
-                
-                
-                var rol = empleadoId.RolDelEmpleado.DescripcionRol == "Socio" ? "Socio" : "Empleado";
-                var token = _authServicio.CreateToken(login, rol, empleadoId.IdEmpleado);
+                var rol = empleadoId.Rol.Descripcion;
+                var token = _authServicio.CreateToken(login, rol, empleadoId.Id);
 
                 return Ok(new { token = token });
             }

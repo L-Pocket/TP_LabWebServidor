@@ -45,14 +45,14 @@ namespace LabAWS_RiusLaura.Servicios
         {
             try
             {
-                this.logger.LogInformation("Iniciando creación de comanda para la mesa ID: {MesaDeComandaId}", comandaCrearDto.MesaDeComandaId);
+                this.logger.LogInformation("Iniciando creación de comanda para la mesa ID: {MesaDeComandaId}", comandaCrearDto.MesaId);
 
-                var mesa = await _context.Mesas.FindAsync(comandaCrearDto.MesaDeComandaId);
+                var mesa = await _context.Mesas.FindAsync(comandaCrearDto.MesaId);
 
                 if (mesa == null)
                 {
-                    this.logger.LogWarning("No se encontró una mesa con el id: {MesaDeComandaId}", comandaCrearDto.MesaDeComandaId);
-                    return (false, $"No se encontró una Mesa con el id {comandaCrearDto.MesaDeComandaId}.",null);
+                    this.logger.LogWarning("No se encontró una mesa con el id: {MesaDeComandaId}", comandaCrearDto.MesaId);
+                    return (false, $"No se encontró una Mesa con el id {comandaCrearDto.MesaId}.",null);
                 }
 
                 var comanda = this.mapper.Map<Comanda>(comandaCrearDto);
@@ -62,13 +62,13 @@ namespace LabAWS_RiusLaura.Servicios
 
                 var comandaDtoResult = this.mapper.Map<ComandaDto>(comanda); // Mapear la entidad Comanda a ComandaDto
 
-                this.logger.LogInformation("Comanda creada exitosamente con ID: {IdComanda}", comandaDtoResult.IdComanda);
+                this.logger.LogInformation("Comanda creada exitosamente con ID: {IdComanda}", comandaDtoResult.Id);
                 //return (true, null, comandaDtoResult);
                 return (true, "", comandaDtoResult);
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "Error al crear la comanda para la mesa ID: {MesaDeComandaId}", comandaCrearDto.MesaDeComandaId);
+                this.logger.LogError(ex, "Error al crear la comanda para la mesa ID: {MesaDeComandaId}", comandaCrearDto.MesaId);
                // return (false, $"Error interno del servidor: {ex.Message}", null);
                 return (false, $"Error interno del servidor: {ex.Message}", new ComandaDto());
             }
@@ -82,7 +82,7 @@ namespace LabAWS_RiusLaura.Servicios
             try
             {
                 var comandas = await _context.Comandas
-                    .Include(c => c.MesaDeComanda)
+                    .Include(c => c.Mesa)
                     .ToListAsync();
 
                 var comandasDto = this.mapper.Map<List<ComandaDto>>(comandas);
@@ -106,8 +106,8 @@ namespace LabAWS_RiusLaura.Servicios
             try
             {
                 var comanda = await _context.Comandas
-                    .Include(c => c.MesaDeComanda)
-                    .FirstOrDefaultAsync(c => c.IdComanda == id);
+                    .Include(c => c.Mesa)
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
                 if (comanda == null)
                 {
@@ -118,7 +118,7 @@ namespace LabAWS_RiusLaura.Servicios
 
                 var comandaDto = this.mapper.Map<ComandaDto>(comanda);
 
-                this.logger.LogInformation("Comanda obtenida exitosamente con Id: {IdComanda}", comandaDto.IdComanda);
+                this.logger.LogInformation("Comanda obtenida exitosamente con Id: {IdComanda}", comandaDto.Id);
 
                 return (true, "", comandaDto);
             }
@@ -145,20 +145,20 @@ namespace LabAWS_RiusLaura.Servicios
                 }
 
                 // Validar la existencia de la mesa solo si es necesario modificar la mesa asociada a la comanda
-                if (comandaCrearDto.MesaDeComandaId != comanda.MesaDeComandaId)
+                if (comandaCrearDto.MesaId != comanda.MesaId)
                 {
-                    var mesa = await _context.Mesas.FindAsync(comandaCrearDto.MesaDeComandaId);
+                    var mesa = await _context.Mesas.FindAsync(comandaCrearDto.MesaId);
 
                     if (mesa == null)
                     {
-                        string mensaje = $"No se encontró una Mesa con el id {comandaCrearDto.MesaDeComandaId}.";
+                        string mensaje = $"No se encontró una Mesa con el id {comandaCrearDto.MesaId}.";
                         this.logger.LogWarning(mensaje);
                         return (false, mensaje);
                     }
                 }
 
                 // Mapear los datos del DTO a la entidad de Comanda
-                comanda.MesaDeComandaId = comandaCrearDto.MesaDeComandaId;
+                comanda.MesaId = comandaCrearDto.MesaId;
                 comanda.NombreCliente = comandaCrearDto.NombreCliente;
 
                 await _context.SaveChangesAsync();

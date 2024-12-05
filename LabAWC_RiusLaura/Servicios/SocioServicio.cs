@@ -51,9 +51,9 @@ namespace LabAWS_RiusLaura.Servicios
             }
 
             // Verificar el estado de la mesa
-            if (mesaEnt.EstadoDeMesaId == 3) // 3 = "Cliente pagando"
+            if (mesaEnt.EstadoMesaId == 3) // 3 = "Cliente pagando"
             {
-                mesaEnt.EstadoDeMesaId = 4; // 4 = "Cerrada"
+                mesaEnt.EstadoMesaId = 4; // 4 = "Cerrada"
                 await _context.SaveChangesAsync();
                 this.logger.LogInformation("Mesa modificada exitosamente.");
 
@@ -98,8 +98,8 @@ namespace LabAWS_RiusLaura.Servicios
                 Nombre = nombre,
                 Usuario = usuario,
                 EmpleadoActivo = true, // El empleado siempre se crea como activo
-                SectorDelEmpleadoId = sectorDelEmpleadoId,
-                RolDelEmpleadoId = rolDelEmpleadoId,
+                SectorId = sectorDelEmpleadoId,
+                RolId = rolDelEmpleadoId,
                 Password = password 
             };            
 
@@ -107,7 +107,7 @@ namespace LabAWS_RiusLaura.Servicios
             this.logger.LogInformation("Iniciando inserción del nuevo Empleado.");
             _context.Empleados.Add(nuevoEmpleado);
             await _context.SaveChangesAsync();
-            this.logger.LogInformation($"Empleado creado exitosamente con ID: {nuevoEmpleado.IdEmpleado}");
+            this.logger.LogInformation($"Empleado creado exitosamente con ID: {nuevoEmpleado.Id}");
 
             // Mapear la entidad Empleado a empleadoDTO para devolverlo al controller
             var empleadoDto = this.mapper.Map<EmpleadoCreateDto>(nuevoEmpleado);
@@ -171,10 +171,10 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Agrupa los empleados por el sectorID y calcula la cantidad total por sector
             var listado = await _context.Empleados
-                .GroupBy(e => e.SectorDelEmpleadoId)
+                .GroupBy(e => e.SectorId)
                 .Select(g => new EmpleadosPorSectorResponseDto // creamos un nuevo objeto anónimo con dos propiedades elsector y la cantidad 
                 {
-                    Sector = g.FirstOrDefault().SectorDelEmpleado.DescripcionSector,
+                    Sector = g.FirstOrDefault().Sector.Descripcion,
                     CantidadEmpleados = g.Count()
                 })
                 .ToListAsync();
@@ -199,14 +199,14 @@ namespace LabAWS_RiusLaura.Servicios
             var operaciones = await _context.Pedidos
                 .Join(
                     _context.Productos,
-                    pedido => pedido.ProductoDelPedidoId,
-                    producto => producto.IdProducto,
+                    pedido => pedido.ProductoId,
+                    producto => producto.Id,
                     (pedido, producto) => new { pedido, producto })
-                .Where(pp => pp.producto.SectorProductoId == idSector)
-                .GroupBy(pp => pp.producto.SectorProducto.DescripcionSector)
+                .Where(pp => pp.producto.SectorId == idSector)
+                .GroupBy(pp => pp.producto.Sector.Descripcion)
                 .Select(g => new OperacionesPorSectorDto // dto
                 {
-                    DescripcionSector = g.Key,
+                    Descripcion = g.Key,
                     CantidadOperaciones = g.Count()
                 })
                 .ToListAsync();
@@ -232,20 +232,20 @@ namespace LabAWS_RiusLaura.Servicios
         public async Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados()
         {
             var resultado = await (from emp in _context.Empleados
-                                   join sec in _context.Sectores on emp.SectorDelEmpleadoId equals sec.IdSector
-                                   join prod in _context.Productos on sec.IdSector equals prod.SectorProductoId
-                                   join ped in _context.Pedidos on prod.IdProducto equals ped.ProductoDelPedidoId
+                                   join sec in _context.Sectores on emp.SectorId equals sec.Id
+                                   join prod in _context.Productos on sec.Id equals prod.SectorId
+                                   join ped in _context.Pedidos on prod.Id equals ped.ProductoId
                                    group new { emp, sec } by new
                                    {
-                                       emp.IdEmpleado,
+                                       emp.Id,
                                        emp.Nombre,
-                                       sec.DescripcionSector // Incluir la descripción del sector
+                                       sec.Descripcion // Incluir la descripción del sector
                                    } into empGroup
                                    select new OperacionesEmpleadoDto
                                    {
-                                       IdEmpleado = empGroup.Key.IdEmpleado,
+                                       Id = empGroup.Key.Id,
                                        Nombre = empGroup.Key.Nombre,
-                                       DescripcionSector = empGroup.Key.DescripcionSector, // Asignar descripción del sector
+                                       Descripcion = empGroup.Key.Descripcion, // Asignar descripción del sector
                                        CantidadOperaciones = empGroup.Count() // Contar el número de pedidos
                                    }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
 
@@ -265,21 +265,21 @@ namespace LabAWS_RiusLaura.Servicios
         public async Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado)
         {
             var resultado = await (from emp in _context.Empleados
-                                   join sec in _context.Sectores on emp.SectorDelEmpleadoId equals sec.IdSector
-                                   join prod in _context.Productos on sec.IdSector equals prod.SectorProductoId
-                                   join ped in _context.Pedidos on prod.IdProducto equals ped.ProductoDelPedidoId
-                                   where emp.IdEmpleado == idEmpleado
+                                   join sec in _context.Sectores on emp.SectorId equals sec.Id
+                                   join prod in _context.Productos on sec.Id equals prod.SectorId
+                                   join ped in _context.Pedidos on prod.Id equals ped.ProductoId
+                                   where emp.Id == idEmpleado
                                    group new { emp, sec } by new
                                    {
-                                       emp.IdEmpleado,
+                                       emp.Id,
                                        emp.Nombre,
-                                       sec.DescripcionSector
+                                       sec.Descripcion
                                    } into empGroup
                                    select new OperacionesEmpleadoDto
                                    {
-                                       IdEmpleado = empGroup.Key.IdEmpleado,
+                                       Id = empGroup.Key.Id,
                                        Nombre = empGroup.Key.Nombre,
-                                       DescripcionSector = empGroup.Key.DescripcionSector,
+                                       Descripcion = empGroup.Key.Descripcion,
                                        CantidadOperaciones = empGroup.Count() // Cuenta el número de pedidos
                                    }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
 
@@ -298,14 +298,14 @@ namespace LabAWS_RiusLaura.Servicios
         {
             
             var pedidos = await _context.Pedidos // Busca Pedidos en la BBDD
-                .Where(p => p.EstadoDelPedidoId == 1) // Filtrar por pedidos pendientes
+                .Where(p => p.EstadoPedidoId == 1) // Filtrar por pedidos pendientes
                 .Select(p => new PedidoDemoradoDto //nuevo objeto con los siguientes campos:
                 {
-                    IdPedido = p.IdPedido,
-                    ComandaDelPedidoId = p.ComandaDelPedidoId,
+                    Id = p.Id,
+                    ComandaId = p.ComandaId,
                     TiempoEstimado = p.TiempoEstimado,
                     TiempoReal = EF.Functions.DateDiffMinute(p.FechaCreacion, DateTime.Now), // Calcular la diferencia en minutos
-                    Estado = p.EstadoDelPedido.DescripcionPedido
+                    Estado = p.EstadoPedido.Descripcion
                 })
                 .Where(p => p.TiempoEstimado < p.TiempoReal) // Filtrar aquellos que están demorados
                 .ToListAsync();

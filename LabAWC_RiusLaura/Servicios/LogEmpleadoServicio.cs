@@ -53,10 +53,10 @@ namespace Restaurante_API.Servicios
         }
         public async Task RegistrarDeslogueo(int empleadoId)
         {
-            var log = await _context.LogueosEmpleados.
-                Where(l => l.EmpleadoLogId == empleadoId && l.FechaDeslogueo==null).
-                OrderByDescending(l =>l.FechaDeslogueo).
-                FirstOrDefaultAsync();
+            var log = await _context.LogueosEmpleados
+                .Where(l => l.EmpleadoLogId == empleadoId && l.FechaDeslogueo==null)
+                .OrderByDescending(l => l.FechaLogueo)
+                .FirstOrDefaultAsync();
 
             if (log != null)
             {

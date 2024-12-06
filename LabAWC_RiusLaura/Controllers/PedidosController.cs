@@ -73,7 +73,7 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         //// GET Lo que MÁS se vendió.
-        //[Authorize(Policy = "RequireSocioRole")]
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMasVendido")]
         public async Task<IActionResult> GetProductoMasVendido()
         {
@@ -113,7 +113,7 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         // GET Lo que MENOS se vendió.
-        //[Authorize(Policy = "RequireSocioRole")]
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMenosVendido")]
         public async Task<IActionResult> GetProductoMenosVendido()
         {
@@ -153,7 +153,7 @@ namespace LabAWS_RiusLaura.Controllers
         }
 
         // POST Crear un pedido nuevo
-        //[Authorize(Policy = "RequireMozoRole")]
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpPost("CrearPedido")]
         public async Task<ActionResult<PedidoResponseDto>> CrearPedido([FromBody] PedidoCreateDto pedido)
         {
@@ -204,7 +204,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-        //[Authorize(Policy = "RequireSocioRole")]
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductosEnEstadoPendientePorSector")]
         public async Task<IActionResult> GetProductosxSector(int sectorId)
         {

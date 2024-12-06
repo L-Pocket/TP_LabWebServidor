@@ -191,6 +191,8 @@ namespace LabAWS_RiusLaura.Servicios
                                         producto => producto.Id,
                                         pedido => pedido.ProductoId,
                                         (producto, pedido) => new { producto, pedido })
+                                  .Where(p => p.producto.SectorId == sectorId
+                                         && p.pedido.EstadoPedidoId == 1) // 1 = Estado Pendiente
                                   .GroupBy(p => new { p.producto.Id, p.producto.NombreDesc }) // Agrupamos por ProductoId y Nombre
                                   .Select(g => new
                                   {
@@ -198,7 +200,7 @@ namespace LabAWS_RiusLaura.Servicios
                                       Nombre = g.Key.NombreDesc,
                                       CantidadPendiente = g.Sum(p => p.pedido.Cantidad) // Sumamos la cantidad pendiente de cada producto
                                   })
-                                  .ToListAsync();
+                                  .ToListAsync();                                
                                 
 
             // Mapea los productos pendientes a ProductoVendidoDto

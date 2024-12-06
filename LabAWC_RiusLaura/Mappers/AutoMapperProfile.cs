@@ -31,10 +31,14 @@ namespace Restaurante_API.Mappers
 
             // Mapeo de Producto a ProductoVendidoDto
             CreateMap<Producto, ProductoVendidoDto>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.NombreDesc, opt => opt.MapFrom(src => src.NombreDesc))
                 .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore()); // Ignoramos CantidadVendida ya que no proviene de la entidad Producto
-
+                
+            // Mapeo de Producto a ProductoPendienteDto
+            CreateMap<Producto, ProductoPendienteDto>()
+                .ForMember(dest => dest.NombreDesc, opt => opt.MapFrom(src => src.NombreDesc))                
+                .ForMember(dest => dest.CantidadPendiente, opt => opt.Ignore()); // Ignoramos CantidadPendiente ya que no proviene de la entidad Producto
+            
             //mapeo operaciones por sector (informe) -socioservicio
             CreateMap<OperacionesPorSectorDto, OperacionesPorSectorDto>();
 

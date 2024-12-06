@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Restaurante_API.Controllers.Responses;
+using Restaurante_API.DTO;
+using Serilog;
 using System.ComponentModel.Design;
 using System.Security.Claims;
 
@@ -22,14 +25,19 @@ namespace LabAWS_RiusLaura.Controllers
             _pedidoService = pedidoService;
         }
 
-        [Authorize(Policy = "RequireSocioRole")]
+        //[Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetPedidoBy/{id}")]
-        public async Task<ActionResult<PedidoResponseDto>> GetPedidoById(int id)
+        public async Task<IActionResult> GetPedidoById(int id)
         {
             // Verificar si el ID proporcionado es mayor que 0
             if (id <= 0)
             {
-                return BadRequest("El ID proporcionado no es válido. Debe ser un número mayor que 0.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID proporcionado no es válido. Debe ser un número mayor que 0.",
+                    Data = null
+                });
             }
             try
             {
@@ -37,48 +45,75 @@ namespace LabAWS_RiusLaura.Controllers
                 var pedido = await _pedidoService.GetPedidoById(id);
                 if (pedido == null)
                 {
-                    return NotFound($"Pedido con ID {id} no encontrado.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"No se encontró un pedido con el ID {id}.",
+                        Data = null
+                    });
                 }
                 // Si se encuentra el pedido, devolverlo con un código de estado 200 OK
-                return Ok(pedido);
+                return Ok(new ApiResponse<PedidoResponseDto>
+                {
+                    Success = true,
+                    Message = "Pedido obtenido exitosamente.",
+                    Data = pedido
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al buscar el pedido: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al buscar el pedido: {ex.Message}",
+                    Data = null
+                });
             }
 
         }
 
         //// GET Lo que MÁS se vendió.
-        [Authorize(Policy = "RequireSocioRole")]
+        //[Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMasVendido")]
         public async Task<IActionResult> GetProductoMasVendido()
         {
             try
-            {
-                
+            {                
                 // Llama al servicio para obtener el producto más vendido
                 var productoMasVendido = await _pedidoService.GetProductoMasVendido();
 
                 // Si el producto no existe en la base de datos, devuelve un mensaje de error
                 if (productoMasVendido == null)
                 {
-
-                    return NotFound("No se encontró ningún producto vendido.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se encontró ningún producto vendido.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el producto más vendido con un código de estado 200 OK
-                return Ok(productoMasVendido);
+                return Ok(new ApiResponse<ProductoVendidoDto>
+                {
+                    Success = true,
+                    Message = "Producto más vendido obtenido exitosamente.",
+                    Data = productoMasVendido
+                });
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, $"Ocurrió un error al obtener el producto más vendido: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al obtener el producto más vendido: {ex.Message}",
+                    Data = null
+                });
             }
         }
 
         // GET Lo que MENOS se vendió.
-        [Authorize(Policy = "RequireSocioRole")]
+        //[Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMenosVendido")]
         public async Task<IActionResult> GetProductoMenosVendido()
         {
@@ -90,21 +125,35 @@ namespace LabAWS_RiusLaura.Controllers
                 // Si no se encuentra ningún producto menos vendido, devuelve un mensaje de error
                 if (productoMenosVendido == null)
                 {
-                    return NotFound("No se encontró ningún producto vendido.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se encontró ningún producto vendido.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el producto menos vendido con un código de estado 200 OK
-                return Ok(productoMenosVendido);
+                return Ok(new ApiResponse<ProductoVendidoDto>
+                {
+                    Success = true,
+                    Message = "Producto menos vendido obtenido exitosamente.",
+                    Data = productoMenosVendido
+                });
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, $"Ocurrió un error al obtener el producto menos vendido: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al obtener el producto menos vendido: {ex.Message}",
+                    Data = null
+                });
             }
         }
 
         // POST Crear un pedido nuevo
-        [Authorize(Policy = "RequireMozoRole")]
+        //[Authorize(Policy = "RequireMozoRole")]
         [HttpPost("CrearPedido")]
         public async Task<ActionResult<PedidoResponseDto>> CrearPedido([FromBody] PedidoCreateDto pedido)
         {
@@ -112,13 +161,12 @@ namespace LabAWS_RiusLaura.Controllers
             // Verifica que Comanda, Producto y Cantidad sean válidos y no estén vacíos
             if (pedido.ComandaId <= 0 || pedido.ProductoId <= 0 || pedido.Cantidad <= 0)
             {
-                return BadRequest("ComandaDelPedidoId, ProductoDelPedidoId, Cantidad son obligatorios y deben ser válidos.");
-            }
-
-            // Verificación de CodigoCliente
-            if (string.IsNullOrEmpty(pedido.CodigoCliente) || pedido.CodigoCliente.Length != 5)
-            {
-                return BadRequest("CodigoCliente es obligatorio y debe tener exactamente 5 caracteres.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "ComandaId, ProductoId y Cantidad son obligatorios y deben ser mayores a 0.",
+                    Data = null
+                });
             }
 
             try
@@ -129,31 +177,69 @@ namespace LabAWS_RiusLaura.Controllers
                 // Si el pedido no se pudo crear devuelve un mensaje de error
                 if (nuevoPedido == null)
                 {
-                    return NotFound("No se pudo crear el pedido ya que la Comanda o el Producto no fueron encontrados.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se pudo crear el pedido ya que la Comanda o el Producto no fueron encontrados.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el nuevo pedido con un código de estado 200 OK
-                return Ok(nuevoPedido);
+                return Ok(new ApiResponse<PedidoResponseDto>
+                {
+                    Success = true,
+                    Message = "Pedido creado exitosamente.",
+                    Data = nuevoPedido
+                });
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, $"Error al crear el pedido: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al crear el pedido: {ex.Message}",
+                    Data = null
+                });
             }
         }
 
-        [Authorize(Policy = "RequireSocioRole")]
+        //[Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductosEnEstadoPendientePorSector")]
-        public async Task<ActionResult<List<Producto>>> GetProductosxSector(int sectorI)
+        public async Task<IActionResult> GetProductosxSector(int sectorId)
         {
+            // Validar que el sectorId sea mayor a 0
+            if (sectorId <= 0)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID del sector proporcionado no es válido. Debe ser un número mayor que 0.",
+                    Data = null
+                });
+            }
+
             try
             {
-                var productos = await _pedidoService.GetAllProductosXSector(sectorI);
+                // Llama al servicio para obtener los productos por sector en estado pendiente
+                var productos = await _pedidoService.GetProductosPendientesXSector(sectorId);
+
+                // Si no hay productos, retorna un mensaje de error
                 if (productos == null || !productos.Any())
                 {
-                    return NotFound("No se encontró ningún producto vendido para este sector en estado pendiente.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se encontró ningún producto en estado pendiente para este sector.",
+                        Data = null
+                    });
                 }
-                return Ok(productos);
+                return Ok(new ApiResponse<List<ProductoPendienteDto>>
+                {
+                    Success = true,
+                    Message = "Productos en estado pendiente encontrados exitosamente.",
+                    Data = productos
+                });
             }
             catch (Exception ex)
             {
@@ -161,9 +247,7 @@ namespace LabAWS_RiusLaura.Controllers
 
             }
 
-
         }
-
 
     }
     

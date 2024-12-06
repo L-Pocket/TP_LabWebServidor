@@ -3,6 +3,7 @@ using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
 using LabAWS_RiusLaura.DTO;
 using Microsoft.EntityFrameworkCore;
+using Restaurante_API.DTO;
 
 namespace LabAWS_RiusLaura.Servicios
 {
@@ -12,7 +13,7 @@ namespace LabAWS_RiusLaura.Servicios
         Task<ProductoVendidoDto> GetProductoMasVendido();
         Task<ProductoVendidoDto> GetProductoMenosVendido();
         Task<PedidoResponseDto> CrearPedido(PedidoCreateDto pedidoDto);
-        Task<List<ProductoVendidoDto>> GetAllProductosXSector(int sectorI);
+        Task<List<ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
     }
 
     public class PedidoServicio : IPedidoService
@@ -180,20 +181,35 @@ namespace LabAWS_RiusLaura.Servicios
             return pedidoResponseDto;
 
         }
-        public async Task<List<ProductoVendidoDto>> GetAllProductosXSector(int sectorId)
+        public async Task<List<ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId)
         {
-            var productos = await _context.Productos
+            this.logger.LogInformation("Iniciando la búsqueda del productos pendientes por sector.");
+
+            // Agrupa los productos pendientes por su ID y calcula la cantidad pendiente
+            var productosPendientes = await _context.Productos
                                   .Join(_context.Pedidos,//join entre tablas
                                         producto => producto.Id,
                                         pedido => pedido.ProductoId,
                                         (producto, pedido) => new { producto, pedido })
-                                  .Where(p => p.producto.SectorId == sectorId
-                                          && p.pedido.EstadoPedidoId == 1) // 1 = Estado Pendiente
-                                  .Select(p => p.producto) // Seleccionamos solo los productos en estado pendiente
+                                  .GroupBy(p => new { p.producto.Id, p.producto.NombreDesc }) // Agrupamos por ProductoId y Nombre
+                                  .Select(g => new
+                                  {
+                                      ProductoId = g.Key.Id,
+                                      Nombre = g.Key.NombreDesc,
+                                      CantidadPendiente = g.Sum(p => p.pedido.Cantidad) // Sumamos la cantidad pendiente de cada producto
+                                  })
                                   .ToListAsync();
+                                
 
-            var resultado = mapper.Map<List<ProductoVendidoDto>>(productos);
-            return resultado;
+            // Mapea los productos pendientes a ProductoVendidoDto
+            var productosDto = productosPendientes.Select(p => new ProductoPendienteDto
+            {                
+                NombreDesc = p.Nombre,
+                CantidadPendiente = p.CantidadPendiente // Asigna manualmente la cantidad pendiente
+
+            }).ToList();
+
+            return productosDto;
 
 
         }

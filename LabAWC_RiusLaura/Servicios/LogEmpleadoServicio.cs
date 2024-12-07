@@ -13,7 +13,7 @@ namespace Restaurante_API.Servicios
         public Task RegistrarLogueo(int empleadoId);
         public Task RegistrarDeslogueo(int empleadoId);
 
-        public Task<List<EmpleadosLogDto>> GetLog();
+        public Task<List<EmpleadosLogDto>> GetLog(DateTime? fechaInicio, DateTime? fechaFin);
 
     }
     public class LogEmpleadoServicio : ILogEmpleadoServicio
@@ -69,12 +69,33 @@ namespace Restaurante_API.Servicios
             }
         }
 
-        public async Task<List<EmpleadosLogDto>> GetLog()
+        //INFORME A - Los días y horarios que se Ingresaron al sistema.
+        public async Task<List<EmpleadosLogDto>> GetLog(DateTime? fechaInicio, DateTime? fechaFin)
         {
-            var logs = await _context.LogueosEmpleados.ToListAsync();
-            //mapeo
-            var logsResponseDto = this._mapper.Map<List<EmpleadosLogDto>>(logs);
-            return logsResponseDto;
+            var query = _context.LogueosEmpleados
+                                .Include(log => log.EmpleadoLog)  // Incluimos la relación con Empleados
+                                .AsQueryable();
+
+            if (fechaInicio.HasValue && !fechaFin.HasValue)
+            {
+                query = query.Where(log => log.FechaLogueo.Date == fechaInicio.Value.Date);
+            }
+
+            if (fechaInicio.HasValue && fechaFin.HasValue)
+            {
+                query = query.Where(log => log.FechaLogueo.Date >= fechaInicio.Value.Date
+                                           && log.FechaLogueo.Date <= fechaFin.Value.Date);
+            }
+
+            // para devolver los datos en el formato que queremos
+            return await query.Select(log => new EmpleadosLogDto
+            {
+                //id = log.Id, 
+                fechaLogueo = log.FechaLogueo,
+                fechaDeslogueo = log.FechaDeslogueo,
+                empleadoLogId = log.EmpleadoLogId,
+                EmpleadoNombre = log.EmpleadoLog.Nombre  // Accedemos al nombre del empleado
+            }).ToListAsync();
         }
     }
 }

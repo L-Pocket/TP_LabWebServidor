@@ -18,11 +18,13 @@ namespace Restaurante_API.Controllers
 
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("logs")]
-        public async Task<IActionResult> Getlogs()
+        // INFORME A!!!
+        public async Task<IActionResult> GetLogs([FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin)
         {
-          
-            var logs = await _LogEmpleadoServicio.GetLog();
+
+            var logs = await _LogEmpleadoServicio.GetLog(fechaInicio, fechaFin);
             return Ok(logs);
+
         }
     }
 }

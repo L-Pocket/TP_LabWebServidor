@@ -72,15 +72,16 @@ namespace LabAWS_RiusLaura.Controllers
 
         }
 
-        //// GET Lo que MÁS se vendió.
+        //// INFORMES PEDIDOS A -  producto más vendido
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMasVendido")]
-        public async Task<IActionResult> GetProductoMasVendido()
+
+        public async Task<IActionResult> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             try
-            {                
-                // Llama al servicio para obtener el producto más vendido
-                var productoMasVendido = await _pedidoService.GetProductoMasVendido();
+            {
+                // Llama al servicio para obtener el producto más vendido con el filtro de fechas
+                var productoMasVendido = await _pedidoService.GetProductoMasVendido(fechaInicio, fechaFin);
 
                 // Si el producto no existe en la base de datos, devuelve un mensaje de error
                 if (productoMasVendido == null)
@@ -112,15 +113,16 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-        // GET Lo que MENOS se vendió.
+
+        // INFORMES PEDIDOS B -  producto menos vendido
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetProductoMenosVendido")]
-        public async Task<IActionResult> GetProductoMenosVendido()
+        public async Task<IActionResult> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             try
-            {                
-                // Llama al servicio para obtener el producto menos vendido
-                var productoMenosVendido = await _pedidoService.GetProductoMenosVendido();
+            {
+                // Llama al servicio para obtener el producto menos vendido, pasando las fechas como parámetros
+                var productoMenosVendido = await _pedidoService.GetProductoMenosVendido(fechaInicio, fechaFin);
 
                 // Si no se encuentra ningún producto menos vendido, devuelve un mensaje de error
                 if (productoMenosVendido == null)
@@ -151,6 +153,7 @@ namespace LabAWS_RiusLaura.Controllers
                 });
             }
         }
+
 
         // POST Crear un pedido nuevo
         [Authorize(Policy = "RequireMozoRole")]

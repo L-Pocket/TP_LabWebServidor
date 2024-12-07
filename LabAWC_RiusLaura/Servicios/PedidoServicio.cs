@@ -10,8 +10,8 @@ namespace LabAWS_RiusLaura.Servicios
     public interface IPedidoService
     {
         Task<PedidoResponseDto> GetPedidoById(int idPedido);
-        Task<ProductoVendidoDto> GetProductoMasVendido();
-        Task<ProductoVendidoDto> GetProductoMenosVendido();
+        Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin);
         Task<PedidoResponseDto> CrearPedido(PedidoCreateDto pedidoDto);
         Task<List<ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
     }
@@ -50,20 +50,26 @@ namespace LabAWS_RiusLaura.Servicios
             return pedidoResponseDto;
         }
 
-        // GET del producto más vendido
-        public async Task<ProductoVendidoDto> GetProductoMasVendido()
+        //INFORMES PEDIDOS A -  producto más vendido
+
+        public async Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             this.logger.LogInformation("Iniciando la búsqueda del producto más vendido.");
-            // Agrupa los pedidos por el ID del producto y calcula la cantidad total vendida por producto
+
+            // Agrupamos los pedidos por el ID del producto y calculamos la cantidad total vendida por producto
             var productoMasVendido = await _context.Pedidos
+                .Where(p =>
+                    (!fechaInicio.HasValue || p.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtramos por fecha de inicio sin hora
+                    && (!fechaFin.HasValue || p.FechaCreacion.Date <= fechaFin.Value.Date) // Filtramos por fecha de fin sin hora
+                )
                 .GroupBy(p => p.ProductoId)
-                .Select(g => new  // creamos un nuevo objeto anónimo con dos propiedades el Id del producto y la cantidad vendida
+                .Select(g => new  // Creamos un nuevo objeto con el ID del producto y la cantidad vendida
                 {
                     ProductoId = g.Key,
                     CantidadVendida = g.Sum(p => p.Cantidad) // Sumamos la cantidad de cada detalle de pedido
                 })
-                .OrderByDescending(g => g.CantidadVendida) // aca nos estaria ordenando de forma desc por la cantidad vendida para saber cual es el mas vendido
-                .FirstOrDefaultAsync(); // obtenemos el primero resultado mas vendido o null si es que no hay datos 
+                .OrderByDescending(g => g.CantidadVendida) // Ordenamos de forma descendente por la cantidad vendida
+                .FirstOrDefaultAsync(); // Obtenemos el producto más vendido o null si no hay datos
 
             // Si no se encuentra ningún producto vendido, devuelve un mensaje de error
             if (productoMasVendido == null)
@@ -90,25 +96,38 @@ namespace LabAWS_RiusLaura.Servicios
             productoMasVendidoDto.CantidadVendida = productoMasVendido.CantidadVendida;
 
             return productoMasVendidoDto;
-
-           
-
         }
 
-        // GET del producto menos vendido
-        public async Task<ProductoVendidoDto> GetProductoMenosVendido()
+
+        //INFORME PEDIDOS B - producto menos vendido
+
+        public async Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             this.logger.LogInformation("Iniciando la búsqueda del producto menos vendido.");
-            // Agrupa los pedidos por el ID del producto y calcula la cantidad total vendida por producto
-            var productoMenosVendido = await _context.Pedidos
+
+            // Filtro por fechas, si se proporcionan
+            var pedidosFiltrados = _context.Pedidos.AsQueryable();
+
+            if (fechaInicio.HasValue)
+            {
+                pedidosFiltrados = pedidosFiltrados.Where(p => p.FechaCreacion.Date >= fechaInicio.Value.Date); // Filtro por fecha de inicio
+            }
+
+            if (fechaFin.HasValue)
+            {
+                pedidosFiltrados = pedidosFiltrados.Where(p => p.FechaCreacion.Date <= fechaFin.Value.Date); // Filtro por fecha de fin
+            }
+
+            // Agrupa los pedidos filtrados por el ID del producto y calcula la cantidad total vendida por producto
+            var productoMenosVendido = await pedidosFiltrados
                 .GroupBy(p => p.ProductoId)
-                .Select(g => new // creamos un nuevo objeto anónimo con dos propiedades el Id del producto y la cantidad vendida
+                .Select(g => new  // Creamos un nuevo objeto con el ID del producto y la cantidad vendida
                 {
                     ProductoId = g.Key,
-                    CantidadVendida = g.Sum(p => p.Cantidad)
+                    CantidadVendida = g.Sum(p => p.Cantidad) // Sumamos la cantidad de cada pedido
                 })
-                .OrderBy(g => g.CantidadVendida) // Ordena de forma ascendente para obtener el menos vendido
-                .FirstOrDefaultAsync(); // obtenemos el primero resultado menos vendido o null si es que no hay datos 
+                .OrderBy(g => g.CantidadVendida) // Ordenamos por la cantidad vendida (ascendente) para obtener el menos vendido
+                .FirstOrDefaultAsync(); // Obtenemos el primer resultado menos vendido o null si no hay datos
 
             // Si no se encuentra ningún producto vendido, devuelve null
             if (productoMenosVendido == null)
@@ -117,27 +136,25 @@ namespace LabAWS_RiusLaura.Servicios
                 return null;
             }
 
-            logger.LogInformation($"Producto menos vendido encontrado: ID {productoMenosVendido.ProductoId} - Cantidad Vendida {productoMenosVendido.CantidadVendida}");
-
-            // Busca el producto en la BBDD utilizando el ID obtenido
+            // Busca el producto en la base de datos utilizando el ID obtenido
             var producto = await _context.Productos.FindAsync(productoMenosVendido.ProductoId);
 
             // Si el producto no existe, devuelve null
             if (producto == null)
             {
-                this.logger.LogWarning("El producto no existe en la BBDD");
+                this.logger.LogWarning("El producto no existe en la base de datos.");
                 return null;
             }
 
-            // Mapear Producto a ProductoVendidoDto para devolverlo al controller
+            this.logger.LogInformation($"Producto menos vendido encontrado: ID {productoMenosVendido.ProductoId} - Cantidad Vendida {productoMenosVendido.CantidadVendida}");
+
+            // Mapear Producto a ProductoVendidoDto para devolverlo al controlador
             var productoMenosVendidoDto = this.mapper.Map<ProductoVendidoDto>(producto);
 
             // Añadir manualmente la cantidad vendida ya que no está en la entidad producto
             productoMenosVendidoDto.CantidadVendida = productoMenosVendido.CantidadVendida;
 
             return productoMenosVendidoDto;
-
-           
         }
 
         // POST de un nuevo pedido

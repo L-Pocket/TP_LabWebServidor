@@ -20,10 +20,11 @@ namespace LabAWS_RiusLaura.Servicios
         Task<bool> BorrarEmpleado(int idEmpleado);
         Task<IEnumerable<EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector();
         Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector);
-        Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados();
-        Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado);
-        Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(); 
-        
+        Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin);
+        Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin);
+
+
     }
 
     public class SocioServicio : ISocioServicio
@@ -227,30 +228,34 @@ namespace LabAWS_RiusLaura.Servicios
 
 
 
-        //cantidad de operaciones de todos por sector listada por cada empleado (c)
+        //MODIFIQUE INFORME C -cantidad de operaciones de todos por sector listada por cada empleado (c)
 
-        public async Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados()
+        public async Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
         {
-            var resultado = await (from emp in _context.Empleados
-                                   join sec in _context.Sectores on emp.SectorId equals sec.Id
-                                   join prod in _context.Productos on sec.Id equals prod.SectorId
-                                   join ped in _context.Pedidos on prod.Id equals ped.ProductoId
-                                   group new { emp, sec } by new
-                                   {
-                                       emp.Id,
-                                       emp.Nombre,
-                                       sec.Descripcion // Incluir la descripción del sector
-                                   } into empGroup
-                                   select new OperacionesEmpleadoDto
-                                   {
-                                       Id = empGroup.Key.Id,
-                                       Nombre = empGroup.Key.Nombre,
-                                       Descripcion = empGroup.Key.Descripcion, // Asignar descripción del sector
-                                       CantidadOperaciones = empGroup.Count() // Contar el número de pedidos
-                                   }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
+            var query = from emp in _context.Empleados
+                        join sec in _context.Sectores on emp.SectorId equals sec.Id
+                        join prod in _context.Productos on sec.Id equals prod.SectorId
+                        join ped in _context.Pedidos on prod.Id equals ped.ProductoId
+                        where (!fechaInicio.HasValue || ped.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtro por fecha de inicio sin hora
+                              && (!fechaFin.HasValue || ped.FechaCreacion.Date <= fechaFin.Value.Date)  // Filtro por fecha de fin sin hora
+                        group new { emp, sec } by new
+                        {
+                            emp.Id,
+                            emp.Nombre,
+                            sec.Descripcion //  descripción del sector
+                        } into empGroup
+                        select new OperacionesEmpleadoDto
+                        {
+                            Id = empGroup.Key.Id,
+                            Nombre = empGroup.Key.Nombre,
+                            Descripcion = empGroup.Key.Descripcion, // Asigna descripción del sector
+                            CantidadOperaciones = empGroup.Count() // Contamos el número de pedidos
+                        };
+
+            var resultado = await query.OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
 
             // Si no se encuentra devuelve un mensaje de error
-            if (resultado == null)
+            if (resultado == null || !resultado.Any())
             {
                 this.logger.LogWarning("No se encontró ninguna operación.");
                 return null;
@@ -261,30 +266,36 @@ namespace LabAWS_RiusLaura.Servicios
         }
 
 
-        // //cantidad de operaciones de cada uno por separado (d)
-        public async Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado)
+        // MODIFIQUE INFORME D - cantidad de operaciones de cada uno por separado (d)
+        public async Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            var resultado = await (from emp in _context.Empleados
-                                   join sec in _context.Sectores on emp.SectorId equals sec.Id
-                                   join prod in _context.Productos on sec.Id equals prod.SectorId
-                                   join ped in _context.Pedidos on prod.Id equals ped.ProductoId
-                                   where emp.Id == idEmpleado
-                                   group new { emp, sec } by new
-                                   {
-                                       emp.Id,
-                                       emp.Nombre,
-                                       sec.Descripcion
-                                   } into empGroup
-                                   select new OperacionesEmpleadoDto
-                                   {
-                                       Id = empGroup.Key.Id,
-                                       Nombre = empGroup.Key.Nombre,
-                                       Descripcion = empGroup.Key.Descripcion,
-                                       CantidadOperaciones = empGroup.Count() // Cuenta el número de pedidos
-                                   }).OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
+            var query = from emp in _context.Empleados
+                        join sec in _context.Sectores on emp.SectorId equals sec.Id
+                        join prod in _context.Productos on sec.Id equals prod.SectorId
+                        join ped in _context.Pedidos on prod.Id equals ped.ProductoId
+                        where emp.Id == idEmpleado
+                              // Filtramos por fecha de inicio (sin la hora)
+                              && (!fechaInicio.HasValue || ped.FechaCreacion.Date >= fechaInicio.Value.Date)
+                              // Filtramos por fecha de fin (sin la hora)
+                              && (!fechaFin.HasValue || ped.FechaCreacion.Date <= fechaFin.Value.Date)
+                        group new { emp, sec } by new
+                        {
+                            emp.Id,
+                            emp.Nombre,
+                            sec.Descripcion
+                        } into empGroup
+                        select new OperacionesEmpleadoDto
+                        {
+                            Id = empGroup.Key.Id,
+                            Nombre = empGroup.Key.Nombre,
+                            Descripcion = empGroup.Key.Descripcion,
+                            CantidadOperaciones = empGroup.Count() // Contamos el número de pedidos
+                        };
+
+            var resultado = await query.OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
 
             // Si no se encuentra devuelve un mensaje de error
-            if (resultado == null)
+            if (resultado == null || !resultado.Any())
             {
                 this.logger.LogWarning("No se encontró ninguna operación.");
                 return null;
@@ -294,31 +305,36 @@ namespace LabAWS_RiusLaura.Servicios
             return resultado;
         }
 
-        public async Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora()
+
+        //MODIFIQUE INFORME PEDIDOS C LISTAR PEDIDOS CON DEMORA
+
+        public async Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
         {
-            
-            var pedidos = await _context.Pedidos // Busca Pedidos en la BBDD
-                .Where(p => p.EstadoPedidoId == 1) // Filtrar por pedidos pendientes
-                .Select(p => new PedidoDemoradoDto //nuevo objeto con los siguientes campos:
-                {
-                    Id = p.Id,
-                    ComandaId = p.ComandaId,
-                    TiempoEstimado = p.TiempoEstimado,
-                    TiempoReal = EF.Functions.DateDiffMinute(p.FechaCreacion, DateTime.Now), // Calcular la diferencia en minutos
-                    Estado = p.EstadoPedido.Descripcion
-                })
-                .Where(p => p.TiempoEstimado < p.TiempoReal) // Filtrar aquellos que están demorados
-                .ToListAsync();
+
+            var pedidos = await _context.Pedidos
+                 .Where(p => p.EstadoPedidoId == 1) // Filtramos por pedidos pendientes
+                 .Where(p => !fechaInicio.HasValue || p.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtramos por fecha de inicio sin hora
+                 .Where(p => !fechaFin.HasValue || p.FechaCreacion.Date <= fechaFin.Value.Date)  // Filtramos por fecha de fin sin hora
+                 .Select(p => new PedidoDemoradoDto // nuevo objeto 
+                 {
+                     Id = p.Id,
+                     ComandaId = p.ComandaId,
+                     TiempoEstimado = p.TiempoEstimado,
+                     TiempoReal = EF.Functions.DateDiffMinute(p.FechaCreacion, DateTime.Now), // Calculamos la diferencia en minutos
+                     Estado = p.EstadoPedido.Descripcion
+                 })
+                 .Where(p => p.TiempoEstimado < p.TiempoReal) // Filtramos los que están demorados
+                 .ToListAsync();
 
             // Si no se encuentra devuelve un mensaje de error
-            if (pedidos == null)
+            if (pedidos == null || !pedidos.Any())
             {
                 this.logger.LogWarning("No hay pedidos demorados.");
                 return null;
             }
 
             return pedidos;
-            
+
         }
 
     }

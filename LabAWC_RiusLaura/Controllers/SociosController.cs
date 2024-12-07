@@ -208,13 +208,13 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-        //cantidad de operaciones de todos por sector listada por cada empleado (c)
+        //MODIFIQUE ACA INFORME C -cantidad de operaciones de todos por sector listada por cada empleado (c)
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("OperacionesDeTodosLosEmpleados")]
-        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados()
+        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
         {
-            
-            var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados();
+            // Llamamos al servicio pasándole las fechas de filtro
+            var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados(fechaInicio, fechaFin);
 
             if (operaciones == null || !operaciones.Any())
             {
@@ -224,44 +224,48 @@ namespace LabAWS_RiusLaura.Controllers
             return Ok(operaciones);
         }
 
-        //cantidad de operaciones de cada uno por separado (d)
+
+        //MODIFIQUE ACA INFORME D-cantidad de operaciones de cada uno por separado (d)
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("OperacionesPorEmpleado/{idEmpleado}")]
-        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado)
+        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            
-            var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado);
+
+            var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado, fechaInicio, fechaFin);
 
             if (operaciones == null || !operaciones.Any())
             {
-                return NotFound($"Empleado con Id {idEmpleado} no encontrado.");
+                return NotFound($"No se encontraron operaciones para el empleado con Id {idEmpleado}.");
             }
 
             return Ok(operaciones);
         }
 
+        //MODIFIQUE ACA INFORME PEDIDOS C - LISTAR PEDIDOS CON DEMORA
+
         [Authorize(Policy = "RequireMozoRole")]
         [HttpGet("ListarPedidosConDemora")]
-        public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora()
+        public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
         {
             try
             {
-                // Llama al servicio para obtener el listado
-                var resultado = await _socioServicio.ListarPedidosConDemora();
+                // Llama al servicio para obtener el listado de pedidos con demora, pasando las fechas como parámetros
+                var resultado = await _socioServicio.ListarPedidosConDemora(fechaInicio, fechaFin);
 
-                // Si no hay listado
-                if (resultado == null)
+                // Si no hay resultados
+                if (resultado == null || !resultado.Any())
                 {
-                    return NotFound("No pedidos con demora para mostrar");
+                    return NotFound("No hay pedidos demorados para mostrar.");
                 }
-                // Devuelve el el resultado con un código de estado 200 OK
+
+                // Devuelve el resultado con un código de estado 200 OK
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al listar los productos con demora: {ex.Message}");
+                return StatusCode(500, $"Ocurrió un error al listar los pedidos con demora: {ex.Message}");
             }
-            
+
         }
         
     }

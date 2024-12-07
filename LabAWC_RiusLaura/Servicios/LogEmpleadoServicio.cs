@@ -1,6 +1,9 @@
-﻿using Entidades;
+﻿using AutoMapper;
+using Entidades;
 using LabAWC_RiusLaura.DAL.Data;
+using LabAWS_RiusLaura.DTO;
 using Microsoft.EntityFrameworkCore;
+using Restaurante_API.DTO;
 
 namespace Restaurante_API.Servicios
 {
@@ -10,16 +13,17 @@ namespace Restaurante_API.Servicios
         public Task RegistrarLogueo(int empleadoId);
         public Task RegistrarDeslogueo(int empleadoId);
 
-        public Task<List<LogueoEmpleado>> GetLog();
+        public Task<List<EmpleadosLogDto>> GetLog();
 
     }
     public class LogEmpleadoServicio : ILogEmpleadoServicio
     {
         private readonly DataContext _context;
-
-        public LogEmpleadoServicio(DataContext context)
+        private readonly IMapper _mapper;
+        public LogEmpleadoServicio(DataContext context, IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         public async Task<Empleado> IniciarSesion(string usuario, string password)
@@ -65,10 +69,12 @@ namespace Restaurante_API.Servicios
             }
         }
 
-        public async Task<List<LogueoEmpleado>> GetLog()
+        public async Task<List<EmpleadosLogDto>> GetLog()
         {
             var logs = await _context.LogueosEmpleados.ToListAsync();
-            return logs;
+            //mapeo
+            var logsResponseDto = this._mapper.Map<List<EmpleadosLogDto>>(logs);
+            return logsResponseDto;
         }
     }
 }

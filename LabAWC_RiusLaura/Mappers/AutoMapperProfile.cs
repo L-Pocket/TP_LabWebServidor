@@ -44,9 +44,12 @@ namespace Restaurante_API.Mappers
 
             CreateMap<Empleado, LoginRequestDto>();
 
+            //mapeo LogueoEmpleados - EmpleadosLogDto
+            CreateMap<LogueoEmpleado, EmpleadosLogDto>();
+
         }
 
-        
-        
+
+
     }
 }

@@ -26,7 +26,7 @@ namespace LabAWS_RiusLaura.Servicios
 
         public async Task<ClienteResponseDto> GetDemora(string codigoMesa, string idPedido)
         {
-            this.logger.LogInformation("Iniciando la búsqueda del empleados por sector.");
+            this.logger.LogInformation("Iniciando la búsqueda Getdedemora.");
             // Buscar la mesa por código
             var mesa = await _context.Mesas
                 .Where(m => m.Codigo == codigoMesa)

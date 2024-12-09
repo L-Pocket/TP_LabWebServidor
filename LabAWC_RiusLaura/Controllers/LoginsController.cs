@@ -24,6 +24,34 @@ namespace LabAWS_RiusLaura.Controllers
         }
        
         [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
+        {
+            try
+            {
+                // Obtenemos el empleadoId y el rol del usuario
+                var empleado = await _logEmpleadoServicio.IniciarSesion(login.usuario, login.password);
+
+                if (empleado == null)
+                {
+                    return Unauthorized("Credenciales incorrectas.");
+                }
+
+                var rol = empleado.Rol.Descripcion;  // Rol del empleado
+                var sectorId = empleado.SectorId;    // Obtenemos el sectorId desde el empleado
+
+                // Generamos el token, ahora incluyendo el sectorId
+                var token = _authServicio.CreateToken(login, rol, empleado.Id, sectorId);
+
+                return Ok(new { token = token });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
+
+        /*
+        [HttpPost("login")]
 
         public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
         {
@@ -43,6 +71,8 @@ namespace LabAWS_RiusLaura.Controllers
 
 
         }
+
+        */
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {

@@ -20,6 +20,42 @@ namespace Restaurante_API.Servicios
 
         }
 
+        public string CreateToken(LoginRequestDto usuario, string rol, int empleadoId, int sectorId)
+        {
+            JwtSettings? jwtSettings = this._configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+
+
+            Claim[] claims = new[]
+            {
+
+                new Claim(ClaimTypes.Name, usuario.usuario),
+                new Claim("Password",usuario.password),
+                new Claim(ClaimTypes.Role, rol), // Agrega el rol como un claim
+                new Claim("EmpleadoId", empleadoId.ToString()), // Claim con el empleadoId para el deslogueo
+                new Claim("SectorId", sectorId.ToString()) // Claim con el SectorId
+        
+    };
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
+            SigningCredentials key = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            SecurityTokenDescriptor securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                IssuedAt = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationInMinutes),
+                Audience = jwtSettings.Audience,
+                Issuer = jwtSettings.Issuer,
+                SigningCredentials = key
+
+            };
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken token = tokenHandler.CreateToken(securityTokenDescriptor);
+            return tokenHandler.WriteToken(token);
+
+        }
+
+        /*
         public string CreateToken(LoginRequestDto usuario, string rol, int empleadoId)
         {
             JwtSettings? jwtSettings = this._configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -33,7 +69,7 @@ namespace Restaurante_API.Servicios
                 new Claim("Password",usuario.password),
                 new Claim(ClaimTypes.Role, rol), // Agrega el rol como un claim
                 new Claim("EmpleadoId", empleadoId.ToString()) // Nuevo claim con el empleadoId para el deslogueo
-                
+
             };
             SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
             SigningCredentials key = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
@@ -53,5 +89,6 @@ namespace Restaurante_API.Servicios
             return tokenHandler.WriteToken(token);
 
         }
+         */
     }
 }

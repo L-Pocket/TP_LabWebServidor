@@ -275,12 +275,15 @@ namespace LabAWS_RiusLaura.Controllers
 
         }
 
+        //*MODIFICO ACA LA RESPUESTA INFORME - **** B
         [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("CantidadOperacionesPorSector/{idSector}")]
-        public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(int idSector)
+        public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(
+     int idSector,
+     [FromQuery] DateTime? fechaInicio,
+     [FromQuery] DateTime? fechaFin)
         {
-            
-            // Verifica que id sea válido
+            // Verifica que el ID sea válido
             if (idSector <= 0)
             {
                 return BadRequest(new ApiResponse<object>
@@ -290,18 +293,36 @@ namespace LabAWS_RiusLaura.Controllers
                     Data = null
                 });
             }
+
+            // Validar que fechaInicio no sea mayor que fechaFin
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio.Value > fechaFin.Value)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser mayor que la fecha de fin.",
+                    Data = null
+                });
+            }
+
             try
             {
-                // Llama al servicio
-                var resultado = await _socioServicio.CantidadOperacionesPorSector(idSector);
+                // Llama al servicio con los parámetros de fechas
+                var resultado = await _socioServicio.CantidadOperacionesPorSector(idSector, fechaInicio, fechaFin);
+
+
 
                 // Si no se encuentran operaciones
                 if (resultado == null || !resultado.Any())
                 {
+                    string mensaje = fechaInicio.HasValue || fechaFin.HasValue
+                        ? $"No se encontraron operaciones para el sector con ID: {idSector} dentro del rango de fechas especificado."
+                        : $"No se encontraron operaciones para el sector con ID: {idSector}.";
+
                     return NotFound(new ApiResponse<object>
                     {
                         Success = false,
-                        Message = $"No se encontraron operaciones para el sector con ID: {idSector}.",
+                        Message = mensaje,
                         Data = null
                     });
                 }
@@ -323,6 +344,7 @@ namespace LabAWS_RiusLaura.Controllers
                 });
             }
         }
+
 
         //MODIFIQUE ACA INFORME C -cantidad de operaciones de todos por sector listada por cada empleado (c)
         [Authorize(Policy = "RequireSocioRole")]

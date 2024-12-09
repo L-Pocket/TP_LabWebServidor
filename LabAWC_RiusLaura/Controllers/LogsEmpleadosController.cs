@@ -21,9 +21,36 @@ namespace Restaurante_API.Controllers
         // INFORME A!!!
         public async Task<IActionResult> GetLogs([FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin)
         {
+            // Validar que la fecha de inicio no sea mayor que la fecha de fin
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio.Value > fechaFin.Value)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser mayor que la fecha de fin."
+                });
+            }
 
+            // Llamar al servicio para obtener los logs
             var logs = await _LogEmpleadoServicio.GetLog(fechaInicio, fechaFin);
-            return Ok(logs);
+
+            // Si no se encuentran logs, retornar mensaje
+            if (logs == null || !logs.Any())
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Message = "No se encontraron registros para el rango de fechas especificado."
+                });
+            }
+
+            // Retornar los logs si existen
+            return Ok(new
+            {
+                Success = true,
+                Message = "Registros obtenidos correctamente.",
+                Data = logs
+            });
 
         }
     }

@@ -19,7 +19,7 @@ namespace LabAWS_RiusLaura.Servicios
         Task<bool> SuspenderEmpleado(int idEmpleado);
         Task<bool> BorrarEmpleado(int idEmpleado);
         Task<IEnumerable<EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector();
-        Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector);
+        Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin);
         Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin);
         Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin);
         Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin);
@@ -193,36 +193,50 @@ namespace LabAWS_RiusLaura.Servicios
         }
 
         //CANTIDAD DE OPERACIONES POR SECTOR (Cuantos pedidos se hicieron para "x" sector)
-        public async Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector)
+        public async Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin)
         {
-            this.logger.LogInformation("Iniciando la búsqueda del operaciones por sector.");
+            this.logger.LogInformation("Iniciando la búsqueda de la cantidad de operaciones por sector.");
 
-            var operaciones = await _context.Pedidos
+            // Consulta inicial
+            var query = _context.Pedidos
                 .Join(
                     _context.Productos,
                     pedido => pedido.ProductoId,
                     producto => producto.Id,
                     (pedido, producto) => new { pedido, producto })
                 .Where(pp => pp.producto.SectorId == idSector)
+                .AsQueryable();
+
+            // Aplicamos filtro por fechas
+            if (fechaInicio.HasValue)
+            {
+                query = query.Where(pp => pp.pedido.FechaCreacion.Date >= fechaInicio.Value.Date);
+            }
+
+            if (fechaFin.HasValue)
+            {
+                query = query.Where(pp => pp.pedido.FechaCreacion.Date <= fechaFin.Value.Date);
+            }
+
+            // Agrupación 
+            var operaciones = await query
                 .GroupBy(pp => pp.producto.Sector.Descripcion)
-                .Select(g => new OperacionesPorSectorDto // dto
+                .Select(g => new OperacionesPorSectorDto
                 {
                     Descripcion = g.Key,
                     CantidadOperaciones = g.Count()
                 })
                 .ToListAsync();
 
-            // Si no se encuentra devuelve un mensaje de error
-            if (operaciones == null)
+            // resultado
+            if (operaciones == null || !operaciones.Any())
             {
                 this.logger.LogWarning("No se encontró ninguna operación.");
-                return null;
+                return Enumerable.Empty<OperacionesPorSectorDto>();
             }
 
-            this.logger.LogInformation("Busqueda finalizada con exito.");
+            this.logger.LogInformation("Búsqueda finalizada con éxito.");
             return operaciones;
-
-            
         }
 
 

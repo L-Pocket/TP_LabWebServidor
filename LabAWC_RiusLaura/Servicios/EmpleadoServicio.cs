@@ -36,7 +36,9 @@ namespace LabAWS_RiusLaura.Servicios
         {
             this.logger.LogInformation("Iniciando poner pedido en Preparación.");
             // Busca el pedido por ID
-            var pedido = await _context.Pedidos.FindAsync(idPedido);
+            var pedido = await _context.Pedidos
+                .Include(p => p.EstadoPedido) 
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
 
             if (pedido == null)
             {
@@ -49,6 +51,8 @@ namespace LabAWS_RiusLaura.Servicios
                 pedido.EstadoPedidoId = 2; // 2 = "en preparación"
                 pedido.TiempoEstimado = tiempoEstimado;
                 await _context.SaveChangesAsync(); //guardar cambios
+                // Recargar la relación EstadoPedido para obtener la descripción actualizada
+                await _context.Entry(pedido).Reference(p => p.EstadoPedido).LoadAsync();
                 this.logger.LogInformation("Acción finalizada con exito.");
 
                 // automapper Pedido a PedidoEstadoResponseDto
@@ -69,7 +73,9 @@ namespace LabAWS_RiusLaura.Servicios
         {
             this.logger.LogInformation("Iniciando poner pedido Listo para Servir.");
             // Busca el pedido por ID
-            var pedido = await _context.Pedidos.FindAsync(idPedido);
+            var pedido = await _context.Pedidos
+                .Include(p => p.EstadoPedido)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
 
             if (pedido == null)
             {
@@ -82,6 +88,8 @@ namespace LabAWS_RiusLaura.Servicios
                 pedido.EstadoPedidoId = 3; // 3 = "Listo para servir"
                 pedido.FechaFinalizacion = DateTime.Now; // una vez listo, se establece la hora de finalización
                 await _context.SaveChangesAsync();
+                // Recargar la relación EstadoPedido para obtener la descripción actualizada
+                await _context.Entry(pedido).Reference(p => p.EstadoPedido).LoadAsync();
                 this.logger.LogInformation("Acción finalizada con exito.");
 
                 // automapper Pedido a PedidoResponseDto 

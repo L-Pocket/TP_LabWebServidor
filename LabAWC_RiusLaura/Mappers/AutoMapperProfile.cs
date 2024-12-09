@@ -12,7 +12,9 @@ namespace Restaurante_API.Mappers
             //CreateMap<DTO, Entidad>()
             this.CreateMap<PedidoCreateDto, Pedido>().ReverseMap();
             this.CreateMap<PedidoResponseDto, Pedido>().ReverseMap();
-            this.CreateMap<PedidoEstadoResponseDto, Pedido>().ReverseMap();
+            this.CreateMap<Pedido, PedidoEstadoResponseDto>()
+            .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.EstadoPedido.Descripcion))
+            .ReverseMap();
 
             //this.CreateMap<MesaDto, Mesa>().ReverseMap(); 
             CreateMap<Mesa, MesaDto>()

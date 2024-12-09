@@ -22,7 +22,7 @@ namespace LabAWS_RiusLaura.Controllers
             _mesaServicio = mesaServicio;
         }
 
-        //[Authorize(Policy = "RequireMozoRole")]
+        [Authorize(Policy = "RequireMozoRole")]
         [HttpGet("listadoDeMesas")]
         public async Task<ActionResult<List<MesaDto>>> GetMesas()
         {

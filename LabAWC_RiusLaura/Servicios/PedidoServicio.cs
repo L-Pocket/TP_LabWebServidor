@@ -162,7 +162,11 @@ namespace LabAWS_RiusLaura.Servicios
         {
             this.logger.LogInformation("Iniciando la creación de un nuevo pedido.");
             //Verificar si la comanda existe
-            var comandaExistente = await _context.Comandas.FindAsync(pedidoDto.ComandaId);
+            //var comandaExistente = await _context.Comandas.FindAsync(pedidoDto.ComandaId);
+            var comandaExistente = await _context.Comandas
+                .Include(c => c.Mesa)  // Incluye la mesa asociada a la comanda
+                .FirstOrDefaultAsync(c => c.Id == pedidoDto.ComandaId);
+
             if (comandaExistente == null)
             {
                 this.logger.LogWarning($"Comanda no encontrada con ID: {pedidoDto.ComandaId}");
@@ -193,6 +197,12 @@ namespace LabAWS_RiusLaura.Servicios
 
             // Mapear Pedido a PedidoResponseDto para devolverlo al controller
             var pedidoResponseDto = this.mapper.Map<PedidoResponseDto>(pedido);
+
+            // Asignar el Código de Mesa a la respuesta, si existe la mesa asociada
+            if (comandaExistente.Mesa != null)
+            {
+                pedidoResponseDto.CodigoMesa = comandaExistente.Mesa.Codigo;
+            }
 
             // Retorna
             return pedidoResponseDto;

@@ -5,7 +5,7 @@
     {
         public string? codigo { get; set; }
         public int estadoMesaId { get; set; }
-        public string? Descripcion { get; set; }
+        
 
     }
 }

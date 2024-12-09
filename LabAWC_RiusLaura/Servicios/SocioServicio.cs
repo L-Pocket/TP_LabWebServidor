@@ -22,7 +22,7 @@ namespace LabAWS_RiusLaura.Servicios
         Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin);
         Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin);
         Task<IEnumerable<OperacionesEmpleadoDto>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin);
-        Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin);
+        //Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin);
 
 
     }
@@ -322,34 +322,34 @@ namespace LabAWS_RiusLaura.Servicios
 
         //MODIFIQUE INFORME PEDIDOS C LISTAR PEDIDOS CON DEMORA
 
-        public async Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
-        {
+        //public async Task<IEnumerable<PedidoDemoradoDto>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
+        //{
 
-            var pedidos = await _context.Pedidos
-                 .Where(p => p.EstadoPedidoId == 1) // Filtramos por pedidos pendientes
-                 .Where(p => !fechaInicio.HasValue || p.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtramos por fecha de inicio sin hora
-                 .Where(p => !fechaFin.HasValue || p.FechaCreacion.Date <= fechaFin.Value.Date)  // Filtramos por fecha de fin sin hora
-                 .Select(p => new PedidoDemoradoDto // nuevo objeto 
-                 {
-                     Id = p.Id,
-                     ComandaId = p.ComandaId,
-                     TiempoEstimado = p.TiempoEstimado,
-                     TiempoReal = EF.Functions.DateDiffMinute(p.FechaCreacion, DateTime.Now), // Calculamos la diferencia en minutos
-                     Estado = p.EstadoPedido.Descripcion
-                 })
-                 .Where(p => p.TiempoEstimado < p.TiempoReal) // Filtramos los que están demorados
-                 .ToListAsync();
+        //    var pedidos = await _context.Pedidos
+        //         .Where(p => p.EstadoPedidoId == 1) // Filtramos por pedidos pendientes
+        //         .Where(p => !fechaInicio.HasValue || p.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtramos por fecha de inicio sin hora
+        //         .Where(p => !fechaFin.HasValue || p.FechaCreacion.Date <= fechaFin.Value.Date)  // Filtramos por fecha de fin sin hora
+        //         .Select(p => new PedidoDemoradoDto // nuevo objeto 
+        //         {
+        //             Id = p.Id,
+        //             ComandaId = p.ComandaId,
+        //             TiempoEstimado = p.TiempoEstimado,
+        //             TiempoReal = EF.Functions.DateDiffMinute(p.FechaCreacion, DateTime.Now), // Calculamos la diferencia en minutos
+        //             Estado = p.EstadoPedido.Descripcion
+        //         })
+        //         .Where(p => p.TiempoEstimado < p.TiempoReal) // Filtramos los que están demorados
+        //         .ToListAsync();
 
-            // Si no se encuentra devuelve un mensaje de error
-            if (pedidos == null || !pedidos.Any())
-            {
-                this.logger.LogWarning("No hay pedidos demorados.");
-                return null;
-            }
+        //    // Si no se encuentra devuelve un mensaje de error
+        //    if (pedidos == null || !pedidos.Any())
+        //    {
+        //        this.logger.LogWarning("No hay pedidos demorados.");
+        //        return null;
+        //    }
 
-            return pedidos;
+        //    return pedidos;
 
-        }
+        //}
 
     }
 }

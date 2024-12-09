@@ -273,6 +273,57 @@ namespace LabAWS_RiusLaura.Controllers
             
             
         }
+
+        [Authorize(Policy = "RequireMozoRole")]
+        [HttpGet("ListarPedidosConDemora")]
+        public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            // Validar que las fechas sean correctas
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio > fechaFin)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser posterior a la fecha de fin.",
+                    Data = null
+                });
+            }
+
+            try
+            {
+                // Llama al servicio para obtener el listado de pedidos con demora, pasando las fechas como parámetros
+                var resultado = await _empleadoServicio.ListarPedidosConDemora(fechaInicio, fechaFin);
+
+                // Si no hay resultados
+                if (resultado == null || !resultado.Any())
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No hay pedidos demorados para mostrar.",
+                        Data = null
+                    });
+                }
+
+                // Devuelve el resultado con un código de estado 200 OK
+                return Ok(new ApiResponse<IEnumerable<PedidoDemoradoDto>>
+                {
+                    Success = true,
+                    Message = "Pedidos demorados obtenidos exitosamente.",
+                    Data = resultado
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al listar los pedidos con demora: {ex.Message}",
+                    Data = null
+                });
+            }
+
+        }
     }
 }
 

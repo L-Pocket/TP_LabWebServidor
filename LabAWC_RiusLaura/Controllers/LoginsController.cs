@@ -50,29 +50,7 @@ namespace LabAWS_RiusLaura.Controllers
             }
         }
 
-        /*
-        [HttpPost("login")]
-
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
-        {
-
-            try
-            {
-                var empleadoId = await _logEmpleadoServicio.IniciarSesion(login.usuario, login.password);
-                var rol = empleadoId.Rol.Descripcion;
-                var token = _authServicio.CreateToken(login, rol, empleadoId.Id);
-
-                return Ok(new { token = token });
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-
-
-        }
-
-        */
+        
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {

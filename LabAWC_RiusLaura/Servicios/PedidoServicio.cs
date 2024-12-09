@@ -186,6 +186,10 @@ namespace LabAWS_RiusLaura.Servicios
             // Versión automapper.Mapear pedidoDTO a entidad Pedido:
             Pedido pedido = this.mapper.Map<Pedido>(pedidoDto);
 
+            // Relacionar el pedido con la comanda y la mesa si la comanda existe.
+            pedido.Comanda = comandaExistente;
+            pedido.ComandaId = comandaExistente.Id;
+
             _context.Pedidos.Add(pedido); // Añadir el nuevo pedido a la base de datos
 
             // Modifico la cantidad de productos:

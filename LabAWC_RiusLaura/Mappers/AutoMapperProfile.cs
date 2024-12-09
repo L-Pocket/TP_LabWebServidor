@@ -11,15 +11,15 @@ namespace Restaurante_API.Mappers
         {
             //CreateMap<DTO, Entidad>()
             this.CreateMap<PedidoCreateDto, Pedido>().ReverseMap();
-            this.CreateMap<PedidoResponseDto, Pedido>().ReverseMap();
+            this.CreateMap<PedidoResponseDto, Pedido>()
+                .ForPath(dest => dest.Comanda.MesaId, opt => opt.MapFrom(src => src.MesaId)) // Mapea la MesaId dentro de la propiedad Comanda
+                .ReverseMap();            
             this.CreateMap<Pedido, PedidoEstadoResponseDto>()
-            .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.EstadoPedido.Descripcion))
-            .ReverseMap();
+                .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.EstadoPedido.Descripcion))
+                .ReverseMap();
 
             //this.CreateMap<MesaDto, Mesa>().ReverseMap(); 
-            CreateMap<Mesa, MesaDto>()
-             .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.EstadoMesa.Descripcion))
-             .ReverseMap();
+            CreateMap<Mesa, MesaDto>().ReverseMap();
 
             // Mapeo desde ComandaCrearDto a Comanda
             CreateMap<ComandaCrearDto, Comanda>()

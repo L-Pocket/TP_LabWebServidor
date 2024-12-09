@@ -7,13 +7,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Restaurante_API.DTO;
 
 namespace LabAWS_RiusLaura.Servicios
 {
     public interface IEmpleadoServicio
     {
-        Task<PedidoResponseDto> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado);
-        Task<PedidoResponseDto> PonerPedidoListoParaServir(int idPedido);
+        Task<PedidoEstadoResponseDto> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado);
+        Task<PedidoEstadoResponseDto> PonerPedidoListoParaServir(int idPedido);
         Task<MesaDto> CambiarEstadoMesaClienteComiendo(int idMesa);
         Task<MesaDto> CambiarEstadoMesaClientePagando(int idMesa);
     }
@@ -31,7 +32,7 @@ namespace LabAWS_RiusLaura.Servicios
             this._mapper = mapper;
         }
 
-        public async Task<PedidoResponseDto> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado)
+        public async Task<PedidoEstadoResponseDto> PonerPedidoEnPreparacion(int idPedido, int tiempoEstimado)
         {
             this.logger.LogInformation("Iniciando poner pedido en Preparación.");
             // Busca el pedido por ID
@@ -47,11 +48,11 @@ namespace LabAWS_RiusLaura.Servicios
             {
                 pedido.EstadoPedidoId = 2; // 2 = "en preparación"
                 pedido.TiempoEstimado = tiempoEstimado;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); //guardar cambios
                 this.logger.LogInformation("Acción finalizada con exito.");
 
-                // automapper Pedido a PedidoResponseDto 
-                var pedidoResponseDto = _mapper.Map<PedidoResponseDto>(pedido);
+                // automapper Pedido a PedidoEstadoResponseDto
+                var pedidoResponseDto = _mapper.Map<PedidoEstadoResponseDto>(pedido);
 
                 // Retorna 
                 return pedidoResponseDto;
@@ -64,7 +65,7 @@ namespace LabAWS_RiusLaura.Servicios
             
         }
 
-        public async Task<PedidoResponseDto> PonerPedidoListoParaServir(int idPedido)
+        public async Task<PedidoEstadoResponseDto> PonerPedidoListoParaServir(int idPedido)
         {
             this.logger.LogInformation("Iniciando poner pedido Listo para Servir.");
             // Busca el pedido por ID
@@ -84,7 +85,7 @@ namespace LabAWS_RiusLaura.Servicios
                 this.logger.LogInformation("Acción finalizada con exito.");
 
                 // automapper Pedido a PedidoResponseDto 
-                var pedidoResponseDto = _mapper.Map<PedidoResponseDto>(pedido);
+                var pedidoResponseDto = _mapper.Map<PedidoEstadoResponseDto>(pedido);
 
                 return pedidoResponseDto;
             }

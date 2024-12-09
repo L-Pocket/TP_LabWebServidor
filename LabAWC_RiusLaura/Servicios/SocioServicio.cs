@@ -35,7 +35,7 @@ namespace LabAWS_RiusLaura.Servicios
 
         public SocioServicio(DataContext context, ILogger<PedidoServicio> logger, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context ?? throw new ArgumentNullException(nameof(context)); //se lanza una excepción, lo que asegura que el servicio no intente operar con una dependencia no válida.
             this.logger = logger;
             this.mapper = mapper;
         }

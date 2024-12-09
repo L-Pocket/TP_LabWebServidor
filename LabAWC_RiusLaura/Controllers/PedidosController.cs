@@ -25,7 +25,7 @@ namespace LabAWS_RiusLaura.Controllers
             _pedidoService = pedidoService;
         }
 
-        //[Authorize(Policy = "RequireSocioRole")]
+        [Authorize(Policy = "RequireSocioRole")]
         [HttpGet("GetPedidoBy/{id}")]
         public async Task<IActionResult> GetPedidoById(int id)
         {

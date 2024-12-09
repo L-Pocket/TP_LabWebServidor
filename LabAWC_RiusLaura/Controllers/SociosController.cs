@@ -11,6 +11,7 @@ using Restaurante_API.DTO;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Restaurante_API.Controllers.Responses;
 
 namespace LabAWS_RiusLaura.Controllers
 {
@@ -37,7 +38,12 @@ namespace LabAWS_RiusLaura.Controllers
             // Verifica que id mesa sea válido
             if (idMesa <= 0)
             {
-                return BadRequest("IdMesa debe ser válido.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID de la mesa proporcionado no es válido. Debe ser un número mayor que 0.",
+                    Data = null
+                });
             }
             try
             {
@@ -46,16 +52,31 @@ namespace LabAWS_RiusLaura.Controllers
 
                 if (!resultado) // si el resultado es = false
                 {
-                    return NotFound($"La mesa con el id {idMesa} no existe o no está en un estado válido para cerrar.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"No se encontró una mesa con el ID {idMesa}, o no está en un estado válido para cerrarla.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el nuevo pedido con un código de estado 200 OK
-                return Ok($"La mesa con el id {idMesa} se cerró correctamente");
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = $"La mesa con el ID {idMesa} se cerró correctamente.",
+                    Data = null
+                });
             }
             catch (Exception ex)
             {
 
-                return StatusCode(500, $"Error al intentar cerrar la mesa: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al intentar cerrar la mesa: {ex.Message}",
+                    Data = null
+                });
             }
 
 
@@ -70,7 +91,12 @@ namespace LabAWS_RiusLaura.Controllers
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password) ||
                 sectorDelEmpleadoId <= 0 || rolDelEmpleadoId <= 0)
             {
-                return BadRequest("Nombre, usuario, contraseña, sectorDelEmpleadoId y rolDelEmpleadoId son obligatorios y deben ser válidos.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Todos los campos son obligatorios. Nombre, usuario, contraseña deben ser válidos, y los IDs de sector y rol deben ser mayores que 0.",
+                    Data = null
+                });
             }
 
             try
@@ -80,16 +106,30 @@ namespace LabAWS_RiusLaura.Controllers
 
                 if (resultado == null)
                 {
-                    return NotFound("No se agregó empleado ya que alguno de los datos son incorrectos.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se pudo agregar al empleado. Verifica que los datos proporcionados sean correctos.",
+                        Data = null
+                    });
                 }
                 // Devuelve un código de estado 200 OK con el empleado creado
-                return Ok($"Se agregó a {nombre} como empleado.");
+                return Ok(new ApiResponse<EmpleadoCreateDto>
+                {
+                    Success = true,
+                    Message = $"Empleado {nombre} agregado correctamente.",
+                    Data = resultado
+                });
 
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, $"Ocurrió un error al agregar empleado: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al intentar agregar al empleado: {ex.Message}",
+                    Data = null
+                });
             }
 
         }
@@ -102,23 +142,43 @@ namespace LabAWS_RiusLaura.Controllers
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
-                return BadRequest("IdEmpleado debe ser válido.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID del empleado debe ser un número válido mayor que 0.",
+                    Data = null
+                });
             }
             try
             {
-                // Llama al servicio
+                // Llama al servicio para suspender al empleado
                 var resultado = await _socioServicio.SuspenderEmpleado(idEmpleado);
 
                 if (!resultado) // si el resultado es = false
                 {
-                    return NotFound($"El empleado con el id {idEmpleado} no existe o ya está suspendido.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"El empleado con el ID {idEmpleado} no existe o ya se encuentra suspendido.",
+                        Data = null
+                    });
                 }
 
-                return Ok($"SE SUSPENDIÓ CORRECTAMENTE al empleado con el id {idEmpleado}.");
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = $"El empleado con el ID {idEmpleado} fue suspendido correctamente.",
+                    Data = null
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error al intentar suspender empleado: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error inesperado al intentar suspender al empleado: {ex.Message}",
+                    Data = null
+                });
             }
 
 
@@ -132,23 +192,43 @@ namespace LabAWS_RiusLaura.Controllers
             // Verifica que id sea válido
             if (idEmpleado <= 0)
             {
-                return BadRequest("IdEmpleado debe ser válido.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID del empleado debe ser mayor que 0.",
+                    Data = null
+                });
             }
             try
             {
-                // Llama al servicio
+                // Llama al servicio para borrar al empleado
                 var resultado = await _socioServicio.BorrarEmpleado(idEmpleado);
 
                 if (!resultado) // si el resultado es = false
                 {
-                    return NotFound($"El empleado con el id {idEmpleado} no existe.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"El empleado con el ID {idEmpleado} no existe o ya fue eliminado.",
+                        Data = null
+                    });
                 }
 
-                return Ok($"SE ELIMINÓ CORRECTAMENTE al empleado con el id {idEmpleado}.");
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = $"El empleado con el ID {idEmpleado} fue eliminado correctamente.",
+                    Data = null
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error al intentar eliminar empleado: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al intentar eliminar al empleado: {ex.Message}",
+                    Data = null
+                });
             }
 
         }
@@ -166,16 +246,30 @@ namespace LabAWS_RiusLaura.Controllers
                 // Si no hay empleados
                 if (resultado == null)
                 {
-
-                    return NotFound("No hay empleados para mostrar");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No hay empleados para mostrar.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el el resultado con un código de estado 200 OK
-                return Ok(resultado);
+                return Ok(new ApiResponse<IEnumerable<EmpleadosPorSectorResponseDto>>
+                {
+                    Success = true,
+                    Message = "Cantidad de empleados por sector obtenida exitosamente.",
+                    Data = resultado
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al obtener el producto más vendido: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al obtener la cantidad de empleados por sector: {ex.Message}",
+                    Data = null
+                });
             }
 
 
@@ -189,22 +283,44 @@ namespace LabAWS_RiusLaura.Controllers
             // Verifica que id sea válido
             if (idSector <= 0)
             {
-                return BadRequest("IdSector debe ser válido.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID del sector debe ser mayor que 0.",
+                    Data = null
+                });
             }
             try
             {
+                // Llama al servicio
                 var resultado = await _socioServicio.CantidadOperacionesPorSector(idSector);
 
+                // Si no se encuentran operaciones
                 if (resultado == null || !resultado.Any())
                 {
-                    return NotFound($"No se encontraron operaciones para el sector con ID: {idSector}");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"No se encontraron operaciones para el sector con ID: {idSector}.",
+                        Data = null
+                    });
                 }
 
-                return Ok(resultado);
+                return Ok(new ApiResponse<IEnumerable<OperacionesPorSectorDto>>
+                {
+                    Success = true,
+                    Message = "Operaciones obtenidas exitosamente por sector.",
+                    Data = resultado
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al obtener la cantidad de operaciones por sector: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al obtener la cantidad de operaciones por sector: {ex.Message}",
+                    Data = null
+                });
             }
         }
 
@@ -213,15 +329,52 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("OperacionesDeTodosLosEmpleados")]
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
         {
-            // Llamamos al servicio pasándole las fechas de filtro
-            var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados(fechaInicio, fechaFin);
-
-            if (operaciones == null || !operaciones.Any())
+            // Validación de parámetros
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio > fechaFin)
             {
-                return NotFound("No se encontraron operaciones.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser posterior a la fecha de fin.",
+                    Data = null
+                });
             }
 
-            return Ok(operaciones);
+            try
+            {
+                // Llama al servicio pasándole las fechas de filtro
+                var operaciones = await _socioServicio.ObtenerTodasLasOperacionesEmpleados(fechaInicio, fechaFin);
+
+                // Si no se encontraron operaciones
+                if (operaciones == null || !operaciones.Any())
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No se encontraron operaciones para los filtros proporcionados.",
+                        Data = null
+                    });
+                }
+
+                return Ok(new ApiResponse<IEnumerable<OperacionesEmpleadoDto>>
+                {
+                    Success = true,
+                    Message = "Operaciones de empleados obtenidas exitosamente.",
+                    Data = operaciones
+                });
+
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones con detalles específicos
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al obtener las operaciones de empleados: {ex.Message}",
+                    Data = null
+                });
+            }
+
         }
 
 
@@ -231,14 +384,60 @@ namespace LabAWS_RiusLaura.Controllers
         public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> OperacionesPorEmpleado(int idEmpleado, DateTime? fechaInicio, DateTime? fechaFin)
         {
 
-            var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado, fechaInicio, fechaFin);
-
-            if (operaciones == null || !operaciones.Any())
+            // Verificar que el idEmpleado sea válido
+            if (idEmpleado <= 0)
             {
-                return NotFound($"No se encontraron operaciones para el empleado con Id {idEmpleado}.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "El ID del empleado debe ser un número mayor que 0.",
+                    Data = null
+                });
             }
 
-            return Ok(operaciones);
+            // Validar que la fecha de inicio no sea posterior a la fecha de fin
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio > fechaFin)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser posterior a la fecha de fin.",
+                    Data = null
+                });
+            }
+
+            try
+            {
+                // Llama al servicio
+                var operaciones = await _socioServicio.OperacionesPorEmpleado(idEmpleado, fechaInicio, fechaFin);
+
+                if (operaciones == null || !operaciones.Any())
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"No se encontraron operaciones para el empleado con ID {idEmpleado}.",
+                        Data = null
+                    });
+                }
+
+                return Ok(new ApiResponse<IEnumerable<OperacionesEmpleadoDto>>
+                {
+                    Success = true,
+                    Message = "Operaciones obtenidas exitosamente.",
+                    Data = operaciones
+                });
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones con respuesta estructurada
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al obtener las operaciones del empleado: {ex.Message}",
+                    Data = null
+                });
+            }
         }
 
         //MODIFIQUE ACA INFORME PEDIDOS C - LISTAR PEDIDOS CON DEMORA
@@ -247,6 +446,17 @@ namespace LabAWS_RiusLaura.Controllers
         [HttpGet("ListarPedidosConDemora")]
         public async Task<ActionResult<IEnumerable<PedidoDemoradoDto>>> ListarPedidosConDemora(DateTime? fechaInicio, DateTime? fechaFin)
         {
+            // Validar que las fechas sean correctas
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio > fechaFin)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "La fecha de inicio no puede ser posterior a la fecha de fin.",
+                    Data = null
+                });
+            }
+
             try
             {
                 // Llama al servicio para obtener el listado de pedidos con demora, pasando las fechas como parámetros
@@ -255,15 +465,30 @@ namespace LabAWS_RiusLaura.Controllers
                 // Si no hay resultados
                 if (resultado == null || !resultado.Any())
                 {
-                    return NotFound("No hay pedidos demorados para mostrar.");
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "No hay pedidos demorados para mostrar.",
+                        Data = null
+                    });
                 }
 
                 // Devuelve el resultado con un código de estado 200 OK
-                return Ok(resultado);
+                return Ok(new ApiResponse<IEnumerable<PedidoDemoradoDto>>
+                {
+                    Success = true,
+                    Message = "Pedidos demorados obtenidos exitosamente.",
+                    Data = resultado
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al listar los pedidos con demora: {ex.Message}");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Ocurrió un error al listar los pedidos con demora: {ex.Message}",
+                    Data = null
+                });
             }
 
         }
